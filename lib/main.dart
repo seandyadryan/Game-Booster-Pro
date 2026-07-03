@@ -599,99 +599,195 @@ class _FlyingHeroPainter extends CustomPainter {
     final dy = 18 - math.sin(progress * math.pi) * 64 + wave * 5;
     final center = Offset(size.width / 2 + dx, size.height / 2 + dy);
 
-    final trailPaint = Paint()
+    final trailRect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final glowPaint = Paint()
+      ..color = const Color(0xFF22D9FF).withValues(alpha: 0.22)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18);
+    canvas.drawCircle(center + const Offset(10, 2), 42, glowPaint);
+
+    for (var i = 0; i < 5; i++) {
+      final lane = Path()
+        ..moveTo(center.dx - 42 - i * 24, center.dy - 29 + i * 13)
+        ..lineTo(center.dx - 124 - i * 20, center.dy - 21 + i * 13)
+        ..lineTo(center.dx - 112 - i * 20, center.dy - 13 + i * 13)
+        ..lineTo(center.dx - 36 - i * 24, center.dy - 21 + i * 13)
+        ..close();
+      final trailPaint = Paint()
+        ..shader = LinearGradient(
+          colors: [
+            const Color(0x0009E8FF),
+            const Color(0xFF09E8FF).withValues(alpha: 0.7 - i * 0.08),
+            const Color(0xFFFF3156).withValues(alpha: 0.16),
+          ],
+        ).createShader(trailRect);
+      canvas.drawPath(lane, trailPaint);
+    }
+
+    final capeBack = Paint()
       ..shader = const LinearGradient(
-        colors: [Color(0x0020D38B), Color(0x8820D38B), Color(0x00FFB000)],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-
-    final trail = Path()
-      ..moveTo(center.dx - 86, center.dy + 36)
-      ..quadraticBezierTo(
-        center.dx - 38,
-        center.dy + 18,
-        center.dx - 4,
-        center.dy + 2,
-      )
-      ..quadraticBezierTo(
-        center.dx - 42,
-        center.dy + 54,
-        center.dx - 106,
-        center.dy + 72,
-      )
-      ..close();
-    canvas.drawPath(trail, trailPaint);
-
-    final capePaint = Paint()..color = const Color(0xFFFA5D5D);
-    final capeShadow = Paint()..color = const Color(0xFF9F2532);
-    final bodyPaint = Paint()..color = const Color(0xFF20D38B);
-    final suitPaint = Paint()..color = const Color(0xFF0E271A);
-    final skinPaint = Paint()..color = const Color(0xFFFFD08A);
-    final bootPaint = Paint()..color = const Color(0xFFFFB000);
-
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFF5D0B78), Color(0xFFFE3157), Color(0xFFFFB000)],
+      ).createShader(trailRect);
+    final capeGlow = Paint()
+      ..color = const Color(0xFFFF3156).withValues(alpha: 0.25)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12);
     final cape = Path()
-      ..moveTo(center.dx - 32, center.dy + 3)
+      ..moveTo(center.dx - 26, center.dy - 7)
       ..cubicTo(
         center.dx - 74,
-        center.dy - 8 + wave * 7,
-        center.dx - 91,
-        center.dy + 31,
-        center.dx - 118,
-        center.dy + 23 + wave * 5,
+        center.dy - 44 + wave * 8,
+        center.dx - 116,
+        center.dy - 16,
+        center.dx - 132,
+        center.dy + 18 + wave * 5,
       )
       ..cubicTo(
-        center.dx - 78,
-        center.dy + 52,
-        center.dx - 47,
-        center.dy + 38,
-        center.dx - 22,
-        center.dy + 20,
+        center.dx - 93,
+        center.dy + 48,
+        center.dx - 55,
+        center.dy + 45 + wave * 4,
+        center.dx - 24,
+        center.dy + 18,
       )
       ..close();
-    canvas.drawPath(cape, capeShadow);
-    canvas.drawPath(cape.shift(const Offset(3, -4)), capePaint);
+    canvas.drawPath(cape, capeGlow);
+    canvas.drawPath(cape, capeBack);
+
+    final capeFold = Path()
+      ..moveTo(center.dx - 31, center.dy + 2)
+      ..cubicTo(
+        center.dx - 65,
+        center.dy + 4 + wave * 8,
+        center.dx - 90,
+        center.dy + 25,
+        center.dx - 118,
+        center.dy + 19,
+      );
+    canvas.drawPath(
+      capeFold,
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.28)
+        ..strokeWidth = 3
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round,
+    );
 
     canvas.save();
     canvas.translate(center.dx, center.dy);
-    canvas.rotate(-0.42 + wave * 0.04);
+    canvas.rotate(-0.48 + wave * 0.04);
+
+    final bodyPaint = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Color(0xFF1DF3D5), Color(0xFF1478FF), Color(0xFF102B67)],
+      ).createShader(const Rect.fromLTWH(-50, -34, 104, 72));
+    final darkSuitPaint = Paint()..color = const Color(0xFF07131F);
+    final trimPaint = Paint()
+      ..color = const Color(0xFF10F3FF)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.2
+      ..strokeCap = StrokeCap.round;
+    final bootPaint = Paint()
+      ..shader = const LinearGradient(
+        colors: [Color(0xFFFFF08A), Color(0xFFFFA000), Color(0xFFFF3156)],
+      ).createShader(const Rect.fromLTWH(-70, -20, 90, 40));
+
+    final rearArm = Paint()
+      ..color = const Color(0xFF0A6DDE)
+      ..strokeWidth = 12
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(const Offset(-21, -4), const Offset(17, 23), rearArm);
+
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        const Rect.fromLTWH(-25, -12, 68, 24),
-        const Radius.circular(12),
+        const Rect.fromLTWH(-28, -18, 62, 35),
+        const Radius.circular(18),
       ),
       bodyPaint,
     );
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        const Rect.fromLTWH(-6, -10, 28, 20),
-        const Radius.circular(7),
+        const Rect.fromLTWH(-10, -14, 29, 29),
+        const Radius.circular(9),
       ),
-      suitPaint,
+      darkSuitPaint,
     );
-    canvas.drawCircle(const Offset(49, -3), 13, skinPaint);
-    final eyePaint = Paint()..color = const Color(0xFF101012);
-    canvas.drawCircle(const Offset(54, -7), 3, eyePaint);
+    canvas.drawPath(
+      Path()
+        ..moveTo(-4, -12)
+        ..lineTo(8, 4)
+        ..lineTo(-2, 15),
+      trimPaint,
+    );
+
+    final frontArm = Paint()
+      ..shader = const LinearGradient(
+        colors: [Color(0xFF1DF3D5), Color(0xFF22D9FF)],
+      ).createShader(const Rect.fromLTWH(14, -24, 60, 26))
+      ..strokeWidth = 13
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(const Offset(22, -8), const Offset(61, -24), frontArm);
+    canvas.drawCircle(const Offset(65, -26), 8, bootPaint);
+
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        const Rect.fromLTWH(-48, -9, 32, 10),
+        const Rect.fromLTWH(-58, -18, 34, 12),
         const Radius.circular(8),
       ),
       bootPaint,
     );
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        const Rect.fromLTWH(-51, 9, 34, 10),
+        const Rect.fromLTWH(-60, 11, 35, 12),
         const Radius.circular(8),
       ),
       bootPaint,
+    );
+
+    final helmetPaint = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFFFFFFFF), Color(0xFF32E7FF), Color(0xFF0A1F47)],
+      ).createShader(const Rect.fromLTWH(28, -35, 46, 42));
+    canvas.drawOval(const Rect.fromLTWH(31, -29, 34, 30), helmetPaint);
+    canvas.drawPath(
+      Path()
+        ..moveTo(39, -20)
+        ..quadraticBezierTo(51, -28, 64, -19)
+        ..lineTo(61, -12)
+        ..quadraticBezierTo(49, -16, 37, -11)
+        ..close(),
+      Paint()..color = const Color(0xFF07131F),
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(41, -18)
+        ..quadraticBezierTo(51, -24, 61, -18),
+      Paint()
+        ..color = const Color(0xFFFF3156)
+        ..strokeWidth = 2.5
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round,
     );
     canvas.restore();
 
     final sparklePaint = Paint()..color = const Color(0xFFFFF1A8);
-    for (var i = 0; i < 7; i++) {
-      final t = (progress + i * 0.16) % 1;
-      final x = size.width - t * size.width * 0.9 - i * 4;
-      final y = 28 + (i * 19) % 116 + math.sin(t * math.pi * 2) * 8;
-      canvas.drawCircle(Offset(x, y), 1.7 + (i % 3), sparklePaint);
+    final starPaint = Paint()
+      ..color = const Color(0xFF22D9FF).withValues(alpha: 0.9)
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.round;
+    for (var i = 0; i < 8; i++) {
+      final t = (progress + i * 0.13) % 1;
+      final x = size.width - t * size.width * 0.92 - i * 5;
+      final y = 25 + (i * 18) % 120 + math.sin(t * math.pi * 2) * 9;
+      canvas.drawCircle(Offset(x, y), 1.5 + (i % 3), sparklePaint);
+      if (i.isEven) {
+        canvas.drawLine(Offset(x - 5, y), Offset(x + 5, y), starPaint);
+        canvas.drawLine(Offset(x, y - 5), Offset(x, y + 5), starPaint);
+      }
     }
   }
 
