@@ -49,8 +49,8 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   Timer? _refreshTimer;
 
   double _ramUsedPercent = 0;
-  int _totalRamMb = 0;
-  int _availableRamMb = 0;
+  int _totalRamBytes = 0;
+  int _availableRamBytes = 0;
   double _refreshRate = 0;
   double _appFps = 0;
   int _fpsFrameCount = 0;
@@ -109,11 +109,18 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 
       final total = (data['totalRamMb'] as num?)?.toInt() ?? 0;
       final available = (data['availableRamMb'] as num?)?.toInt() ?? 0;
-      final used = total <= 0 ? 0 : ((total - available) / total).clamp(0, 1);
+      final totalBytes =
+          (data['totalRamBytes'] as num?)?.toInt() ?? total * 1024 * 1024;
+      final availableBytes =
+          (data['availableRamBytes'] as num?)?.toInt() ??
+          available * 1024 * 1024;
+      final used = totalBytes <= 0
+          ? 0
+          : ((totalBytes - availableBytes) / totalBytes).clamp(0, 1);
 
       setState(() {
-        _totalRamMb = total;
-        _availableRamMb = available;
+        _totalRamBytes = totalBytes;
+        _availableRamBytes = availableBytes;
         _ramUsedPercent = used.toDouble();
         _refreshRate = (data['refreshRate'] as num?)?.toDouble() ?? 0;
         _dndEnabled = data['dndEnabled'] == true;
@@ -154,7 +161,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       _boosting = false;
       _status = dndResult
           ? 'Boost selesai. Cache ${_formatStorage(freed)} dibersihkan.'
-          : 'Boost selesai. DND menunggu izin sistem.';
+          : 'Boost selesai. Dont Disturb menunggu izin sistem.';
     });
   }
 
@@ -207,13 +214,17 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         setState(() {
           _dndEnabled = enabled;
           _dndPermission = result?['permission'] == true;
-          _status = result?['message'] as String? ?? 'Mode DND diproses.';
+          _status =
+              result?['message'] as String? ?? 'Mode Dont Disturb diproses.';
         });
       }
       return enabled;
     } on PlatformException catch (error) {
       if (mounted) {
-        setState(() => _status = error.message ?? 'DND belum bisa diaktifkan.');
+        setState(
+          () =>
+              _status = error.message ?? 'Dont Disturb belum bisa diaktifkan.',
+        );
       }
       return false;
     }
@@ -230,16 +241,20 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     return '${(mb / 1024).toStringAsFixed(2)} GB';
   }
 
-  String _formatRam(int value) {
-    if (value <= 0) {
+  String _formatMemory(int bytes) {
+    if (bytes <= 0) {
       return '-';
     }
-    return '${(value / 1024).toStringAsFixed(1)} GB';
+    final gb = bytes / (1024 * 1024 * 1024);
+    if (gb >= 1) {
+      return '${gb.toStringAsFixed(1)} GB';
+    }
+    return '${(bytes / (1024 * 1024)).round()} MB';
   }
 
   @override
   Widget build(BuildContext context) {
-    final usedRam = math.max(_totalRamMb - _availableRamMb, 0);
+    final usedRamBytes = math.max(_totalRamBytes - _availableRamBytes, 0);
 
     return Scaffold(
       body: SafeArea(
@@ -271,8 +286,9 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                     sliver: SliverToBoxAdapter(
                       child: _Header(
                         ramUsedPercent: _ramUsedPercent,
-                        usedRam: _formatRam(usedRam),
-                        totalRam: _formatRam(_totalRamMb),
+                        usedRam: _formatMemory(usedRamBytes),
+                        availableRam: _formatMemory(_availableRamBytes),
+                        totalRam: _formatMemory(_totalRamBytes),
                         boosting: _boosting,
                       ),
                     ),
@@ -322,7 +338,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                           icon: _dndEnabled
                               ? Icons.notifications_off
                               : Icons.notifications_paused_outlined,
-                          title: 'DND',
+                          title: 'Dont Disturb',
                           value: _dndEnabled
                               ? 'Aktif'
                               : (_dndPermission ? 'Siap' : 'Butuh izin'),
@@ -357,12 +373,14 @@ class _Header extends StatelessWidget {
   const _Header({
     required this.ramUsedPercent,
     required this.usedRam,
+    required this.availableRam,
     required this.totalRam,
     required this.boosting,
   });
 
   final double ramUsedPercent;
   final String usedRam;
+  final String availableRam;
   final String totalRam;
   final bool boosting;
 
@@ -414,7 +432,7 @@ class _Header extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '$usedRam/$totalRam',
+                    'Sisa $availableRam',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white60,
@@ -423,6 +441,16 @@ class _Header extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Terpakai $usedRam dari $totalRam',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white54,
+                  fontSize: 9,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),

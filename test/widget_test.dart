@@ -16,6 +16,8 @@ void main() {
               return {
                 'totalRamMb': 8192,
                 'availableRamMb': 4096,
+                'totalRamBytes': 8192 * 1024 * 1024,
+                'availableRamBytes': 4096 * 1024 * 1024,
                 'refreshRate': 120.0,
                 'dndPermission': true,
                 'dndEnabled': false,
@@ -31,7 +33,7 @@ void main() {
               return {
                 'enabled': true,
                 'permission': true,
-                'message': 'Mode DND aktif.',
+                'message': 'Mode Dont Disturb aktif.',
               };
           }
           return null;

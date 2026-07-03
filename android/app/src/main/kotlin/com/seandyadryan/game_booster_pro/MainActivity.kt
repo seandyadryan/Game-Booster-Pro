@@ -36,6 +36,9 @@ class MainActivity : FlutterActivity() {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryInfo = ActivityManager.MemoryInfo()
         activityManager.getMemoryInfo(memoryInfo)
+        val procMemory = readProcMemoryInfo()
+        val totalRamBytes = procMemory.first ?: memoryInfo.totalMem
+        val availableRamBytes = procMemory.second ?: memoryInfo.availMem
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val dndPermission = Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
@@ -48,8 +51,10 @@ class MainActivity : FlutterActivity() {
         }
 
         return mapOf(
-            "totalRamMb" to (memoryInfo.totalMem / 1024 / 1024).toInt(),
-            "availableRamMb" to (memoryInfo.availMem / 1024 / 1024).toInt(),
+            "totalRamBytes" to totalRamBytes,
+            "availableRamBytes" to availableRamBytes,
+            "totalRamMb" to (totalRamBytes / 1024 / 1024).toInt(),
+            "availableRamMb" to (availableRamBytes / 1024 / 1024).toInt(),
             "lowMemory" to memoryInfo.lowMemory,
             "refreshRate" to getRefreshRate(),
             "dndPermission" to dndPermission,
@@ -84,7 +89,7 @@ class MainActivity : FlutterActivity() {
             return mapOf(
                 "enabled" to false,
                 "permission" to false,
-                "message" to "DND membutuhkan Android 6 atau lebih baru."
+                "message" to "Dont Disturb membutuhkan Android 6 atau lebih baru."
             )
         }
 
@@ -93,7 +98,7 @@ class MainActivity : FlutterActivity() {
             return mapOf(
                 "enabled" to false,
                 "permission" to false,
-                "message" to "Aktifkan izin DND untuk Game Booster Pro."
+                "message" to "Aktifkan izin Dont Disturb untuk Game Booster Pro."
             )
         }
 
@@ -101,8 +106,31 @@ class MainActivity : FlutterActivity() {
         return mapOf(
             "enabled" to true,
             "permission" to true,
-            "message" to "Mode DND aktif."
+            "message" to "Mode Dont Disturb aktif."
         )
+    }
+
+    private fun readProcMemoryInfo(): Pair<Long?, Long?> {
+        var total: Long? = null
+        var available: Long? = null
+
+        runCatching {
+            File("/proc/meminfo").forEachLine { line ->
+                when {
+                    line.startsWith("MemTotal:") -> total = parseMemoryLine(line)
+                    line.startsWith("MemAvailable:") -> available = parseMemoryLine(line)
+                }
+            }
+        }
+
+        return Pair(total, available)
+    }
+
+    private fun parseMemoryLine(line: String): Long? {
+        val value = line.split(Regex("\\s+"))
+            .firstOrNull { token -> token.all { char -> char.isDigit() } }
+            ?.toLongOrNull()
+        return value?.times(1024)
     }
 
     private fun getRefreshRate(): Float {

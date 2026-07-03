@@ -7,7 +7,7 @@ Game Booster Pro adalah aplikasi Flutter untuk membantu menyiapkan sesi bermain 
 - Membersihkan cache aplikasi.
 - Meringankan proses background.
 - Menampilkan penggunaan RAM.
-- Mengaktifkan mode Do Not Disturb jika izin sistem diberikan.
+- Mengaktifkan mode Dont Disturb jika izin sistem diberikan.
 - Menampilkan FPS aplikasi atau refresh rate layar jika FPS belum tersedia.
 - Animasi boost orang terbang dengan jubah saat tombol boost ditekan.
 
