@@ -26,7 +26,7 @@ class MainActivity : FlutterActivity() {
                 "getSystemStatus" -> result.success(getSystemStatus())
                 "cleanCache" -> result.success(cleanCache())
                 "closeBackgroundApps" -> result.success(closeBackgroundApps())
-                "enableDnd" -> result.success(enableDnd())
+                "toggleDnd" -> result.success(toggleDnd(call.argument<Boolean>("enabled") ?: true))
                 else -> result.notImplemented()
             }
         }
@@ -82,7 +82,7 @@ class MainActivity : FlutterActivity() {
         )
     }
 
-    private fun enableDnd(): Map<String, Any> {
+    private fun toggleDnd(enabled: Boolean): Map<String, Any> {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -102,11 +102,21 @@ class MainActivity : FlutterActivity() {
             )
         }
 
-        notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY)
+        notificationManager.setInterruptionFilter(
+            if (enabled) {
+                NotificationManager.INTERRUPTION_FILTER_PRIORITY
+            } else {
+                NotificationManager.INTERRUPTION_FILTER_ALL
+            }
+        )
         return mapOf(
-            "enabled" to true,
+            "enabled" to enabled,
             "permission" to true,
-            "message" to "Mode Dont Disturb aktif."
+            "message" to if (enabled) {
+                "Mode Dont Disturb aktif."
+            } else {
+                "Mode Dont Disturb nonaktif."
+            }
         )
     }
 

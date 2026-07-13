@@ -49,15 +49,18 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   Timer? _refreshTimer;
 
   double _ramUsedPercent = 0;
-  int _totalRamBytes = 0;
-  int _availableRamBytes = 0;
   double _refreshRate = 0;
   double _appFps = 0;
   int _fpsFrameCount = 0;
   int _fpsMicros = 0;
   bool _boosting = false;
+  bool _connected = false;
   bool _dndEnabled = false;
   bool _dndPermission = false;
+  String _gfxQuality = 'Smooth';
+  String _gfxResolution = 'HD';
+  int _gfxFps = 60;
+  bool _gfxAntiAliasing = false;
   String _status = 'Siap mengoptimalkan sesi game.';
 
   @override
@@ -119,8 +122,6 @@ class _BoosterDashboardState extends State<BoosterDashboard>
           : ((totalBytes - availableBytes) / totalBytes).clamp(0, 1);
 
       setState(() {
-        _totalRamBytes = totalBytes;
-        _availableRamBytes = availableBytes;
         _ramUsedPercent = used.toDouble();
         _refreshRate = (data['refreshRate'] as num?)?.toDouble() ?? 0;
         _dndEnabled = data['dndEnabled'] == true;
@@ -142,6 +143,14 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       return;
     }
 
+    if (_connected) {
+      setState(() {
+        _connected = false;
+        _status = 'Disconnected. Mode boost dihentikan.';
+      });
+      return;
+    }
+
     setState(() {
       _boosting = true;
       _status = 'Boost berjalan...';
@@ -150,7 +159,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 
     final freed = await _cleanCache();
     await _closeBackgroundApps();
-    final dndResult = await _enableDnd();
+    final dndResult = _dndEnabled ? true : await _setDnd(true);
     await _loadSystemStatus(silent: true);
 
     if (!mounted) {
@@ -159,9 +168,10 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 
     setState(() {
       _boosting = false;
+      _connected = true;
       _status = dndResult
-          ? 'Boost selesai. Cache ${_formatStorage(freed)} dibersihkan.'
-          : 'Boost selesai. Dont Disturb menunggu izin sistem.';
+          ? 'Connected. Cache ${_formatStorage(freed)} dibersihkan.'
+          : 'Connected. Dont Disturb menunggu izin sistem.';
     });
   }
 
@@ -204,21 +214,24 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     }
   }
 
-  Future<bool> _enableDnd() async {
+  Future<bool> _toggleDnd() => _setDnd(!_dndEnabled);
+
+  Future<bool> _setDnd(bool enabled) async {
     try {
       final result = await _platform.invokeMapMethod<String, dynamic>(
-        'enableDnd',
+        'toggleDnd',
+        {'enabled': enabled},
       );
-      final enabled = result?['enabled'] == true;
+      final resultEnabled = result?['enabled'] == true;
       if (mounted) {
         setState(() {
-          _dndEnabled = enabled;
+          _dndEnabled = resultEnabled;
           _dndPermission = result?['permission'] == true;
           _status =
               result?['message'] as String? ?? 'Mode Dont Disturb diproses.';
         });
       }
-      return enabled;
+      return resultEnabled;
     } on PlatformException catch (error) {
       if (mounted) {
         setState(
@@ -227,6 +240,46 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         );
       }
       return false;
+    }
+  }
+
+  Future<void> _showGfxTools() async {
+    var quality = _gfxQuality;
+    var resolution = _gfxResolution;
+    var fps = _gfxFps;
+    var antiAliasing = _gfxAntiAliasing;
+
+    final applied = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: const Color(0xFF151A16),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+      ),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setSheetState) => _GfxToolsSheet(
+          quality: quality,
+          resolution: resolution,
+          fps: fps,
+          antiAliasing: antiAliasing,
+          onQualityChanged: (value) => setSheetState(() => quality = value),
+          onResolutionChanged: (value) =>
+              setSheetState(() => resolution = value),
+          onFpsChanged: (value) => setSheetState(() => fps = value),
+          onAntiAliasingChanged: (value) =>
+              setSheetState(() => antiAliasing = value),
+        ),
+      ),
+    );
+
+    if (applied == true && mounted) {
+      setState(() {
+        _gfxQuality = quality;
+        _gfxResolution = resolution;
+        _gfxFps = fps;
+        _gfxAntiAliasing = antiAliasing;
+        _status = 'Profil GFX $quality, $resolution, $fps FPS diterapkan.';
+      });
     }
   }
 
@@ -241,21 +294,8 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     return '${(mb / 1024).toStringAsFixed(2)} GB';
   }
 
-  String _formatMemory(int bytes) {
-    if (bytes <= 0) {
-      return '-';
-    }
-    final gb = bytes / (1024 * 1024 * 1024);
-    if (gb >= 1) {
-      return '${gb.toStringAsFixed(1)} GB';
-    }
-    return '${(bytes / (1024 * 1024)).round()} MB';
-  }
-
   @override
   Widget build(BuildContext context) {
-    final usedRamBytes = math.max(_totalRamBytes - _availableRamBytes, 0);
-
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
@@ -284,13 +324,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       12,
                     ),
                     sliver: SliverToBoxAdapter(
-                      child: _Header(
-                        ramUsedPercent: _ramUsedPercent,
-                        usedRam: _formatMemory(usedRamBytes),
-                        availableRam: _formatMemory(_availableRamBytes),
-                        totalRam: _formatMemory(_totalRamBytes),
-                        boosting: _boosting,
-                      ),
+                      child: _Header(ramUsedPercent: _ramUsedPercent),
                     ),
                   ),
                   SliverPadding(
@@ -302,6 +336,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       child: _BoosterCore(
                         animation: _flightController,
                         boosting: _boosting,
+                        connected: _connected,
                         status: _status,
                         onBoost: _runBoost,
                       ),
@@ -315,7 +350,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       28,
                     ),
                     sliver: SliverGrid.count(
-                      crossAxisCount: compact ? 2 : 4,
+                      crossAxisCount: compact ? 2 : 3,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                       childAspectRatio: compact ? 1.05 : 1.22,
@@ -337,13 +372,13 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         _ActionTile(
                           icon: _dndEnabled
                               ? Icons.notifications_off
-                              : Icons.notifications_paused_outlined,
+                              : Icons.notifications_active_outlined,
                           title: 'Dont Disturb',
                           value: _dndEnabled
                               ? 'Aktif'
                               : (_dndPermission ? 'Siap' : 'Butuh izin'),
                           color: const Color(0xFFFA5D5D),
-                          onTap: _enableDnd,
+                          onTap: _toggleDnd,
                         ),
                         _ActionTile(
                           icon: Icons.speed_outlined,
@@ -355,6 +390,22 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                                     : 'Menunggu'),
                           color: const Color(0xFF46C7F4),
                           onTap: _loadSystemStatus,
+                        ),
+                        _ActionTile(
+                          icon: _connected ? Icons.link : Icons.link_off,
+                          title: 'Connection',
+                          value: _connected ? 'Connected' : 'Disconnected',
+                          color: _connected
+                              ? const Color(0xFF20D38B)
+                              : const Color(0xFF8B9390),
+                          onTap: _runBoost,
+                        ),
+                        _ActionTile(
+                          icon: Icons.tune,
+                          title: 'GFX Tools',
+                          value: '$_gfxQuality / $_gfxFps',
+                          color: const Color(0xFFB788FF),
+                          onTap: _showGfxTools,
                         ),
                       ],
                     ),
@@ -370,54 +421,32 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 }
 
 class _Header extends StatelessWidget {
-  const _Header({
-    required this.ramUsedPercent,
-    required this.usedRam,
-    required this.availableRam,
-    required this.totalRam,
-    required this.boosting,
-  });
+  const _Header({required this.ramUsedPercent});
 
   final double ramUsedPercent;
-  final String usedRam;
-  final String availableRam;
-  final String totalRam;
-  final bool boosting;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Game Booster Pro',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                boosting ? 'Mode turbo sedang aktif' : 'Dashboard performa',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
-              ),
-            ],
+        Text(
+          'Game Booster Pro',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
           ),
         ),
+        const SizedBox(height: 14),
         SizedBox(
-          width: 86,
-          height: 86,
+          width: 72,
+          height: 72,
           child: Stack(
             alignment: Alignment.center,
             children: [
               CircularProgressIndicator(
                 value: ramUsedPercent == 0 ? null : ramUsedPercent,
-                strokeWidth: 8,
+                strokeWidth: 7,
                 backgroundColor: Colors.white12,
                 color: const Color(0xFF20D38B),
               ),
@@ -428,29 +457,14 @@ class _Header extends StatelessWidget {
                     '${(ramUsedPercent * 100).round()}%',
                     style: const TextStyle(
                       fontWeight: FontWeight.w900,
-                      fontSize: 18,
+                      fontSize: 17,
                     ),
                   ),
-                  Text(
-                    'Sisa $availableRam',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white60,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  const Text(
+                    'RAM',
+                    style: TextStyle(color: Colors.white60, fontSize: 10),
                   ),
                 ],
-              ),
-              const SizedBox(height: 6),
-              Text(
-                'Terpakai $usedRam dari $totalRam',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white54,
-                  fontSize: 9,
-                  fontWeight: FontWeight.w600,
-                ),
               ),
             ],
           ),
@@ -464,12 +478,14 @@ class _BoosterCore extends StatelessWidget {
   const _BoosterCore({
     required this.animation,
     required this.boosting,
+    required this.connected,
     required this.status,
     required this.onBoost,
   });
 
   final Animation<double> animation;
   final bool boosting;
+  final bool connected;
   final String status;
   final VoidCallback onBoost;
 
@@ -485,7 +501,7 @@ class _BoosterCore extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 190,
+            height: 205,
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -493,13 +509,13 @@ class _BoosterCore extends StatelessWidget {
                   animation: animation,
                   builder: (context, child) {
                     final pulse = boosting
-                        ? 0.85 + math.sin(animation.value * math.pi * 6) * 0.08
-                        : 0.76;
+                        ? 0.88 + math.sin(animation.value * math.pi * 6) * 0.06
+                        : 0.82;
                     return Transform.scale(
                       scale: pulse,
                       child: Container(
-                        width: 180,
-                        height: 180,
+                        width: 190,
+                        height: 190,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
@@ -522,7 +538,12 @@ class _BoosterCore extends StatelessWidget {
                     );
                   },
                 ),
-                FlyingHero(animation: animation),
+                _RocketFlight(animation: animation, boosting: boosting),
+                Positioned(
+                  top: 8,
+                  right: 4,
+                  child: _ConnectionBadge(connected: connected),
+                ),
               ],
             ),
           ),
@@ -532,9 +553,15 @@ class _BoosterCore extends StatelessWidget {
             height: 56,
             child: FilledButton.icon(
               onPressed: boosting ? null : onBoost,
-              icon: Icon(boosting ? Icons.bolt : Icons.rocket_launch),
+              icon: Icon(
+                boosting
+                    ? Icons.bolt
+                    : (connected ? Icons.link_off : Icons.rocket_launch),
+              ),
               label: Text(
-                boosting ? 'BOOSTING' : 'BOOST SEKARANG',
+                boosting
+                    ? 'CONNECTING'
+                    : (connected ? 'DISCONNECT' : 'BOOST SEKARANG'),
                 style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 16,
@@ -568,232 +595,213 @@ class _BoosterCore extends StatelessWidget {
   }
 }
 
-class FlyingHero extends StatelessWidget {
-  const FlyingHero({super.key, required this.animation});
+class _ConnectionBadge extends StatelessWidget {
+  const _ConnectionBadge({required this.connected});
+
+  final bool connected;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = connected ? const Color(0xFF20D38B) : const Color(0xFF9AA19E);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(connected ? Icons.link : Icons.link_off, size: 15, color: color),
+          const SizedBox(width: 6),
+          Text(
+            connected ? 'Connected' : 'Disconnected',
+            style: TextStyle(
+              color: color,
+              fontSize: 11,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RocketFlight extends StatelessWidget {
+  const _RocketFlight({required this.animation, required this.boosting});
 
   final Animation<double> animation;
+  final bool boosting;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {
-        return CustomPaint(
-          painter: _FlyingHeroPainter(progress: animation.value),
-          size: const Size(240, 170),
+        final progress = animation.value;
+        final lift = boosting ? -18 * math.sin(progress * math.pi) : 0.0;
+        final sway = boosting ? math.sin(progress * math.pi * 5) * 5 : 0.0;
+        final scale = boosting ? 0.94 + progress * 0.12 : 0.94;
+        return Transform.translate(
+          offset: Offset(sway, lift),
+          child: Transform.scale(scale: scale, child: child),
         );
       },
+      child: Container(
+        width: 158,
+        height: 178,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFFF5A36).withValues(alpha: 0.2),
+              blurRadius: 24,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Image.asset(
+          'assets/flying_rocket.png',
+          fit: BoxFit.cover,
+          alignment: Alignment.center,
+        ),
+      ),
     );
   }
 }
 
-class _FlyingHeroPainter extends CustomPainter {
-  _FlyingHeroPainter({required this.progress});
+class _GfxToolsSheet extends StatelessWidget {
+  const _GfxToolsSheet({
+    required this.quality,
+    required this.resolution,
+    required this.fps,
+    required this.antiAliasing,
+    required this.onQualityChanged,
+    required this.onResolutionChanged,
+    required this.onFpsChanged,
+    required this.onAntiAliasingChanged,
+  });
 
-  final double progress;
+  final String quality;
+  final String resolution;
+  final int fps;
+  final bool antiAliasing;
+  final ValueChanged<String> onQualityChanged;
+  final ValueChanged<String> onResolutionChanged;
+  final ValueChanged<int> onFpsChanged;
+  final ValueChanged<bool> onAntiAliasingChanged;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final wave = math.sin(progress * math.pi * 2);
-    final dx = -42 + progress * 86;
-    final dy = 18 - math.sin(progress * math.pi) * 64 + wave * 5;
-    final center = Offset(size.width / 2 + dx, size.height / 2 + dy);
-
-    final trailRect = Rect.fromLTWH(0, 0, size.width, size.height);
-    final glowPaint = Paint()
-      ..color = const Color(0xFF22D9FF).withValues(alpha: 0.22)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18);
-    canvas.drawCircle(center + const Offset(10, 2), 42, glowPaint);
-
-    for (var i = 0; i < 5; i++) {
-      final lane = Path()
-        ..moveTo(center.dx - 42 - i * 24, center.dy - 29 + i * 13)
-        ..lineTo(center.dx - 124 - i * 20, center.dy - 21 + i * 13)
-        ..lineTo(center.dx - 112 - i * 20, center.dy - 13 + i * 13)
-        ..lineTo(center.dx - 36 - i * 24, center.dy - 21 + i * 13)
-        ..close();
-      final trailPaint = Paint()
-        ..shader = LinearGradient(
-          colors: [
-            const Color(0x0009E8FF),
-            const Color(0xFF09E8FF).withValues(alpha: 0.7 - i * 0.08),
-            const Color(0xFFFF3156).withValues(alpha: 0.16),
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.tune, color: Color(0xFFB788FF)),
+                const SizedBox(width: 10),
+                Text(
+                  'GFX Tools',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900),
+                ),
+                const Spacer(),
+                IconButton(
+                  tooltip: 'Tutup',
+                  onPressed: () => Navigator.pop(context, false),
+                  icon: const Icon(Icons.close),
+                ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            const _GfxLabel('Kualitas grafis'),
+            const SizedBox(height: 8),
+            SegmentedButton<String>(
+              segments: const [
+                ButtonSegment(value: 'Smooth', label: Text('Smooth')),
+                ButtonSegment(value: 'Balanced', label: Text('Balanced')),
+                ButtonSegment(value: 'HD', label: Text('HD')),
+              ],
+              selected: {quality},
+              onSelectionChanged: (value) => onQualityChanged(value.first),
+            ),
+            const SizedBox(height: 18),
+            const _GfxLabel('Resolusi'),
+            const SizedBox(height: 8),
+            SegmentedButton<String>(
+              segments: const [
+                ButtonSegment(value: 'SD', label: Text('SD')),
+                ButtonSegment(value: 'HD', label: Text('HD')),
+                ButtonSegment(value: 'FHD', label: Text('FHD')),
+              ],
+              selected: {resolution},
+              onSelectionChanged: (value) => onResolutionChanged(value.first),
+            ),
+            const SizedBox(height: 18),
+            const _GfxLabel('Target FPS'),
+            const SizedBox(height: 8),
+            SegmentedButton<int>(
+              segments: const [
+                ButtonSegment(value: 30, label: Text('30')),
+                ButtonSegment(value: 60, label: Text('60')),
+                ButtonSegment(value: 90, label: Text('90')),
+                ButtonSegment(value: 120, label: Text('120')),
+              ],
+              selected: {fps},
+              onSelectionChanged: (value) => onFpsChanged(value.first),
+            ),
+            const SizedBox(height: 12),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text(
+                'Anti-aliasing',
+                style: TextStyle(fontWeight: FontWeight.w800),
+              ),
+              subtitle: const Text('Menghaluskan tepian objek dalam game'),
+              value: antiAliasing,
+              onChanged: onAntiAliasingChanged,
+            ),
+            const SizedBox(height: 14),
+            SizedBox(
+              height: 52,
+              child: FilledButton.icon(
+                onPressed: () => Navigator.pop(context, true),
+                icon: const Icon(Icons.check_circle_outline),
+                label: const Text(
+                  'TERAPKAN PROFIL',
+                  style: TextStyle(fontWeight: FontWeight.w900),
+                ),
+              ),
+            ),
           ],
-        ).createShader(trailRect);
-      canvas.drawPath(lane, trailPaint);
-    }
-
-    final capeBack = Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Color(0xFF5D0B78), Color(0xFFFE3157), Color(0xFFFFB000)],
-      ).createShader(trailRect);
-    final capeGlow = Paint()
-      ..color = const Color(0xFFFF3156).withValues(alpha: 0.25)
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12);
-    final cape = Path()
-      ..moveTo(center.dx - 26, center.dy - 7)
-      ..cubicTo(
-        center.dx - 74,
-        center.dy - 44 + wave * 8,
-        center.dx - 116,
-        center.dy - 16,
-        center.dx - 132,
-        center.dy + 18 + wave * 5,
-      )
-      ..cubicTo(
-        center.dx - 93,
-        center.dy + 48,
-        center.dx - 55,
-        center.dy + 45 + wave * 4,
-        center.dx - 24,
-        center.dy + 18,
-      )
-      ..close();
-    canvas.drawPath(cape, capeGlow);
-    canvas.drawPath(cape, capeBack);
-
-    final capeFold = Path()
-      ..moveTo(center.dx - 31, center.dy + 2)
-      ..cubicTo(
-        center.dx - 65,
-        center.dy + 4 + wave * 8,
-        center.dx - 90,
-        center.dy + 25,
-        center.dx - 118,
-        center.dy + 19,
-      );
-    canvas.drawPath(
-      capeFold,
-      Paint()
-        ..color = Colors.white.withValues(alpha: 0.28)
-        ..strokeWidth = 3
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round,
-    );
-
-    canvas.save();
-    canvas.translate(center.dx, center.dy);
-    canvas.rotate(-0.48 + wave * 0.04);
-
-    final bodyPaint = Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [Color(0xFF1DF3D5), Color(0xFF1478FF), Color(0xFF102B67)],
-      ).createShader(const Rect.fromLTWH(-50, -34, 104, 72));
-    final darkSuitPaint = Paint()..color = const Color(0xFF07131F);
-    final trimPaint = Paint()
-      ..color = const Color(0xFF10F3FF)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.2
-      ..strokeCap = StrokeCap.round;
-    final bootPaint = Paint()
-      ..shader = const LinearGradient(
-        colors: [Color(0xFFFFF08A), Color(0xFFFFA000), Color(0xFFFF3156)],
-      ).createShader(const Rect.fromLTWH(-70, -20, 90, 40));
-
-    final rearArm = Paint()
-      ..color = const Color(0xFF0A6DDE)
-      ..strokeWidth = 12
-      ..strokeCap = StrokeCap.round;
-    canvas.drawLine(const Offset(-21, -4), const Offset(17, 23), rearArm);
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        const Rect.fromLTWH(-28, -18, 62, 35),
-        const Radius.circular(18),
+        ),
       ),
-      bodyPaint,
     );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        const Rect.fromLTWH(-10, -14, 29, 29),
-        const Radius.circular(9),
-      ),
-      darkSuitPaint,
-    );
-    canvas.drawPath(
-      Path()
-        ..moveTo(-4, -12)
-        ..lineTo(8, 4)
-        ..lineTo(-2, 15),
-      trimPaint,
-    );
-
-    final frontArm = Paint()
-      ..shader = const LinearGradient(
-        colors: [Color(0xFF1DF3D5), Color(0xFF22D9FF)],
-      ).createShader(const Rect.fromLTWH(14, -24, 60, 26))
-      ..strokeWidth = 13
-      ..strokeCap = StrokeCap.round;
-    canvas.drawLine(const Offset(22, -8), const Offset(61, -24), frontArm);
-    canvas.drawCircle(const Offset(65, -26), 8, bootPaint);
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        const Rect.fromLTWH(-58, -18, 34, 12),
-        const Radius.circular(8),
-      ),
-      bootPaint,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        const Rect.fromLTWH(-60, 11, 35, 12),
-        const Radius.circular(8),
-      ),
-      bootPaint,
-    );
-
-    final helmetPaint = Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Color(0xFFFFFFFF), Color(0xFF32E7FF), Color(0xFF0A1F47)],
-      ).createShader(const Rect.fromLTWH(28, -35, 46, 42));
-    canvas.drawOval(const Rect.fromLTWH(31, -29, 34, 30), helmetPaint);
-    canvas.drawPath(
-      Path()
-        ..moveTo(39, -20)
-        ..quadraticBezierTo(51, -28, 64, -19)
-        ..lineTo(61, -12)
-        ..quadraticBezierTo(49, -16, 37, -11)
-        ..close(),
-      Paint()..color = const Color(0xFF07131F),
-    );
-    canvas.drawPath(
-      Path()
-        ..moveTo(41, -18)
-        ..quadraticBezierTo(51, -24, 61, -18),
-      Paint()
-        ..color = const Color(0xFFFF3156)
-        ..strokeWidth = 2.5
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round,
-    );
-    canvas.restore();
-
-    final sparklePaint = Paint()..color = const Color(0xFFFFF1A8);
-    final starPaint = Paint()
-      ..color = const Color(0xFF22D9FF).withValues(alpha: 0.9)
-      ..strokeWidth = 2
-      ..strokeCap = StrokeCap.round;
-    for (var i = 0; i < 8; i++) {
-      final t = (progress + i * 0.13) % 1;
-      final x = size.width - t * size.width * 0.92 - i * 5;
-      final y = 25 + (i * 18) % 120 + math.sin(t * math.pi * 2) * 9;
-      canvas.drawCircle(Offset(x, y), 1.5 + (i % 3), sparklePaint);
-      if (i.isEven) {
-        canvas.drawLine(Offset(x - 5, y), Offset(x + 5, y), starPaint);
-        canvas.drawLine(Offset(x, y - 5), Offset(x, y + 5), starPaint);
-      }
-    }
   }
+}
+
+class _GfxLabel extends StatelessWidget {
+  const _GfxLabel(this.text);
+
+  final String text;
 
   @override
-  bool shouldRepaint(covariant _FlyingHeroPainter oldDelegate) {
-    return oldDelegate.progress != progress;
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: Colors.white70,
+        fontWeight: FontWeight.w700,
+      ),
+    );
   }
 }
 

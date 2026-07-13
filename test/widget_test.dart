@@ -29,7 +29,7 @@ void main() {
                 'success': true,
                 'message': 'Background aplikasi diringankan.',
               };
-            case 'enableDnd':
+            case 'toggleDnd':
               return {
                 'enabled': true,
                 'permission': true,
@@ -51,6 +51,11 @@ void main() {
 
     expect(find.text('Game Booster Pro'), findsOneWidget);
     expect(find.text('BOOST SEKARANG'), findsOneWidget);
+    expect(find.text('Disconnected'), findsWidgets);
     expect(find.byIcon(Icons.rocket_launch), findsOneWidget);
+
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -500));
+    await tester.pumpAndSettle();
+    expect(find.text('GFX Tools'), findsOneWidget);
   });
 }
