@@ -1,4 +1,4 @@
-package com.seandyadryan.game_booster_pro
+package com.deploydulupulangnanti.gameboosterpro
 
 import android.app.ActivityManager
 import android.app.NotificationManager

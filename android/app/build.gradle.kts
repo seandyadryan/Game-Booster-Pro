@@ -22,7 +22,7 @@ if (keyPropertiesFile != null) {
 }
 
 android {
-    namespace = "com.seandyadryan.game_booster_pro"
+    namespace = "com.deploydulupulangnanti.gameboosterpro"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -36,7 +36,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.seandyadryan.game_booster_pro"
+        applicationId = "com.deploydulupulangnanti.gameboosterpro"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
