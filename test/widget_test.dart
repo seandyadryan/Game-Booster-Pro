@@ -51,8 +51,16 @@ void main() {
 
     expect(find.text('Game Booster Pro'), findsOneWidget);
     expect(find.text('BOOST SEKARANG'), findsOneWidget);
-    expect(find.text('Disconnected'), findsWidgets);
+    expect(find.text('RAM'), findsNothing);
+    expect(find.text('Disconnected'), findsNothing);
     expect(find.byIcon(Icons.rocket_launch), findsOneWidget);
+
+    await tester.tap(find.text('BOOST SEKARANG'));
+    await tester.pump();
+    expect(find.text('CONNECTING'), findsOneWidget);
+
+    await tester.pumpAndSettle();
+    expect(find.text('DISCONNECT'), findsOneWidget);
 
     await tester.drag(find.byType(CustomScrollView), const Offset(0, -500));
     await tester.pumpAndSettle();

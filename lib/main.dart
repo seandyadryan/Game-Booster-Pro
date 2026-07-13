@@ -48,7 +48,6 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   late final AnimationController _flightController;
   Timer? _refreshTimer;
 
-  double _ramUsedPercent = 0;
   double _refreshRate = 0;
   double _appFps = 0;
   int _fpsFrameCount = 0;
@@ -110,19 +109,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         return;
       }
 
-      final total = (data['totalRamMb'] as num?)?.toInt() ?? 0;
-      final available = (data['availableRamMb'] as num?)?.toInt() ?? 0;
-      final totalBytes =
-          (data['totalRamBytes'] as num?)?.toInt() ?? total * 1024 * 1024;
-      final availableBytes =
-          (data['availableRamBytes'] as num?)?.toInt() ??
-          available * 1024 * 1024;
-      final used = totalBytes <= 0
-          ? 0
-          : ((totalBytes - availableBytes) / totalBytes).clamp(0, 1);
-
       setState(() {
-        _ramUsedPercent = used.toDouble();
         _refreshRate = (data['refreshRate'] as num?)?.toDouble() ?? 0;
         _dndEnabled = data['dndEnabled'] == true;
         _dndPermission = data['dndPermission'] == true;
@@ -155,12 +142,13 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       _boosting = true;
       _status = 'Boost berjalan...';
     });
-    _flightController.forward(from: 0);
+    final flight = _flightController.forward(from: 0);
 
     final freed = await _cleanCache();
     await _closeBackgroundApps();
     final dndResult = _dndEnabled ? true : await _setDnd(true);
     await _loadSystemStatus(silent: true);
+    await flight;
 
     if (!mounted) {
       return;
@@ -323,9 +311,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       compact ? 18 : 28,
                       12,
                     ),
-                    sliver: SliverToBoxAdapter(
-                      child: _Header(ramUsedPercent: _ramUsedPercent),
-                    ),
+                    sliver: SliverToBoxAdapter(child: const _Header()),
                   ),
                   SliverPadding(
                     padding: EdgeInsets.symmetric(
@@ -421,9 +407,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.ramUsedPercent});
-
-  final double ramUsedPercent;
+  const _Header();
 
   @override
   Widget build(BuildContext context) {
@@ -435,38 +419,6 @@ class _Header extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.w900,
             color: Colors.white,
-          ),
-        ),
-        const SizedBox(height: 14),
-        SizedBox(
-          width: 72,
-          height: 72,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              CircularProgressIndicator(
-                value: ramUsedPercent == 0 ? null : ramUsedPercent,
-                strokeWidth: 7,
-                backgroundColor: Colors.white12,
-                color: const Color(0xFF20D38B),
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '${(ramUsedPercent * 100).round()}%',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 17,
-                    ),
-                  ),
-                  const Text(
-                    'RAM',
-                    style: TextStyle(color: Colors.white60, fontSize: 10),
-                  ),
-                ],
-              ),
-            ],
           ),
         ),
       ],
@@ -539,11 +491,6 @@ class _BoosterCore extends StatelessWidget {
                   },
                 ),
                 _RocketFlight(animation: animation, boosting: boosting),
-                Positioned(
-                  top: 8,
-                  right: 4,
-                  child: _ConnectionBadge(connected: connected),
-                ),
               ],
             ),
           ),
@@ -595,40 +542,6 @@ class _BoosterCore extends StatelessWidget {
   }
 }
 
-class _ConnectionBadge extends StatelessWidget {
-  const _ConnectionBadge({required this.connected});
-
-  final bool connected;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = connected ? const Color(0xFF20D38B) : const Color(0xFF9AA19E);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha: 0.45)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(connected ? Icons.link : Icons.link_off, size: 15, color: color),
-          const SizedBox(width: 6),
-          Text(
-            connected ? 'Connected' : 'Disconnected',
-            style: TextStyle(
-              color: color,
-              fontSize: 11,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _RocketFlight extends StatelessWidget {
   const _RocketFlight({required this.animation, required this.boosting});
 
@@ -641,12 +554,56 @@ class _RocketFlight extends StatelessWidget {
       animation: animation,
       builder: (context, child) {
         final progress = animation.value;
-        final lift = boosting ? -18 * math.sin(progress * math.pi) : 0.0;
-        final sway = boosting ? math.sin(progress * math.pi * 5) * 5 : 0.0;
-        final scale = boosting ? 0.94 + progress * 0.12 : 0.94;
-        return Transform.translate(
-          offset: Offset(sway, lift),
-          child: Transform.scale(scale: scale, child: child),
+        var verticalOffset = 0.0;
+        var opacity = 1.0;
+        var scale = 0.94;
+
+        if (boosting && progress < 0.18) {
+          final prepare = Curves.easeInOut.transform(progress / 0.18);
+          verticalOffset = 12 * prepare;
+          scale = 0.94 - 0.05 * prepare;
+        } else if (boosting && progress < 0.70) {
+          final launch = Curves.easeInCubic.transform((progress - 0.18) / 0.52);
+          verticalOffset = 12 - 158 * launch;
+          scale = 0.89 + 0.18 * launch;
+          if (progress > 0.58) {
+            opacity = (1 - (progress - 0.58) / 0.12).clamp(0, 1);
+          }
+        } else if (boosting) {
+          final returnProgress = ((progress - 0.70) / 0.30)
+              .clamp(0.0, 1.0)
+              .toDouble();
+          final returnCurve = Curves.easeOutBack.transform(returnProgress);
+          verticalOffset = 76 * (1 - returnCurve);
+          scale = 0.88 + 0.06 * returnCurve;
+          opacity = returnProgress.clamp(0, 1);
+        }
+
+        final sway = boosting
+            ? math.sin(progress * math.pi * 8) * (1 - progress) * 5
+            : 0.0;
+        final tilt = boosting ? math.sin(progress * math.pi * 6) * 0.035 : 0.0;
+
+        return Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            if (boosting)
+              CustomPaint(
+                size: const Size(170, 205),
+                painter: _BoostTrailPainter(progress: progress),
+              ),
+            Opacity(
+              opacity: opacity,
+              child: Transform.translate(
+                offset: Offset(sway, verticalOffset),
+                child: Transform.rotate(
+                  angle: tilt,
+                  child: Transform.scale(scale: scale, child: child),
+                ),
+              ),
+            ),
+          ],
         );
       },
       child: Container(
@@ -670,6 +627,60 @@ class _RocketFlight extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _BoostTrailPainter extends CustomPainter {
+  const _BoostTrailPainter({required this.progress});
+
+  final double progress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final intensity = progress < 0.18
+        ? progress / 0.18
+        : (1 - ((progress - 0.18) / 0.82)).clamp(0.18, 1.0);
+    final centerX = size.width / 2;
+    final startY = size.height * 0.58;
+    final glow = Paint()
+      ..color = const Color(0xFFFFA629).withValues(alpha: 0.25 * intensity)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 16);
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: Offset(centerX, startY + 20),
+        width: 62,
+        height: 90,
+      ),
+      glow,
+    );
+
+    final colors = [
+      const Color(0xFFFFF08A),
+      const Color(0xFFFFA629),
+      const Color(0xFFFF4D3D),
+      const Color(0xFF22D9FF),
+    ];
+    for (var index = 0; index < colors.length; index++) {
+      final x = centerX + (index - 1.5) * 12;
+      final length = 42 + ((index + progress * 10) % 3) * 18;
+      final trail = Paint()
+        ..color = colors[index].withValues(alpha: 0.75 * intensity)
+        ..strokeWidth = index == 1 || index == 2 ? 5 : 3
+        ..strokeCap = StrokeCap.round;
+      canvas.drawLine(
+        Offset(x, startY),
+        Offset(
+          x + math.sin(progress * math.pi * 8 + index) * 5,
+          startY + length,
+        ),
+        trail,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _BoostTrailPainter oldDelegate) {
+    return oldDelegate.progress != progress;
   }
 }
 
