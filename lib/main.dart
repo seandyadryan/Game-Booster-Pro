@@ -609,21 +609,16 @@ class _RocketFlight extends StatelessWidget {
       child: Container(
         width: 158,
         height: 178,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFFF5A36).withValues(alpha: 0.2),
-              blurRadius: 24,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Image.asset(
-          'assets/flying_rocket.png',
-          fit: BoxFit.cover,
-          alignment: Alignment.center,
+        clipBehavior: Clip.hardEdge,
+        decoration: const BoxDecoration(),
+        child: Transform.scale(
+          scale: 1.35,
+          child: Image.asset(
+            'assets/flying_rocket.png',
+            fit: BoxFit.contain,
+            alignment: Alignment.center,
+            filterQuality: FilterQuality.high,
+          ),
         ),
       ),
     );
