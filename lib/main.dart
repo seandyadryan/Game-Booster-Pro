@@ -3,7 +3,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/scheduler.dart';
 
 void main() {
   runApp(const GameBoosterProApp());
@@ -40,7 +39,7 @@ class BoosterDashboard extends StatefulWidget {
 }
 
 class _BoosterDashboardState extends State<BoosterDashboard>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   static const MethodChannel _platform = MethodChannel(
     'game_booster_pro/system',
   );
@@ -49,17 +48,16 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   Timer? _refreshTimer;
 
   double _refreshRate = 0;
-  double _appFps = 0;
-  int _fpsFrameCount = 0;
-  int _fpsMicros = 0;
+  int _battery = -1;
+  double _temperature = -1;
+  bool _pendingDnd = false;
+  bool _dndBusy = false;
+  bool _dndRequestFailed = false;
+  bool _sessionOwnsDnd = false;
   bool _boosting = false;
   bool _connected = false;
   bool _dndEnabled = false;
   bool _dndPermission = false;
-  String _gfxQuality = 'Smooth';
-  String _gfxResolution = 'HD';
-  int _gfxFps = 60;
-  bool _gfxAntiAliasing = false;
   String _status = 'Siap mengoptimalkan sesi game.';
 
   @override
@@ -69,7 +67,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       vsync: this,
       duration: const Duration(milliseconds: 1800),
     );
-    SchedulerBinding.instance.addTimingsCallback(_handleFrameTimings);
+    WidgetsBinding.instance.addObserver(this);
     _loadSystemStatus();
     _refreshTimer = Timer.periodic(
       const Duration(seconds: 5),
@@ -79,24 +77,37 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 
   @override
   void dispose() {
-    SchedulerBinding.instance.removeTimingsCallback(_handleFrameTimings);
+    WidgetsBinding.instance.removeObserver(this);
     _refreshTimer?.cancel();
     _flightController.dispose();
     super.dispose();
   }
 
-  void _handleFrameTimings(List<FrameTiming> timings) {
-    for (final timing in timings) {
-      _fpsFrameCount++;
-      _fpsMicros += timing.totalSpan.inMicroseconds;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _resumeStatus();
     }
+  }
 
-    if (_fpsMicros >= Duration.microsecondsPerSecond && mounted) {
-      setState(() {
-        _appFps = _fpsFrameCount * Duration.microsecondsPerSecond / _fpsMicros;
-        _fpsFrameCount = 0;
-        _fpsMicros = 0;
-      });
+  Future<void> _resumeStatus() async {
+    await _loadSystemStatus(silent: true);
+    if (mounted && _pendingDnd && _dndPermission && !_dndBusy) {
+      _pendingDnd = false;
+      await _setDnd(true);
+    }
+  }
+
+  Future<void> _systemAction(
+    String method, [
+    Map<String, dynamic>? args,
+  ]) async {
+    try {
+      await _platform.invokeMethod<dynamic>(method, args);
+    } on PlatformException catch (error) {
+      if (mounted) setState(() => _status = error.message ?? 'Operasi gagal.');
+    } on MissingPluginException {
+      if (mounted) setState(() => _status = 'Fitur ini tersedia di Android.');
     }
   }
 
@@ -111,12 +122,19 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 
       setState(() {
         _refreshRate = (data['refreshRate'] as num?)?.toDouble() ?? 0;
+        _battery = (data['batteryPercent'] as num?)?.toInt() ?? -1;
+        _temperature = (data['batteryTemperature'] as num?)?.toDouble() ?? -1;
         _dndEnabled = data['dndEnabled'] == true;
+        if (_connected && !_dndEnabled) _connected = false;
         _dndPermission = data['dndPermission'] == true;
         if (!silent) {
           _status = 'Status sistem diperbarui.';
         }
       });
+    } on MissingPluginException {
+      if (mounted && !silent) {
+        setState(() => _status = 'Fitur sistem tersedia di Android.');
+      }
     } on PlatformException catch (error) {
       if (!mounted || silent) {
         return;
@@ -126,11 +144,18 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   }
 
   Future<void> _runBoost() async {
-    if (_boosting) {
+    if (_boosting || _dndBusy) {
       return;
     }
 
     if (_connected) {
+      if (_sessionOwnsDnd) {
+        await _setDnd(false);
+        if (_dndRequestFailed) return;
+      }
+      _sessionOwnsDnd = false;
+      _pendingDnd = false;
+      if (!mounted) return;
       setState(() {
         _connected = false;
         _status = 'Disconnected. Mode boost dihentikan.';
@@ -138,32 +163,51 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       return;
     }
 
+    final needsDnd = !_dndEnabled;
+    if (needsDnd && !await _toggleDnd()) return;
+    if (!mounted) return;
+    _sessionOwnsDnd = needsDnd;
+
     setState(() {
       _boosting = true;
       _status = 'Boost berjalan...';
     });
-    final flight = _flightController.forward(from: 0);
+    final flight = _flightController
+        .forward(from: 0)
+        .orCancel
+        .then<void>(
+          (_) {},
+          onError: (Object error) {
+            if (error is! TickerCanceled) throw error;
+          },
+        );
+    try {
+      final freed = await _cleanCache();
+      if (freed == null) return;
+      await _loadSystemStatus(silent: true);
+      await flight;
 
-    final freed = await _cleanCache();
-    await _closeBackgroundApps();
-    final dndResult = _dndEnabled ? true : await _setDnd(true);
-    await _loadSystemStatus(silent: true);
-    await flight;
+      if (!mounted) {
+        return;
+      }
 
-    if (!mounted) {
-      return;
+      setState(() {
+        _boosting = false;
+        _connected = _dndEnabled;
+        _status = _dndEnabled
+            ? 'Connected. Cache ${_formatStorage(freed)} dibersihkan.'
+            : 'Boost belum aktif. Periksa izin dan status Dont Disturb.';
+      });
+    } on TickerCanceled {
+      // The dashboard was disposed while its launch animation was active.
+    } on MissingPluginException {
+      if (mounted) setState(() => _status = 'Boost tersedia di Android.');
+    } finally {
+      if (mounted) setState(() => _boosting = false);
     }
-
-    setState(() {
-      _boosting = false;
-      _connected = true;
-      _status = dndResult
-          ? 'Connected. Cache ${_formatStorage(freed)} dibersihkan.'
-          : 'Connected. Dont Disturb menunggu izin sistem.';
-    });
   }
 
-  Future<int> _cleanCache() async {
+  Future<int?> _cleanCache() async {
     try {
       final freed = await _platform.invokeMethod<int>('cleanCache') ?? 0;
       if (mounted) {
@@ -176,7 +220,10 @@ class _BoosterDashboardState extends State<BoosterDashboard>
           () => _status = error.message ?? 'Cache belum bisa dibersihkan.',
         );
       }
-      return 0;
+      return null;
+    } on MissingPluginException {
+      if (mounted) setState(() => _status = 'Cache tersedia di Android.');
+      return null;
     }
   }
 
@@ -199,12 +246,45 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         );
       }
       return false;
+    } on MissingPluginException {
+      if (mounted) {
+        setState(() => _status = 'Kelola aplikasi tersedia di Android.');
+      }
+      return false;
     }
   }
 
-  Future<bool> _toggleDnd() => _setDnd(!_dndEnabled);
+  Future<bool> _toggleDnd() async {
+    if (_dndBusy) return _dndEnabled;
+    if (!_dndEnabled) {
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Aktifkan DND ketat?'),
+          content: const Text(
+            'Suara panggilan dan notifikasi dibisukan, termasuk alarm dan media. Panggilan WhatsApp masih dapat diterima; DND tidak menolak panggilan.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Aktifkan'),
+            ),
+          ],
+        ),
+      );
+      if (confirmed != true || !mounted) return false;
+    }
+    return _setDnd(!_dndEnabled);
+  }
 
   Future<bool> _setDnd(bool enabled) async {
+    if (_dndBusy) return _dndEnabled;
+    _dndBusy = true;
+    _dndRequestFailed = false;
     try {
       final result = await _platform.invokeMapMethod<String, dynamic>(
         'toggleDnd',
@@ -215,6 +295,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         setState(() {
           _dndEnabled = resultEnabled;
           _dndPermission = result?['permission'] == true;
+          _pendingDnd = enabled && !_dndPermission;
           _status =
               result?['message'] as String? ?? 'Mode Dont Disturb diproses.';
         });
@@ -227,47 +308,107 @@ class _BoosterDashboardState extends State<BoosterDashboard>
               _status = error.message ?? 'Dont Disturb belum bisa diaktifkan.',
         );
       }
+      _dndRequestFailed = true;
       return false;
+    } on MissingPluginException {
+      _dndRequestFailed = true;
+      if (mounted) {
+        setState(() => _status = 'Dont Disturb tersedia di Android.');
+      }
+      return false;
+    } finally {
+      _dndBusy = false;
     }
   }
 
   Future<void> _showGfxTools() async {
-    var quality = _gfxQuality;
-    var resolution = _gfxResolution;
-    var fps = _gfxFps;
-    var antiAliasing = _gfxAntiAliasing;
-
-    final applied = await showModalBottomSheet<bool>(
+    await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF151A16),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-      ),
-      builder: (context) => StatefulBuilder(
-        builder: (context, setSheetState) => _GfxToolsSheet(
-          quality: quality,
-          resolution: resolution,
-          fps: fps,
-          antiAliasing: antiAliasing,
-          onQualityChanged: (value) => setSheetState(() => quality = value),
-          onResolutionChanged: (value) =>
-              setSheetState(() => resolution = value),
-          onFpsChanged: (value) => setSheetState(() => fps = value),
-          onAntiAliasingChanged: (value) =>
-              setSheetState(() => antiAliasing = value),
+      builder: (context) => SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'GFX Tools',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Grafis, resolusi, anti-aliasing, dan batas FPS diatur di dalam game. Pilih game untuk membuka pengaturannya.',
+              ),
+              ListTile(
+                leading: const Icon(Icons.display_settings),
+                title: const Text('Pengaturan layar Android'),
+                subtitle: const Text(
+                  'Refresh rate dan kecerahan sesuai dukungan perangkat',
+                ),
+                onTap: () => _systemAction('openDisplaySettings'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.sports_esports),
+                title: const Text('Buka game'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _showGames();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
 
-    if (applied == true && mounted) {
-      setState(() {
-        _gfxQuality = quality;
-        _gfxResolution = resolution;
-        _gfxFps = fps;
-        _gfxAntiAliasing = antiAliasing;
-        _status = 'Profil GFX $quality, $resolution, $fps FPS diterapkan.';
-      });
+  Future<void> _showGames() async {
+    try {
+      final games =
+          await _platform.invokeListMethod<dynamic>('listGames') ?? [];
+      if (!mounted) return;
+      await showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => SafeArea(
+          child: SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.6,
+            child: games.isEmpty
+                ? const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(24),
+                      child: Text(
+                        'Belum ada aplikasi yang terdaftar sebagai game di perangkat.',
+                      ),
+                    ),
+                  )
+                : ListView(
+                    children: [
+                      const ListTile(title: Text('Game saya')),
+                      for (final game in games)
+                        ListTile(
+                          leading: const Icon(Icons.sports_esports),
+                          title: Text(game['name'] as String),
+                          subtitle: Text(game['packageName'] as String),
+                          trailing: const Icon(Icons.play_arrow),
+                          onTap: () {
+                            Navigator.pop(context);
+                            _systemAction('launchGame', {
+                              'packageName': game['packageName'],
+                            });
+                          },
+                        ),
+                    ],
+                  ),
+          ),
+        ),
+      );
+    } on PlatformException catch (error) {
+      if (mounted) {
+        setState(() => _status = error.message ?? 'Daftar game gagal dibaca.');
+      }
+    } on MissingPluginException {
+      if (mounted) setState(() => _status = 'Daftar game tersedia di Android.');
     }
   }
 
@@ -343,7 +484,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       children: [
                         _ActionTile(
                           icon: Icons.cleaning_services_outlined,
-                          title: 'Cache',
+                          title: 'Cache aplikasi',
                           value: 'Bersihkan',
                           color: const Color(0xFF20D38B),
                           onTap: _cleanCache,
@@ -351,7 +492,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         _ActionTile(
                           icon: Icons.layers_clear_outlined,
                           title: 'Background',
-                          value: 'Ringankan',
+                          value: 'Kelola aplikasi',
                           color: const Color(0xFFFFB000),
                           onTap: _closeBackgroundApps,
                         ),
@@ -368,12 +509,10 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         ),
                         _ActionTile(
                           icon: Icons.speed_outlined,
-                          title: 'FPS',
-                          value: _appFps > 0
-                              ? '${_appFps.round()} FPS'
-                              : (_refreshRate > 0
-                                    ? '${_refreshRate.round()} Hz'
-                                    : 'Menunggu'),
+                          title: 'Refresh rate',
+                          value: (_refreshRate > 0
+                              ? '${_refreshRate.round()} Hz'
+                              : 'Menunggu'),
                           color: const Color(0xFF46C7F4),
                           onTap: _loadSystemStatus,
                         ),
@@ -389,9 +528,34 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         _ActionTile(
                           icon: Icons.tune,
                           title: 'GFX Tools',
-                          value: '$_gfxQuality / $_gfxFps',
+                          value: 'Layar & game',
                           color: const Color(0xFFB788FF),
                           onTap: _showGfxTools,
+                        ),
+                        _ActionTile(
+                          icon: Icons.sports_esports,
+                          title: 'Game saya',
+                          value: 'Buka game',
+                          color: const Color(0xFF20D38B),
+                          onTap: _showGames,
+                        ),
+                        _ActionTile(
+                          icon: Icons.battery_std,
+                          title: 'Baterai',
+                          value: _battery >= 0
+                              ? '$_battery%'
+                              : 'Tidak tersedia',
+                          color: const Color(0xFFFFB000),
+                          onTap: _loadSystemStatus,
+                        ),
+                        _ActionTile(
+                          icon: Icons.thermostat,
+                          title: 'Suhu baterai',
+                          value: _temperature >= 0
+                              ? '${_temperature.toStringAsFixed(1)} C'
+                              : 'Tidak tersedia',
+                          color: const Color(0xFFFA5D5D),
+                          onTap: _loadSystemStatus,
                         ),
                       ],
                     ),
@@ -676,138 +840,6 @@ class _BoostTrailPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _BoostTrailPainter oldDelegate) {
     return oldDelegate.progress != progress;
-  }
-}
-
-class _GfxToolsSheet extends StatelessWidget {
-  const _GfxToolsSheet({
-    required this.quality,
-    required this.resolution,
-    required this.fps,
-    required this.antiAliasing,
-    required this.onQualityChanged,
-    required this.onResolutionChanged,
-    required this.onFpsChanged,
-    required this.onAntiAliasingChanged,
-  });
-
-  final String quality;
-  final String resolution;
-  final int fps;
-  final bool antiAliasing;
-  final ValueChanged<String> onQualityChanged;
-  final ValueChanged<String> onResolutionChanged;
-  final ValueChanged<int> onFpsChanged;
-  final ValueChanged<bool> onAntiAliasingChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                const Icon(Icons.tune, color: Color(0xFFB788FF)),
-                const SizedBox(width: 10),
-                Text(
-                  'GFX Tools',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900),
-                ),
-                const Spacer(),
-                IconButton(
-                  tooltip: 'Tutup',
-                  onPressed: () => Navigator.pop(context, false),
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-            const SizedBox(height: 18),
-            const _GfxLabel('Kualitas grafis'),
-            const SizedBox(height: 8),
-            SegmentedButton<String>(
-              segments: const [
-                ButtonSegment(value: 'Smooth', label: Text('Smooth')),
-                ButtonSegment(value: 'Balanced', label: Text('Balanced')),
-                ButtonSegment(value: 'HD', label: Text('HD')),
-              ],
-              selected: {quality},
-              onSelectionChanged: (value) => onQualityChanged(value.first),
-            ),
-            const SizedBox(height: 18),
-            const _GfxLabel('Resolusi'),
-            const SizedBox(height: 8),
-            SegmentedButton<String>(
-              segments: const [
-                ButtonSegment(value: 'SD', label: Text('SD')),
-                ButtonSegment(value: 'HD', label: Text('HD')),
-                ButtonSegment(value: 'FHD', label: Text('FHD')),
-              ],
-              selected: {resolution},
-              onSelectionChanged: (value) => onResolutionChanged(value.first),
-            ),
-            const SizedBox(height: 18),
-            const _GfxLabel('Target FPS'),
-            const SizedBox(height: 8),
-            SegmentedButton<int>(
-              segments: const [
-                ButtonSegment(value: 30, label: Text('30')),
-                ButtonSegment(value: 60, label: Text('60')),
-                ButtonSegment(value: 90, label: Text('90')),
-                ButtonSegment(value: 120, label: Text('120')),
-              ],
-              selected: {fps},
-              onSelectionChanged: (value) => onFpsChanged(value.first),
-            ),
-            const SizedBox(height: 12),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text(
-                'Anti-aliasing',
-                style: TextStyle(fontWeight: FontWeight.w800),
-              ),
-              subtitle: const Text('Menghaluskan tepian objek dalam game'),
-              value: antiAliasing,
-              onChanged: onAntiAliasingChanged,
-            ),
-            const SizedBox(height: 14),
-            SizedBox(
-              height: 52,
-              child: FilledButton.icon(
-                onPressed: () => Navigator.pop(context, true),
-                icon: const Icon(Icons.check_circle_outline),
-                label: const Text(
-                  'TERAPKAN PROFIL',
-                  style: TextStyle(fontWeight: FontWeight.w900),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _GfxLabel extends StatelessWidget {
-  const _GfxLabel(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: Colors.white70,
-        fontWeight: FontWeight.w700,
-      ),
-    );
   }
 }
 

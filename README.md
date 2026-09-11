@@ -4,12 +4,29 @@ Game Booster Pro adalah aplikasi Flutter untuk membantu menyiapkan sesi bermain 
 
 ## Fitur
 
-- Membersihkan cache aplikasi.
-- Meringankan proses background.
-- Menampilkan penggunaan RAM.
-- Mengaktifkan mode Dont Disturb jika izin sistem diberikan.
-- Menampilkan FPS aplikasi atau refresh rate layar jika FPS belum tersedia.
-- Animasi boost orang terbang dengan jubah saat tombol boost ditekan.
+- Membersihkan cache milik Game Booster Pro.
+- Membuka pengelolaan aplikasi Android untuk mengatur background secara manual.
+- DND ketat dengan izin sistem, pembacaan status aktual, dan pemulihan pengaturan sebelum sesi Boost.
+- Refresh rate layar dalam Hz, persentase baterai, dan suhu baterai.
+- GFX Tools membuka pengaturan layar Android dan daftar game terpasang.
+- Pembuka game yang ditandai sebagai game oleh metadata Android.
+- Animasi peluncuran roket saat Boost.
+
+## Batas Fitur dan Pengujian Perangkat
+
+DND membisukan suara; panggilan WhatsApp masih dapat diterima atau tampil.
+Mode ketat juga membisukan alarm dan media. Perilaku tampilan panggilan bergantung pada Android/OEM dan WhatsApp.
+Android 15+ mengelola permintaan DND aplikasi sebagai aturan tersendiri; aturan lain dapat tetap mengaktifkan DND setelah sesi selesai.
+
+Android tidak menyediakan akses aplikasi biasa untuk menghapus semua Recent Apps,
+menutup semua proses aplikasi lain, atau mengubah resolusi, anti-aliasing, dan FPS game lain.
+Kontrol profil GFX lama yang hanya mengubah variabel UI sudah dihapus.
+Pengaturan grafis dilakukan di dalam game; opsi refresh rate sistem bergantung pada perangkat.
+
+Uji di ponsel: berikan/tolak/cabut izin DND, aktifkan mode ketat, lakukan panggilan WhatsApp,
+periksa suara dan tampilan panggilan secara terpisah, lalu akhiri Boost dan periksa pemulihan DND.
+Ulangi saat DND sudah aktif sebelum Boost dan ketika aplikasi kembali dari pengaturan.
+Uji pembuka game, pengaturan layar, dan pengelolaan aplikasi pada perangkat target.
 
 ## Flutter
 

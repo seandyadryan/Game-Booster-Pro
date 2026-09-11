@@ -2,7 +2,8 @@ package com.deploydulupulangnanti.gameboosterpro
 
 import android.app.ActivityManager
 import android.app.NotificationManager
-import android.content.ComponentCallbacks2
+import android.content.IntentFilter
+import android.os.BatteryManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -15,6 +16,7 @@ import java.io.File
 
 class MainActivity : FlutterActivity() {
     private val channelName = "game_booster_pro/system"
+    private val preferences by lazy { getSharedPreferences("booster", Context.MODE_PRIVATE) }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -22,12 +24,32 @@ class MainActivity : FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelName).setMethodCallHandler {
             call,
             result ->
-            when (call.method) {
+            try { when (call.method) {
                 "getSystemStatus" -> result.success(getSystemStatus())
-                "cleanCache" -> result.success(cleanCache())
+                "cleanCache" -> Thread {
+                    val cleaned = runCatching { cleanCache() }
+                    runOnUiThread {
+                        cleaned.fold(
+                            onSuccess = { result.success(it) },
+                            onFailure = { result.error("CACHE_ERROR", it.message, null) }
+                        )
+                    }
+                }.start()
                 "closeBackgroundApps" -> result.success(closeBackgroundApps())
                 "toggleDnd" -> result.success(toggleDnd(call.argument<Boolean>("enabled") ?: true))
+                "openDisplaySettings" -> { startActivity(Intent(Settings.ACTION_DISPLAY_SETTINGS)); result.success(null) }
+                "openDndSettings" -> { startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)); result.success(null) }
+                "listGames" -> result.success(listGames())
+                "launchGame" -> {
+                    val target = call.argument<String>("packageName") ?: error("Game belum dipilih")
+                    require(listGames().any { it["packageName"] == target }) { "Game tidak tersedia" }
+                    val intent = packageManager.getLaunchIntentForPackage(target) ?: error("Game tidak dapat dibuka")
+                    startActivity(intent)
+                    result.success(null)
+                }
                 else -> result.notImplemented()
+            } } catch (error: Exception) {
+                result.error("SYSTEM_ERROR", error.message ?: "Operasi sistem gagal", null)
             }
         }
     }
@@ -44,13 +66,18 @@ class MainActivity : FlutterActivity() {
         val dndPermission = Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
             notificationManager.isNotificationPolicyAccessGranted
         val dndEnabled = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            notificationManager.currentInterruptionFilter !=
-                NotificationManager.INTERRUPTION_FILTER_ALL
+            notificationManager.currentInterruptionFilter ==
+                NotificationManager.INTERRUPTION_FILTER_NONE
         } else {
             false
         }
 
+        val battery = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val level = battery?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
+        val scale = battery?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1
         return mapOf(
+            "batteryPercent" to if (level >= 0 && scale > 0) level * 100 / scale else -1,
+            "batteryTemperature" to ((battery?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) ?: -1) / 10.0),
             "totalRamBytes" to totalRamBytes,
             "availableRamBytes" to availableRamBytes,
             "totalRamMb" to (totalRamBytes / 1024 / 1024).toInt(),
@@ -71,15 +98,23 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun closeBackgroundApps(): Map<String, Any> {
-        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        activityManager.killBackgroundProcesses(packageName)
-        onTrimMemory(ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL)
-        System.gc()
-
+        startActivity(Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS))
         return mapOf(
-            "success" to true,
-            "message" to "Background aplikasi diringankan."
+            "success" to false,
+            "message" to "Kelola aplikasi di pengaturan Android. Untuk Hapus semua, gunakan layar Recent Apps perangkat."
         )
+    }
+
+    private fun listGames(): List<Map<String, String>> {
+        val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+        return packageManager.queryIntentActivities(intent, 0)
+            .filter { info ->
+                val app = info.activityInfo.applicationInfo
+                (Build.VERSION.SDK_INT >= 26 && app.category == android.content.pm.ApplicationInfo.CATEGORY_GAME) ||
+                    (app.flags and android.content.pm.ApplicationInfo.FLAG_IS_GAME != 0)
+            }
+            .map { mapOf("name" to it.loadLabel(packageManager).toString(), "packageName" to it.activityInfo.packageName) }
+            .distinctBy { it["packageName"] }.sortedBy { it["name"] }
     }
 
     private fun toggleDnd(enabled: Boolean): Map<String, Any> {
@@ -102,20 +137,29 @@ class MainActivity : FlutterActivity() {
             )
         }
 
+        val current = notificationManager.currentInterruptionFilter
+        if (enabled && !preferences.contains("previousDnd")) {
+            preferences.edit().putInt("previousDnd", current).apply()
+        }
         notificationManager.setInterruptionFilter(
             if (enabled) {
-                NotificationManager.INTERRUPTION_FILTER_PRIORITY
+                NotificationManager.INTERRUPTION_FILTER_NONE
             } else {
-                NotificationManager.INTERRUPTION_FILTER_ALL
+                if (Build.VERSION.SDK_INT >= 35) NotificationManager.INTERRUPTION_FILTER_ALL
+                else preferences.getInt("previousDnd", NotificationManager.INTERRUPTION_FILTER_ALL)
             }
         )
+        if (!enabled) preferences.edit().remove("previousDnd").apply()
+        val actual = notificationManager.currentInterruptionFilter == NotificationManager.INTERRUPTION_FILTER_NONE
         return mapOf(
-            "enabled" to enabled,
+            "enabled" to actual,
             "permission" to true,
             "message" to if (enabled) {
-                "Mode Dont Disturb aktif."
+                "DND ketat diminta. Panggilan tetap dapat diterima, tetapi suara dibisukan termasuk alarm dan media."
+            } else if (actual) {
+                "Permintaan DND aplikasi dihentikan. DND sistem masih aktif; periksa aturan DND lain."
             } else {
-                "Mode Dont Disturb nonaktif."
+                "Pengaturan DND sebelumnya dipulihkan."
             }
         )
     }
