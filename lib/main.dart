@@ -15,6 +15,7 @@ class GameBoosterProApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      locale: const Locale('en'),
       title: 'Game Booster Pro',
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -58,7 +59,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   bool _connected = false;
   bool _dndEnabled = false;
   bool _dndPermission = false;
-  String _status = 'Siap mengoptimalkan sesi game.';
+  String _status = 'Ready to start your gaming session.';
 
   @override
   void initState() {
@@ -105,9 +106,13 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     try {
       await _platform.invokeMethod<dynamic>(method, args);
     } on PlatformException catch (error) {
-      if (mounted) setState(() => _status = error.message ?? 'Operasi gagal.');
+      if (mounted) {
+        setState(() => _status = error.message ?? 'Operation failed.');
+      }
     } on MissingPluginException {
-      if (mounted) setState(() => _status = 'Fitur ini tersedia di Android.');
+      if (mounted) {
+        setState(() => _status = 'This feature is available on Android.');
+      }
     }
   }
 
@@ -128,18 +133,20 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         if (_connected && !_dndEnabled) _connected = false;
         _dndPermission = data['dndPermission'] == true;
         if (!silent) {
-          _status = 'Status sistem diperbarui.';
+          _status = 'System status updated.';
         }
       });
     } on MissingPluginException {
       if (mounted && !silent) {
-        setState(() => _status = 'Fitur sistem tersedia di Android.');
+        setState(() => _status = 'System features are available on Android.');
       }
     } on PlatformException catch (error) {
       if (!mounted || silent) {
         return;
       }
-      setState(() => _status = error.message ?? 'Gagal membaca sistem.');
+      setState(
+        () => _status = error.message ?? 'Unable to read system status.',
+      );
     }
   }
 
@@ -158,7 +165,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       if (!mounted) return;
       setState(() {
         _connected = false;
-        _status = 'Disconnected. Mode boost dihentikan.';
+        _status = 'Disconnected. Boost session ended.';
       });
       return;
     }
@@ -170,7 +177,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 
     setState(() {
       _boosting = true;
-      _status = 'Boost berjalan...';
+      _status = 'Starting boost...';
     });
     final flight = _flightController
         .forward(from: 0)
@@ -195,13 +202,13 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         _boosting = false;
         _connected = _dndEnabled;
         _status = _dndEnabled
-            ? 'Connected. Cache ${_formatStorage(freed)} dibersihkan.'
-            : 'Boost belum aktif. Periksa izin dan status Dont Disturb.';
+            ? 'Connected. Cleared ${_formatStorage(freed)} of app cache.'
+            : 'Boost is inactive. Check Dont Disturb access and status.';
       });
     } on TickerCanceled {
       // The dashboard was disposed while its launch animation was active.
     } on MissingPluginException {
-      if (mounted) setState(() => _status = 'Boost tersedia di Android.');
+      if (mounted) setState(() => _status = 'Boost is available on Android.');
     } finally {
       if (mounted) setState(() => _boosting = false);
     }
@@ -211,18 +218,20 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     try {
       final freed = await _platform.invokeMethod<int>('cleanCache') ?? 0;
       if (mounted) {
-        setState(() => _status = 'Cache ${_formatStorage(freed)} dibersihkan.');
+        setState(
+          () => _status = 'Cleared ${_formatStorage(freed)} of app cache.',
+        );
       }
       return freed;
     } on PlatformException catch (error) {
       if (mounted) {
-        setState(
-          () => _status = error.message ?? 'Cache belum bisa dibersihkan.',
-        );
+        setState(() => _status = error.message ?? 'Unable to clear app cache.');
       }
       return null;
     } on MissingPluginException {
-      if (mounted) setState(() => _status = 'Cache tersedia di Android.');
+      if (mounted) {
+        setState(() => _status = 'Cache cleaning is available on Android.');
+      }
       return null;
     }
   }
@@ -234,21 +243,21 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       );
       if (mounted) {
         setState(
-          () =>
-              _status = result?['message'] as String? ?? 'Memori diringankan.',
+          () => _status =
+              result?['message'] as String? ?? 'App management opened.',
         );
       }
       return result?['success'] == true;
     } on PlatformException catch (error) {
       if (mounted) {
         setState(
-          () => _status = error.message ?? 'Background belum bisa ditutup.',
+          () => _status = error.message ?? 'Unable to open app management.',
         );
       }
       return false;
     } on MissingPluginException {
       if (mounted) {
-        setState(() => _status = 'Kelola aplikasi tersedia di Android.');
+        setState(() => _status = 'App management is available on Android.');
       }
       return false;
     }
@@ -260,18 +269,18 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       final confirmed = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Aktifkan DND ketat?'),
+          title: const Text('Enable strict Dont Disturb?'),
           content: const Text(
-            'Suara panggilan dan notifikasi dibisukan, termasuk alarm dan media. Panggilan WhatsApp masih dapat diterima; DND tidak menolak panggilan.',
+            'Calls and notifications will be silenced, including alarms and media. WhatsApp calls can still arrive; Dont Disturb does not reject calls.',
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Batal'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Aktifkan'),
+              child: const Text('Enable'),
             ),
           ],
         ),
@@ -297,15 +306,15 @@ class _BoosterDashboardState extends State<BoosterDashboard>
           _dndPermission = result?['permission'] == true;
           _pendingDnd = enabled && !_dndPermission;
           _status =
-              result?['message'] as String? ?? 'Mode Dont Disturb diproses.';
+              result?['message'] as String? ??
+              'Dont Disturb request processed.';
         });
       }
       return resultEnabled;
     } on PlatformException catch (error) {
       if (mounted) {
         setState(
-          () =>
-              _status = error.message ?? 'Dont Disturb belum bisa diaktifkan.',
+          () => _status = error.message ?? 'Unable to update Dont Disturb.',
         );
       }
       _dndRequestFailed = true;
@@ -313,7 +322,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     } on MissingPluginException {
       _dndRequestFailed = true;
       if (mounted) {
-        setState(() => _status = 'Dont Disturb tersedia di Android.');
+        setState(() => _status = 'Dont Disturb is available on Android.');
       }
       return false;
     } finally {
@@ -337,19 +346,19 @@ class _BoosterDashboardState extends State<BoosterDashboard>
               ),
               const SizedBox(height: 12),
               const Text(
-                'Grafis, resolusi, anti-aliasing, dan batas FPS diatur di dalam game. Pilih game untuk membuka pengaturannya.',
+                'Graphics, resolution, anti-aliasing, and FPS limits are controlled inside each game. Launch a game, then open its settings.',
               ),
               ListTile(
                 leading: const Icon(Icons.display_settings),
-                title: const Text('Pengaturan layar Android'),
+                title: const Text('Android display settings'),
                 subtitle: const Text(
-                  'Refresh rate dan kecerahan sesuai dukungan perangkat',
+                  'Refresh rate and brightness options depend on your device',
                 ),
                 onTap: () => _systemAction('openDisplaySettings'),
               ),
               ListTile(
                 leading: const Icon(Icons.sports_esports),
-                title: const Text('Buka game'),
+                title: const Text('Launch game'),
                 onTap: () {
                   Navigator.pop(context);
                   _showGames();
@@ -378,16 +387,19 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                     child: Padding(
                       padding: EdgeInsets.all(24),
                       child: Text(
-                        'Belum ada aplikasi yang terdaftar sebagai game di perangkat.',
+                        'No apps identified as games were found on this device.',
                       ),
                     ),
                   )
                 : ListView(
                     children: [
-                      const ListTile(title: Text('Game saya')),
+                      const ListTile(title: Text('My games')),
                       for (final game in games)
                         ListTile(
-                          leading: const Icon(Icons.sports_esports),
+                          key: ValueKey(game['packageName']),
+                          leading: _GameIcon(
+                            packageName: game['packageName'] as String,
+                          ),
                           title: Text(game['name'] as String),
                           subtitle: Text(game['packageName'] as String),
                           trailing: const Icon(Icons.play_arrow),
@@ -405,10 +417,12 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       );
     } on PlatformException catch (error) {
       if (mounted) {
-        setState(() => _status = error.message ?? 'Daftar game gagal dibaca.');
+        setState(() => _status = error.message ?? 'Unable to load games.');
       }
     } on MissingPluginException {
-      if (mounted) setState(() => _status = 'Daftar game tersedia di Android.');
+      if (mounted) {
+        setState(() => _status = 'Game discovery is available on Android.');
+      }
     }
   }
 
@@ -484,15 +498,15 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       children: [
                         _ActionTile(
                           icon: Icons.cleaning_services_outlined,
-                          title: 'Cache aplikasi',
-                          value: 'Bersihkan',
+                          title: 'App cache',
+                          value: 'Clear cache',
                           color: const Color(0xFF20D38B),
                           onTap: _cleanCache,
                         ),
                         _ActionTile(
                           icon: Icons.layers_clear_outlined,
                           title: 'Background',
-                          value: 'Kelola aplikasi',
+                          value: 'Manage apps',
                           color: const Color(0xFFFFB000),
                           onTap: _closeBackgroundApps,
                         ),
@@ -502,8 +516,8 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                               : Icons.notifications_active_outlined,
                           title: 'Dont Disturb',
                           value: _dndEnabled
-                              ? 'Aktif'
-                              : (_dndPermission ? 'Siap' : 'Butuh izin'),
+                              ? 'Active'
+                              : (_dndPermission ? 'Ready' : 'Allow access'),
                           color: const Color(0xFFFA5D5D),
                           onTap: _toggleDnd,
                         ),
@@ -512,7 +526,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                           title: 'Refresh rate',
                           value: (_refreshRate > 0
                               ? '${_refreshRate.round()} Hz'
-                              : 'Menunggu'),
+                              : 'Waiting'),
                           color: const Color(0xFF46C7F4),
                           onTap: _loadSystemStatus,
                         ),
@@ -528,32 +542,30 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         _ActionTile(
                           icon: Icons.tune,
                           title: 'GFX Tools',
-                          value: 'Layar & game',
+                          value: 'Display & games',
                           color: const Color(0xFFB788FF),
                           onTap: _showGfxTools,
                         ),
                         _ActionTile(
                           icon: Icons.sports_esports,
-                          title: 'Game saya',
-                          value: 'Buka game',
+                          title: 'My games',
+                          value: 'Launch game',
                           color: const Color(0xFF20D38B),
                           onTap: _showGames,
                         ),
                         _ActionTile(
                           icon: Icons.battery_std,
-                          title: 'Baterai',
-                          value: _battery >= 0
-                              ? '$_battery%'
-                              : 'Tidak tersedia',
+                          title: 'Battery',
+                          value: _battery >= 0 ? '$_battery%' : 'Unavailable',
                           color: const Color(0xFFFFB000),
                           onTap: _loadSystemStatus,
                         ),
                         _ActionTile(
                           icon: Icons.thermostat,
-                          title: 'Suhu baterai',
+                          title: 'Battery temperature',
                           value: _temperature >= 0
                               ? '${_temperature.toStringAsFixed(1)} C'
-                              : 'Tidak tersedia',
+                              : 'Unavailable',
                           color: const Color(0xFFFA5D5D),
                           onTap: _loadSystemStatus,
                         ),
@@ -565,6 +577,64 @@ class _BoosterDashboardState extends State<BoosterDashboard>
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+class _GameIcon extends StatefulWidget {
+  const _GameIcon({required this.packageName});
+
+  final String packageName;
+
+  @override
+  State<_GameIcon> createState() => _GameIconState();
+}
+
+class _GameIconState extends State<_GameIcon> {
+  late Future<Uint8List?> _icon;
+
+  Future<Uint8List?> _loadIcon() async {
+    try {
+      return await const MethodChannel(
+        'game_booster_pro/system',
+      ).invokeMethod<Uint8List>('getGameIcon', {
+        'packageName': widget.packageName,
+      });
+    } on PlatformException {
+      return null;
+    } on MissingPluginException {
+      return null;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _icon = _loadIcon();
+  }
+
+  @override
+  void didUpdateWidget(covariant _GameIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.packageName != widget.packageName) _icon = _loadIcon();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const fallback = Icon(Icons.sports_esports, size: 32);
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: FutureBuilder<Uint8List?>(
+        future: _icon,
+        builder: (context, snapshot) => snapshot.data == null
+            ? fallback
+            : Image.memory(
+                snapshot.data!,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stack) => fallback,
+              ),
       ),
     );
   }
@@ -672,7 +742,7 @@ class _BoosterCore extends StatelessWidget {
               label: Text(
                 boosting
                     ? 'CONNECTING'
-                    : (connected ? 'DISCONNECT' : 'BOOST SEKARANG'),
+                    : (connected ? 'DISCONNECT' : 'BOOST NOW'),
                 style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 16,

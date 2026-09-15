@@ -13,6 +13,9 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
+import java.io.ByteArrayOutputStream
+import android.graphics.Bitmap
+import android.graphics.Canvas
 
 class MainActivity : FlutterActivity() {
     private val channelName = "game_booster_pro/system"
@@ -40,16 +43,33 @@ class MainActivity : FlutterActivity() {
                 "openDisplaySettings" -> { startActivity(Intent(Settings.ACTION_DISPLAY_SETTINGS)); result.success(null) }
                 "openDndSettings" -> { startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)); result.success(null) }
                 "listGames" -> result.success(listGames())
+                "getGameIcon" -> {
+                    val target = call.argument<String>("packageName") ?: error("Select a game first.")
+                    val drawable = packageManager.getApplicationIcon(target)
+                    val bitmap = Bitmap.createBitmap(96, 96, Bitmap.Config.ARGB_8888)
+                    try {
+                        drawable.setBounds(0, 0, 96, 96)
+                        drawable.draw(Canvas(bitmap))
+                        val bytes = ByteArrayOutputStream().use { output ->
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)
+                            output.toByteArray()
+                        }
+                        result.success(bytes)
+                    } finally {
+                        bitmap.recycle()
+                    }
+                }
                 "launchGame" -> {
-                    val target = call.argument<String>("packageName") ?: error("Game belum dipilih")
-                    require(listGames().any { it["packageName"] == target }) { "Game tidak tersedia" }
-                    val intent = packageManager.getLaunchIntentForPackage(target) ?: error("Game tidak dapat dibuka")
+                    val target = call.argument<String>("packageName") ?: error("Select a game first.")
+                    require(target.isNotBlank()) { "Invalid game package ID." }
+                    val intent = packageManager.getLaunchIntentForPackage(target) ?: error("This game is no longer installed or cannot be launched.")
+                    intent.setPackage(target)
                     startActivity(intent)
                     result.success(null)
                 }
                 else -> result.notImplemented()
             } } catch (error: Exception) {
-                result.error("SYSTEM_ERROR", error.message ?: "Operasi sistem gagal", null)
+                result.error("SYSTEM_ERROR", error.message ?: "System operation failed.", null)
             }
         }
     }
@@ -101,7 +121,7 @@ class MainActivity : FlutterActivity() {
         startActivity(Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS))
         return mapOf(
             "success" to false,
-            "message" to "Kelola aplikasi di pengaturan Android. Untuk Hapus semua, gunakan layar Recent Apps perangkat."
+            "message" to "Manage apps in Android settings. To close recent apps, use your device's Recent Apps screen."
         )
     }
 
@@ -124,7 +144,7 @@ class MainActivity : FlutterActivity() {
             return mapOf(
                 "enabled" to false,
                 "permission" to false,
-                "message" to "Dont Disturb membutuhkan Android 6 atau lebih baru."
+                "message" to "Dont Disturb requires Android 6 or later."
             )
         }
 
@@ -133,7 +153,7 @@ class MainActivity : FlutterActivity() {
             return mapOf(
                 "enabled" to false,
                 "permission" to false,
-                "message" to "Aktifkan izin Dont Disturb untuk Game Booster Pro."
+                "message" to "Allow Dont Disturb access for Game Booster Pro."
             )
         }
 
@@ -155,11 +175,11 @@ class MainActivity : FlutterActivity() {
             "enabled" to actual,
             "permission" to true,
             "message" to if (enabled) {
-                "DND ketat diminta. Panggilan tetap dapat diterima, tetapi suara dibisukan termasuk alarm dan media."
+                "Strict Dont Disturb requested. Calls can still arrive, but sounds including alarms and media are silenced."
             } else if (actual) {
-                "Permintaan DND aplikasi dihentikan. DND sistem masih aktif; periksa aturan DND lain."
+                "The app's Dont Disturb request ended. System Dont Disturb is still active; check other rules."
             } else {
-                "Pengaturan DND sebelumnya dipulihkan."
+                "Previous Dont Disturb settings restored."
             }
         )
     }

@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0B0F0C",
     "theme_color": "#20D38B",
-    "description": "Game Booster Pro untuk memantau RAM, cache, background apps, Dont Disturb, dan FPS.",
+    "description": "Android gaming companion with Dont Disturb, app cache management, device information, and a game launcher.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
