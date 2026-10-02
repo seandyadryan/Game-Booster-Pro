@@ -55,6 +55,11 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   bool _dndBusy = false;
   bool _dndRequestFailed = false;
   bool _sessionOwnsDnd = false;
+  bool _usageDisclosureAccepted = false;
+  bool _cacheAccessPending = false;
+  bool _cacheSheetOpen = false;
+  bool _cacheLoading = false;
+  List<Map<String, dynamic>> _topCachedApps = [];
   bool _boosting = false;
   bool _connected = false;
   bool _dndEnabled = false;
@@ -97,6 +102,231 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       _pendingDnd = false;
       await _setDnd(true);
     }
+    if (_cacheAccessPending && mounted) {
+      final granted = await _querySystemPermission('hasUsageAccess');
+      if (granted) {
+        _cacheAccessPending = false;
+        await _loadTopCachedApps();
+        if (mounted && !_cacheSheetOpen) _showTopCacheSheet();
+      }
+    }
+  }
+
+  Future<bool> _querySystemPermission(String method) async {
+    try {
+      return await _platform.invokeMethod<bool>(method) ?? false;
+    } on PlatformException catch (error) {
+      if (mounted) {
+        setState(() => _status = error.message ?? 'Permission check failed.');
+      }
+      return false;
+    } on MissingPluginException {
+      if (mounted) {
+        setState(() => _status = 'This feature is available on Android.');
+      }
+      return false;
+    }
+  }
+
+  Future<void> _showTopCacheApps() async {
+    if (!_usageDisclosureAccepted) {
+      final accepted = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Usage Access'),
+          content: const Text(
+            'Game Booster Pro uses Usage Access to read cache sizes for launchable apps and rank the five largest. Android does not allow this permission to clear another app’s cache automatically. You can open each app’s Storage settings and clear it there.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Continue'),
+            ),
+          ],
+        ),
+      );
+      if (accepted != true || !mounted) return;
+      _usageDisclosureAccepted = true;
+    }
+
+    final granted = await _querySystemPermission('hasUsageAccess');
+    if (!granted) {
+      _cacheAccessPending = true;
+      try {
+        await _platform.invokeMethod<void>('requestUsageAccess');
+      } on PlatformException catch (error) {
+        _cacheAccessPending = false;
+        if (mounted) {
+          setState(
+            () => _status =
+                error.message ?? 'Unable to open Usage Access settings.',
+          );
+        }
+        return;
+      } on MissingPluginException {
+        _cacheAccessPending = false;
+        if (mounted)
+          setState(() => _status = 'Usage Access is available on Android.');
+        return;
+      }
+      if (mounted) {
+        setState(
+          () => _status =
+              'Grant Usage Access, then return to view the top five app caches.',
+        );
+      }
+      return;
+    }
+    await _loadTopCachedApps();
+    if (mounted) _showTopCacheSheet();
+  }
+
+  Future<void> _loadTopCachedApps() async {
+    if (!mounted) return;
+    setState(() => _cacheLoading = true);
+    try {
+      final apps =
+          await _platform.invokeListMethod<dynamic>('getTopCachedApps') ?? [];
+      if (!mounted) return;
+      setState(
+        () => _topCachedApps = apps
+            .cast<Map<dynamic, dynamic>>()
+            .map((item) => Map<String, dynamic>.from(item))
+            .toList(),
+      );
+    } on PlatformException catch (error) {
+      if (mounted)
+        setState(
+          () => _status = error.message ?? 'Unable to read app cache sizes.',
+        );
+    } finally {
+      if (mounted) setState(() => _cacheLoading = false);
+    }
+  }
+
+  void _showTopCacheSheet() {
+    _cacheSheetOpen = true;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (sheetContext, setSheetState) => SafeArea(
+          child: SizedBox(
+            height: MediaQuery.sizeOf(sheetContext).height * 0.68,
+            child: Column(
+              children: [
+                ListTile(
+                  title: const Text(
+                    'Top 5 app caches',
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                  ),
+                  subtitle: const Text(
+                    'Open App info, then Storage, to clear its cache.',
+                  ),
+                  trailing: IconButton(
+                    tooltip: 'Refresh',
+                    onPressed: () async {
+                      await _loadTopCachedApps();
+                      if (sheetContext.mounted) setSheetState(() {});
+                    },
+                    icon: const Icon(Icons.refresh),
+                  ),
+                ),
+                Expanded(
+                  child: _cacheLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : _topCachedApps.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'No cache data is available for launchable apps.',
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: _topCachedApps.length,
+                          itemBuilder: (context, index) {
+                            final app = _topCachedApps[index];
+                            final packageName = app['packageName'] as String;
+                            return ListTile(
+                              leading: _GameIcon(packageName: packageName),
+                              title: Text(app['name'] as String),
+                              subtitle: Text(packageName),
+                              trailing: Text(
+                                _formatStorage(
+                                  (app['cacheBytes'] as num).toInt(),
+                                ),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              onTap: () => _systemAction(
+                                'openAppStorageSettings',
+                                {'packageName': packageName},
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ).whenComplete(() => _cacheSheetOpen = false);
+  }
+
+  Future<void> _prepareGameLaunch(String packageName) async {
+    if (!_usageDisclosureAccepted) {
+      final accepted = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Game monitor access'),
+          content: const Text(
+            'Usage Access detects when the selected game is on screen. Display over other apps shows a small monitor bar. Android does not expose another game’s actual FPS to regular apps; the bar reports screen refresh rate in Hz and shows FPS as unavailable.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Continue'),
+            ),
+          ],
+        ),
+      );
+      if (accepted != true || !mounted) return;
+      _usageDisclosureAccepted = true;
+    }
+    final overlay = await _querySystemPermission('hasOverlayAccess');
+    if (!mounted) return;
+    if (!overlay) {
+      final accepted = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Allow the game monitor bar?'),
+          content: const Text(
+            'Allow Game Booster Pro to display a small bar over the selected game. You can remove it by tapping the bar.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Open settings'),
+            ),
+          ],
+        ),
+      );
+      if (accepted != true || !mounted) return;
+    }
+    await _systemAction('launchGame', {'packageName': packageName});
   }
 
   Future<void> _systemAction(
@@ -346,7 +576,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
               ),
               const SizedBox(height: 12),
               const Text(
-                'Graphics, resolution, anti-aliasing, and FPS limits are controlled inside each game. Launch a game, then open its settings.',
+                'Launch a game and show a monitor bar. Android exposes screen refresh rate, but not another game’s actual FPS to regular apps.',
               ),
               ListTile(
                 leading: const Icon(Icons.display_settings),
@@ -358,7 +588,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
               ),
               ListTile(
                 leading: const Icon(Icons.sports_esports),
-                title: const Text('Launch game'),
+                title: const Text('Launch game with monitor bar'),
                 onTap: () {
                   Navigator.pop(context);
                   _showGames();
@@ -405,9 +635,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                           trailing: const Icon(Icons.play_arrow),
                           onTap: () {
                             Navigator.pop(context);
-                            _systemAction('launchGame', {
-                              'packageName': game['packageName'],
-                            });
+                            _prepareGameLaunch(game['packageName'] as String);
                           },
                         ),
                     ],
@@ -498,10 +726,10 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       children: [
                         _ActionTile(
                           icon: Icons.cleaning_services_outlined,
-                          title: 'App cache',
-                          value: 'Clear cache',
+                          title: 'Top app caches',
+                          value: 'View top 5',
                           color: const Color(0xFF20D38B),
-                          onTap: _cleanCache,
+                          onTap: _showTopCacheApps,
                         ),
                         _ActionTile(
                           icon: Icons.layers_clear_outlined,

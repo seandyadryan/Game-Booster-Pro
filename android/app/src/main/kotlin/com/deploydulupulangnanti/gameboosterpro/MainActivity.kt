@@ -2,13 +2,29 @@ package com.deploydulupulangnanti.gameboosterpro
 
 import android.app.ActivityManager
 import android.app.NotificationManager
+import android.app.AppOpsManager
+import android.app.usage.StorageStatsManager
+import android.app.usage.UsageEvents
+import android.app.usage.UsageStatsManager
 import android.content.IntentFilter
 import android.os.BatteryManager
+import android.os.Handler
+import android.os.Looper
+import java.util.concurrent.Executors
+import android.os.Process
+import android.os.UserHandle
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
+import android.os.storage.StorageManager
+import android.graphics.Color
+import android.graphics.PixelFormat
+import android.net.Uri
+import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -20,6 +36,27 @@ import android.graphics.Canvas
 class MainActivity : FlutterActivity() {
     private val channelName = "game_booster_pro/system"
     private val preferences by lazy { getSharedPreferences("booster", Context.MODE_PRIVATE) }
+    private val monitorHandler = Handler(Looper.getMainLooper())
+    private val monitorExecutor = Executors.newSingleThreadExecutor()
+    private var monitorView: TextView? = null
+    private var monitorPackage: String? = null
+    private var pendingGamePackage: String? = null
+    private var usageSettingsOpenedForGame = false
+    private val monitorTick = object : Runnable {
+        override fun run() {
+            val target = monitorPackage ?: return
+            monitorExecutor.execute {
+                val foreground = currentForegroundPackage()
+                monitorHandler.post {
+                    if (monitorPackage != target) return@post
+                    monitorView?.visibility = if (foreground == target) View.VISIBLE else View.GONE
+                    monitorView?.text = "FPS --  |  Display ${getRefreshRate().toInt()} Hz  |  ×"
+                    if (foreground != target && foreground == packageName) stopGameMonitor()
+                    else monitorHandler.postDelayed(this, 1000)
+                }
+            }
+        }
+    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -59,19 +96,176 @@ class MainActivity : FlutterActivity() {
                         bitmap.recycle()
                     }
                 }
+                "hasUsageAccess" -> result.success(hasUsageAccess())
+                "hasOverlayAccess" -> result.success(Settings.canDrawOverlays(this))
+                "requestUsageAccess" -> {
+                    startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                    result.success(null)
+                }
+                "getTopCachedApps" -> Thread {
+                    val response = runCatching { getTopCachedApps() }
+                    runOnUiThread {
+                        response.fold(
+                            onSuccess = { result.success(it) },
+                            onFailure = { result.error("CACHE_STATS_ERROR", it.message, null) }
+                        )
+                    }
+                }.start()
+                "openAppStorageSettings" -> {
+                    val target = call.argument<String>("packageName") ?: error("Select an app first.")
+                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$target")))
+                    result.success(null)
+                }
                 "launchGame" -> {
                     val target = call.argument<String>("packageName") ?: error("Select a game first.")
                     require(target.isNotBlank()) { "Invalid game package ID." }
+                    if (!Settings.canDrawOverlays(this) || !hasUsageAccess()) {
+                        pendingGamePackage = target
+                        if (!Settings.canDrawOverlays(this)) {
+                            startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")))
+                            result.success(mapOf("launched" to false, "permission" to "overlay"))
+                        } else {
+                            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                            result.success(mapOf("launched" to false, "permission" to "usage"))
+                        }
+                        return@setMethodCallHandler
+                    }
                     val intent = packageManager.getLaunchIntentForPackage(target) ?: error("This game is no longer installed or cannot be launched.")
                     intent.setPackage(target)
+                    startGameMonitor(target)
                     startActivity(intent)
-                    result.success(null)
+                    result.success(mapOf("launched" to true))
                 }
                 else -> result.notImplemented()
             } } catch (error: Exception) {
                 result.error("SYSTEM_ERROR", error.message ?: "System operation failed.", null)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val target = pendingGamePackage ?: return
+        if (Settings.canDrawOverlays(this) && hasUsageAccess()) {
+            pendingGamePackage = null
+            window.decorView.post {
+                if (!isFinishing) {
+                    val intent = packageManager.getLaunchIntentForPackage(target)
+                    if (intent != null) {
+                        startGameMonitor(target)
+                        startActivity(intent.setPackage(target))
+                    }
+                }
+            }
+        } else if (Settings.canDrawOverlays(this)) {
+            if (!usageSettingsOpenedForGame) {
+                usageSettingsOpenedForGame = true
+                startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+            } else {
+                pendingGamePackage = null
+                usageSettingsOpenedForGame = false
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        stopGameMonitor()
+        monitorExecutor.shutdownNow()
+        super.onDestroy()
+    }
+
+    private fun hasUsageAccess(): Boolean {
+        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        return appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName) == AppOpsManager.MODE_ALLOWED
+    }
+
+    private fun getTopCachedApps(): List<Map<String, Any>> {
+        check(hasUsageAccess()) { "Grant Usage Access to view app cache sizes." }
+        val statsManager = getSystemService(Context.STORAGE_STATS_SERVICE) as StorageStatsManager
+        val launchers = packageManager.queryIntentActivities(
+            Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER), 0
+        ).map { it.activityInfo.applicationInfo }.distinctBy { it.packageName }
+        return launchers.mapNotNull { app ->
+            runCatching {
+                val stats = statsManager.queryStatsForPackage(
+                    app.storageUuid ?: StorageManager.UUID_DEFAULT,
+                    app.packageName,
+                    UserHandle.getUserHandleForUid(app.uid)
+                )
+                mapOf(
+                    "packageName" to app.packageName,
+                    "name" to packageManager.getApplicationLabel(app).toString(),
+                    "cacheBytes" to stats.cacheBytes,
+                    "totalBytes" to stats.appBytes + stats.dataBytes + stats.cacheBytes
+                )
+            }.getOrNull()
+        }.filter { (it["cacheBytes"] as Long) > 0 }
+            .sortedByDescending { it["cacheBytes"] as Long }
+            .take(5)
+    }
+
+    private fun startGameMonitor(target: String) {
+        stopGameMonitor()
+        if (!Settings.canDrawOverlays(this)) return
+        val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val view = TextView(this).apply {
+            text = "FPS --  |  Display ${getRefreshRate().toInt()} Hz  |  ×"
+            setTextColor(Color.WHITE)
+            textSize = 13f
+            setPadding(18, 12, 18, 12)
+            setBackgroundColor(Color.argb(220, 12, 20, 16))
+            elevation = 12f
+            setOnClickListener { stopGameMonitor() }
+        }
+        val overlayType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        } else {
+            @Suppress("DEPRECATION")
+            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+        }
+        val params = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            overlayType,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+            PixelFormat.TRANSLUCENT
+        ).apply { gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL; y = 72 }
+        runCatching { wm.addView(view, params) }.onSuccess {
+            monitorView = view
+            monitorPackage = target
+            monitorHandler.post(monitorTick)
+        }
+    }
+
+    private fun currentForegroundPackage(): String? {
+        val manager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val now = System.currentTimeMillis()
+        val events = manager.queryEvents(now - 15_000, now)
+        val event = UsageEvents.Event()
+        var lastPackage: String? = null
+        var lastTimestamp = 0L
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event)
+            val resumed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                UsageEvents.Event.ACTIVITY_RESUMED
+            } else {
+                UsageEvents.Event.MOVE_TO_FOREGROUND
+            }
+            if (event.eventType == resumed && event.timeStamp >= lastTimestamp) {
+                lastTimestamp = event.timeStamp
+                lastPackage = event.packageName
+            }
+        }
+        return lastPackage
+    }
+
+    private fun stopGameMonitor() {
+        monitorHandler.removeCallbacks(monitorTick)
+        val view = monitorView ?: return
+        runCatching { (getSystemService(Context.WINDOW_SERVICE) as WindowManager).removeView(view) }
+        monitorView = null
+        monitorPackage = null
     }
 
     private fun getSystemStatus(): Map<String, Any> {
