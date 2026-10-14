@@ -38,6 +38,11 @@ class MainActivity : FlutterActivity() {
     private val preferences by lazy { getSharedPreferences("booster", Context.MODE_PRIVATE) }
     private val monitorHandler = Handler(Looper.getMainLooper())
     private val monitorExecutor = Executors.newSingleThreadExecutor()
+    private val cacheExecutor = Executors.newSingleThreadExecutor()
+    private val networkExecutor = Executors.newSingleThreadExecutor()
+    private var lastForegroundPackage: String? = null
+    private var lastForegroundTimestamp = 0L
+    private var monitorHasSeenGame = false
     private var monitorView: TextView? = null
     private var monitorPackage: String? = null
     private var pendingGamePackage: String? = null
@@ -46,12 +51,13 @@ class MainActivity : FlutterActivity() {
         override fun run() {
             val target = monitorPackage ?: return
             monitorExecutor.execute {
-                val foreground = currentForegroundPackage()
+                val foreground = runCatching { currentForegroundPackage() }.getOrNull()
                 monitorHandler.post {
                     if (monitorPackage != target) return@post
+                    if (foreground == target) monitorHasSeenGame = true
                     monitorView?.visibility = if (foreground == target) View.VISIBLE else View.GONE
                     monitorView?.text = "FPS --  |  Display ${getRefreshRate().toInt()} Hz  |  ×"
-                    if (foreground != target && foreground == packageName) stopGameMonitor()
+                    if (monitorHasSeenGame && foreground == packageName) stopGameMonitor()
                     else monitorHandler.postDelayed(this, 1000)
                 }
             }
@@ -66,7 +72,25 @@ class MainActivity : FlutterActivity() {
             result ->
             try { when (call.method) {
                 "getSystemStatus" -> result.success(getSystemStatus())
-                "cleanCache" -> Thread {
+                "getOwnCacheStats" -> cacheExecutor.execute {
+                    val stats = runCatching { mapOf("cacheBytes" to ownCacheCleaner().size()) }
+                    runOnUiThread {
+                        stats.fold(
+                            onSuccess = { result.success(it) },
+                            onFailure = { result.error("CACHE_ERROR", "Unable to read app cache.", null) }
+                        )
+                    }
+                }
+                "checkNetworkLatency" -> networkExecutor.execute {
+                    val checked = runCatching { NetworkDiagnostics(this).check() }
+                    runOnUiThread {
+                        checked.fold(
+                            onSuccess = { result.success(it) },
+                            onFailure = { result.error("NETWORK_ERROR", it.message ?: "Network check failed.", null) }
+                        )
+                    }
+                }
+                "cleanCache" -> cacheExecutor.execute {
                     val cleaned = runCatching { cleanCache() }
                     runOnUiThread {
                         cleaned.fold(
@@ -74,7 +98,7 @@ class MainActivity : FlutterActivity() {
                             onFailure = { result.error("CACHE_ERROR", it.message, null) }
                         )
                     }
-                }.start()
+                }
                 "closeBackgroundApps" -> result.success(closeBackgroundApps())
                 "toggleDnd" -> result.success(toggleDnd(call.argument<Boolean>("enabled") ?: true))
                 "openDisplaySettings" -> { startActivity(Intent(Settings.ACTION_DISPLAY_SETTINGS)); result.success(null) }
@@ -102,7 +126,7 @@ class MainActivity : FlutterActivity() {
                     startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                     result.success(null)
                 }
-                "getTopCachedApps" -> Thread {
+                "getTopCachedApps" -> cacheExecutor.execute {
                     val response = runCatching { getTopCachedApps() }
                     runOnUiThread {
                         response.fold(
@@ -110,7 +134,7 @@ class MainActivity : FlutterActivity() {
                             onFailure = { result.error("CACHE_STATS_ERROR", it.message, null) }
                         )
                     }
-                }.start()
+                }
                 "openAppStorageSettings" -> {
                     val target = call.argument<String>("packageName") ?: error("Select an app first.")
                     startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$target")))
@@ -171,6 +195,8 @@ class MainActivity : FlutterActivity() {
     override fun onDestroy() {
         stopGameMonitor()
         monitorExecutor.shutdownNow()
+        cacheExecutor.shutdownNow()
+        networkExecutor.shutdownNow()
         super.onDestroy()
     }
 
@@ -180,6 +206,7 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun getTopCachedApps(): List<Map<String, Any>> {
+        check(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { "App cache ranking requires Android 8 or later." }
         check(hasUsageAccess()) { "Grant Usage Access to view app cache sizes." }
         val statsManager = getSystemService(Context.STORAGE_STATS_SERVICE) as StorageStatsManager
         val launchers = packageManager.queryIntentActivities(
@@ -196,7 +223,7 @@ class MainActivity : FlutterActivity() {
                     "packageName" to app.packageName,
                     "name" to packageManager.getApplicationLabel(app).toString(),
                     "cacheBytes" to stats.cacheBytes,
-                    "totalBytes" to stats.appBytes + stats.dataBytes + stats.cacheBytes
+                    "totalBytes" to stats.appBytes + stats.dataBytes
                 )
             }.getOrNull()
         }.filter { (it["cacheBytes"] as Long) > 0 }
@@ -206,6 +233,9 @@ class MainActivity : FlutterActivity() {
 
     private fun startGameMonitor(target: String) {
         stopGameMonitor()
+        lastForegroundPackage = null
+        lastForegroundTimestamp = 0L
+        monitorHasSeenGame = false
         if (!Settings.canDrawOverlays(this)) return
         val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val view = TextView(this).apply {
@@ -243,8 +273,6 @@ class MainActivity : FlutterActivity() {
         val now = System.currentTimeMillis()
         val events = manager.queryEvents(now - 15_000, now)
         val event = UsageEvents.Event()
-        var lastPackage: String? = null
-        var lastTimestamp = 0L
         while (events.hasNextEvent()) {
             events.getNextEvent(event)
             val resumed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -252,12 +280,12 @@ class MainActivity : FlutterActivity() {
             } else {
                 UsageEvents.Event.MOVE_TO_FOREGROUND
             }
-            if (event.eventType == resumed && event.timeStamp >= lastTimestamp) {
-                lastTimestamp = event.timeStamp
-                lastPackage = event.packageName
+            if (event.eventType == resumed && event.timeStamp >= lastForegroundTimestamp) {
+                lastForegroundTimestamp = event.timeStamp
+                lastForegroundPackage = event.packageName
             }
         }
-        return lastPackage
+        return lastForegroundPackage
     }
 
     private fun stopGameMonitor() {
@@ -303,13 +331,9 @@ class MainActivity : FlutterActivity() {
         )
     }
 
-    private fun cleanCache(): Long {
-        val before = cacheSize(cacheDir) + externalCacheDirs.filterNotNull().sumOf { cacheSize(it) }
-        deleteChildren(cacheDir)
-        externalCacheDirs.filterNotNull().forEach { deleteChildren(it) }
-        val after = cacheSize(cacheDir) + externalCacheDirs.filterNotNull().sumOf { cacheSize(it) }
-        return (before - after).coerceAtLeast(0)
-    }
+    private fun ownCacheCleaner() = AppCacheCleaner(listOf(cacheDir, codeCacheDir) + externalCacheDirs.filterNotNull())
+
+    private fun cleanCache(): Map<String, Long> = ownCacheCleaner().clear()
 
     private fun closeBackgroundApps(): Map<String, Any> {
         startActivity(Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS))
@@ -410,25 +434,4 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun cacheSize(file: File?): Long {
-        if (file == null || !file.exists()) {
-            return 0
-        }
-        if (file.isFile) {
-            return file.length()
-        }
-        return file.listFiles()?.sumOf { cacheSize(it) } ?: 0
-    }
-
-    private fun deleteChildren(file: File?) {
-        if (file == null || !file.exists() || !file.isDirectory) {
-            return
-        }
-        file.listFiles()?.forEach { child ->
-            if (child.isDirectory) {
-                deleteChildren(child)
-            }
-            child.delete()
-        }
-    }
 }

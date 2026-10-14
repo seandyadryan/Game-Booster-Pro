@@ -1,0 +1,68 @@
+{
+  "descriptions": {
+    "short-description": {
+      "characters": 70,
+      "maximum": 80
+    },
+    "full-description": {
+      "characters": 3194,
+      "maximum": 4000
+    }
+  },
+  "images": [
+    {
+      "file": "feature-graphic.png",
+      "width": 1024,
+      "height": 500,
+      "bytes": 784396
+    },
+    {
+      "file": "phone/01-dashboard.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 329624
+    },
+    {
+      "file": "phone/02-tools.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 215086
+    },
+    {
+      "file": "phone/03-gfx-tools.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 153398
+    },
+    {
+      "file": "phone/04-ai-network.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 148295
+    },
+    {
+      "file": "desktop/01-dashboard.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 238987
+    },
+    {
+      "file": "desktop/02-tools.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 230650
+    },
+    {
+      "file": "desktop/03-gfx-tools.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 161293
+    },
+    {
+      "file": "desktop/04-ai-network.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 161230
+    }
+  ]
+}

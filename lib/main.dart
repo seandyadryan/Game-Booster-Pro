@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'system_tools.dart';
 
 void main() {
   runApp(const GameBoosterProApp());
@@ -56,6 +57,10 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   bool _dndRequestFailed = false;
   bool _sessionOwnsDnd = false;
   bool _usageDisclosureAccepted = false;
+  bool _monitorDisclosureAccepted = false;
+  int? _ownCacheBytes;
+  bool _cleaningCache = false;
+  String? _cacheError;
   bool _cacheAccessPending = false;
   bool _cacheSheetOpen = false;
   bool _cacheLoading = false;
@@ -75,6 +80,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     );
     WidgetsBinding.instance.addObserver(this);
     _loadSystemStatus();
+    _loadOwnCacheSize();
     _refreshTimer = Timer.periodic(
       const Duration(seconds: 5),
       (_) => _loadSystemStatus(silent: true),
@@ -98,6 +104,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 
   Future<void> _resumeStatus() async {
     await _loadSystemStatus(silent: true);
+    await _loadOwnCacheSize();
     if (mounted && _pendingDnd && _dndPermission && !_dndBusy) {
       _pendingDnd = false;
       await _setDnd(true);
@@ -169,8 +176,9 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         return;
       } on MissingPluginException {
         _cacheAccessPending = false;
-        if (mounted)
+        if (mounted) {
           setState(() => _status = 'Usage Access is available on Android.');
+        }
         return;
       }
       if (mounted) {
@@ -187,7 +195,10 @@ class _BoosterDashboardState extends State<BoosterDashboard>
 
   Future<void> _loadTopCachedApps() async {
     if (!mounted) return;
-    setState(() => _cacheLoading = true);
+    setState(() {
+      _cacheLoading = true;
+      _cacheError = null;
+    });
     try {
       final apps =
           await _platform.invokeListMethod<dynamic>('getTopCachedApps') ?? [];
@@ -199,10 +210,17 @@ class _BoosterDashboardState extends State<BoosterDashboard>
             .toList(),
       );
     } on PlatformException catch (error) {
-      if (mounted)
-        setState(
-          () => _status = error.message ?? 'Unable to read app cache sizes.',
-        );
+      if (mounted) {
+        setState(() {
+          _cacheError = error.message ?? 'Unable to read app cache sizes.';
+          _status = _cacheError!;
+          _topCachedApps = [];
+        });
+      }
+    } on MissingPluginException {
+      if (mounted) {
+        setState(() => _cacheError = 'App cache ranking requires Android.');
+      }
     } finally {
       if (mounted) setState(() => _cacheLoading = false);
     }
@@ -229,16 +247,26 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                   ),
                   trailing: IconButton(
                     tooltip: 'Refresh',
-                    onPressed: () async {
-                      await _loadTopCachedApps();
-                      if (sheetContext.mounted) setSheetState(() {});
-                    },
+                    onPressed: _cacheLoading
+                        ? null
+                        : () async {
+                            setSheetState(() => _cacheLoading = true);
+                            await _loadTopCachedApps();
+                            if (sheetContext.mounted) setSheetState(() {});
+                          },
                     icon: const Icon(Icons.refresh),
                   ),
                 ),
                 Expanded(
                   child: _cacheLoading
                       ? const Center(child: CircularProgressIndicator())
+                      : _cacheError != null
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Text(_cacheError!),
+                          ),
+                        )
                       : _topCachedApps.isEmpty
                       ? const Center(
                           child: Text(
@@ -279,7 +307,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   }
 
   Future<void> _prepareGameLaunch(String packageName) async {
-    if (!_usageDisclosureAccepted) {
+    if (!_monitorDisclosureAccepted) {
       final accepted = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
@@ -300,7 +328,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         ),
       );
       if (accepted != true || !mounted) return;
-      _usageDisclosureAccepted = true;
+      _monitorDisclosureAccepted = true;
     }
     final overlay = await _querySystemPermission('hasOverlayAccess');
     if (!mounted) return;
@@ -360,7 +388,6 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         _battery = (data['batteryPercent'] as num?)?.toInt() ?? -1;
         _temperature = (data['batteryTemperature'] as num?)?.toDouble() ?? -1;
         _dndEnabled = data['dndEnabled'] == true;
-        if (_connected && !_dndEnabled) _connected = false;
         _dndPermission = data['dndPermission'] == true;
         if (!silent) {
           _status = 'System status updated.';
@@ -381,7 +408,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   }
 
   Future<void> _runBoost() async {
-    if (_boosting || _dndBusy) {
+    if (_boosting || _dndBusy || _cleaningCache) {
       return;
     }
 
@@ -400,11 +427,6 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       return;
     }
 
-    final needsDnd = !_dndEnabled;
-    if (needsDnd && !await _toggleDnd()) return;
-    if (!mounted) return;
-    _sessionOwnsDnd = needsDnd;
-
     setState(() {
       _boosting = true;
       _status = 'Starting boost...';
@@ -419,51 +441,148 @@ class _BoosterDashboardState extends State<BoosterDashboard>
           },
         );
     try {
-      final freed = await _cleanCache();
-      if (freed == null) return;
+      final report = await _cleanCache();
       await _loadSystemStatus(silent: true);
       await flight;
+
+      // Cleanup is independent of optional Dont Disturb permission and consent.
+      if (mounted && _dndPermission && !_dndEnabled) {
+        _sessionOwnsDnd = await _toggleDnd();
+      }
 
       if (!mounted) {
         return;
       }
 
+      final failedFiles = (report['failedFiles'] as num?)?.toInt() ?? 0;
       setState(() {
         _boosting = false;
-        _connected = _dndEnabled;
-        _status = _dndEnabled
-            ? 'Connected. Cleared ${_formatStorage(freed)} of app cache.'
-            : 'Boost is inactive. Check Dont Disturb access and status.';
+        _connected = true;
+        _status =
+            'Boost ready. Game Booster Pro cache: ${formatBytes((report['beforeBytes'] as num).toInt())} before, ${formatBytes((report['freedBytes'] as num).toInt())} cleared, ${formatBytes((report['afterBytes'] as num).toInt())} remaining.${failedFiles > 0 ? ' $failedFiles files could not be removed.' : ''}${_dndEnabled ? ' Dont Disturb active.' : ''}';
       });
     } on TickerCanceled {
       // The dashboard was disposed while its launch animation was active.
     } on MissingPluginException {
       if (mounted) setState(() => _status = 'Boost is available on Android.');
+    } on PlatformException catch (error) {
+      if (mounted) {
+        setState(() => _status = error.message ?? 'Unable to clear app cache.');
+      }
     } finally {
       if (mounted) setState(() => _boosting = false);
     }
   }
 
-  Future<int?> _cleanCache() async {
+  Future<int> _readOwnCacheSize() async {
+    final stats = await _platform.invokeMapMethod<String, dynamic>(
+      'getOwnCacheStats',
+    );
+    if (stats == null) {
+      throw PlatformException(
+        code: 'CACHE_ERROR',
+        message: 'No app cache information was returned.',
+      );
+    }
+    final bytes = (stats['cacheBytes'] as num).toInt();
+    if (mounted) setState(() => _ownCacheBytes = bytes);
+    return bytes;
+  }
+
+  Future<void> _loadOwnCacheSize() async {
     try {
-      final freed = await _platform.invokeMethod<int>('cleanCache') ?? 0;
-      if (mounted) {
-        setState(
-          () => _status = 'Cleared ${_formatStorage(freed)} of app cache.',
+      await _readOwnCacheSize();
+    } on PlatformException {
+      if (mounted) setState(() => _ownCacheBytes = null);
+    } on MissingPluginException {
+      if (mounted) setState(() => _ownCacheBytes = null);
+    }
+  }
+
+  Future<Map<String, dynamic>> _cleanCache() async {
+    if (_cleaningCache) {
+      throw PlatformException(
+        code: 'CACHE_BUSY',
+        message: 'A cleanup is already running.',
+      );
+    }
+    _cleaningCache = true;
+    try {
+      final report = await _platform.invokeMapMethod<String, dynamic>(
+        'cleanCache',
+      );
+      if (report == null) {
+        throw PlatformException(
+          code: 'CACHE_ERROR',
+          message: 'No cleanup result was returned.',
         );
       }
-      return freed;
-    } on PlatformException catch (error) {
       if (mounted) {
-        setState(() => _status = error.message ?? 'Unable to clear app cache.');
+        setState(() {
+          _ownCacheBytes = (report['afterBytes'] as num).toInt();
+          _status =
+              'Game Booster Pro cache: ${formatBytes((report['freedBytes'] as num).toInt())} cleared; ${formatBytes(_ownCacheBytes!)} remaining.';
+        });
       }
-      return null;
-    } on MissingPluginException {
-      if (mounted) {
-        setState(() => _status = 'Cache cleaning is available on Android.');
-      }
-      return null;
+      return report;
+    } finally {
+      _cleaningCache = false;
     }
+  }
+
+  void _showAppCache() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AppCacheSheet(
+        readCache: _readOwnCacheSize,
+        clearCache: _cleanCache,
+        onTopApps: () {
+          Navigator.pop(context);
+          _showTopCacheApps();
+        },
+      ),
+    );
+  }
+
+  void _showNetworkCheck() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => const NetworkCheckSheet(channel: _platform),
+    );
+  }
+
+  Future<void> _showPrivacyPolicy() async {
+    final policy = await rootBundle.loadString('assets/privacy-policy.txt');
+    if (!mounted) return;
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => FractionallySizedBox(
+        heightFactor: 0.85,
+        child: SafeArea(
+          child: Column(
+            children: [
+              ListTile(
+                title: const Text('Privacy policy'),
+                trailing: IconButton(
+                  tooltip: 'Close',
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24),
+                  child: SelectionArea(child: Text(policy)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Future<bool> _closeBackgroundApps() async {
@@ -655,14 +774,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   }
 
   String _formatStorage(int bytes) {
-    if (bytes <= 0) {
-      return '0 MB';
-    }
-    final mb = bytes / (1024 * 1024);
-    if (mb < 1024) {
-      return '${mb.toStringAsFixed(1)} MB';
-    }
-    return '${(mb / 1024).toStringAsFixed(2)} GB';
+    return formatBytes(bytes);
   }
 
   @override
@@ -694,7 +806,9 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       compact ? 18 : 28,
                       12,
                     ),
-                    sliver: SliverToBoxAdapter(child: const _Header()),
+                    sliver: SliverToBoxAdapter(
+                      child: _Header(onPrivacy: _showPrivacyPolicy),
+                    ),
                   ),
                   SliverPadding(
                     padding: EdgeInsets.symmetric(
@@ -719,17 +833,30 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       28,
                     ),
                     sliver: SliverGrid.count(
-                      crossAxisCount: compact ? 2 : 3,
+                      crossAxisCount: compact
+                          ? 2
+                          : (constraints.maxWidth >= 1100 ? 4 : 3),
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      childAspectRatio: compact ? 1.05 : 1.22,
+                      childAspectRatio: compact
+                          ? 1.05
+                          : (constraints.maxWidth >= 1100 ? 1.9 : 1.22),
                       children: [
                         _ActionTile(
                           icon: Icons.cleaning_services_outlined,
-                          title: 'Top app caches',
-                          value: 'View top 5',
+                          title: 'App cache',
+                          value: _ownCacheBytes == null
+                              ? 'Clear cache'
+                              : formatBytes(_ownCacheBytes!),
                           color: const Color(0xFF20D38B),
-                          onTap: _showTopCacheApps,
+                          onTap: _showAppCache,
+                        ),
+                        _ActionTile(
+                          icon: Icons.network_check,
+                          title: 'AI Network',
+                          value: 'Check latency',
+                          color: const Color(0xFF46C7F4),
+                          onTap: _showNetworkCheck,
                         ),
                         _ActionTile(
                           icon: Icons.layers_clear_outlined,
@@ -869,18 +996,30 @@ class _GameIconState extends State<_GameIcon> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header();
+  const _Header({required this.onPrivacy});
+  final VoidCallback onPrivacy;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        Text(
-          'Game Booster Pro',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w900,
-            color: Colors.white,
+        const SizedBox(width: 40),
+        Expanded(
+          child: Text(
+            'Game Booster Pro',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 40,
+          child: IconButton(
+            tooltip: 'Privacy policy',
+            onPressed: onPrivacy,
+            icon: const Icon(Icons.privacy_tip_outlined, size: 20),
           ),
         ),
       ],
