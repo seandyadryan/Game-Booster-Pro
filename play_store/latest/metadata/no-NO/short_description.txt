@@ -1,0 +1,1 @@
+Mål TCP-forsinkelse, tøm denne appens hurtigbuffer og start spill.

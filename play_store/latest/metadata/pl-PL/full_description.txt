@@ -1,0 +1,14 @@
+Game Tools to narzędzie Android do pomiaru opóźnienia TCP, pamięci podręcznej tej aplikacji, skrótów do gier i informacji o ekranie.
+
+Network Latency wykonuje pięć połączeń TCP z Cloudflare 1.1.1.1:443 i pokazuje średnie, minimalne i maksymalne opóźnienie, jitter oraz nieudane próby. To czas nawiązania połączenia, nie ping serwera gry ani test szybkości internetu.
+
+Start Session usuwa tylko tymczasową pamięć podręczną Game Tools i pokazuje bajty przed czyszczeniem, usunięte i pozostałe. Pamięć innych aplikacji czyści się ręcznie w ustawieniach Androida. Lista pięciu największych pamięci podręcznych wymaga dostępu do danych o użytkowaniu i Androida 8 lub nowszego.
+
+Uruchamiaj zainstalowane aplikacje rozpoznane jako gry, otwieraj ustawienia ekranu Androida i sprawdzaj baterię. Odświeżanie ekranu jest mierzone w Hz, a nie w FPS gry. Grafiką w grze zarządza sama gra.
+
+Opcjonalny tryb Nie przeszkadzać może wyciszać alarmy i multimedia, ale nie odrzuca połączeń. Opcjonalny pasek odświeżania wymaga dostępu do danych o użytkowaniu i zgody na wyświetlanie nad innymi aplikacjami.
+
+Wyniki są przetwarzane na urządzeniu. Zlecane kontrole sieci łączą się z Cloudflare, który może otrzymać publiczny adres IP. Brak SDK reklamowych i analitycznych. Interfejs jest po angielsku. Funkcje zależą od urządzenia, wersji Androida i uprawnień.
+
+PT Deploy Dulu Pulang Nanti
+Support: seandyadryan2@gmail.com

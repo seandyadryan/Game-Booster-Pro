@@ -92,7 +92,7 @@ class _AppCacheSheetState extends State<AppCacheSheet> {
                 const SizedBox(width: 12),
                 const Expanded(
                   child: Text(
-                    'App cache',
+                    'This app\'s cache',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -109,7 +109,7 @@ class _AppCacheSheetState extends State<AppCacheSheet> {
               ],
             ),
             const SizedBox(height: 24),
-            const Text('Game Booster Pro cache'),
+            const Text('Game Tools cache'),
             const SizedBox(height: 8),
             Text(
               _bytes == null ? '--' : formatBytes(_bytes!),
@@ -158,7 +158,7 @@ class _AppCacheSheetState extends State<AppCacheSheet> {
             FilledButton.icon(
               onPressed: _busy ? null : _clear,
               icon: const Icon(Icons.cleaning_services_outlined),
-              label: Text(_busy ? 'Working...' : 'Clear cache'),
+              label: Text(_busy ? 'Working...' : 'Clear This App\'s Cache'),
             ),
             const Divider(height: 40),
             ListTile(
@@ -232,7 +232,7 @@ class _NetworkCheckSheetState extends State<NetworkCheckSheet> {
                 const SizedBox(width: 12),
                 const Expanded(
                   child: Text(
-                    'AI Network',
+                    'Network Latency',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                 ),

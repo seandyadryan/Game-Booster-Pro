@@ -1,0 +1,1 @@
+TCP-Latenz prüfen, den Cache dieser App leeren und Spiele starten.

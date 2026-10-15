@@ -1,0 +1,14 @@
+Game Tools on Android-työkalu TCP-verkkoviiveelle, tämän sovelluksen välimuistille, pelien pikakuvakkeille ja näytön tiedoille.
+
+Network Latency muodostaa viisi TCP-yhteyttä Cloudflareen osoitteessa 1.1.1.1:443. Näet keskimääräisen, pienimmän ja suurimman viiveen, viiveen vaihtelun ja epäonnistuneet yritykset. Tulokset ovat yhteyden muodostusaikoja, eivät pelipalvelimen ping-arvoja tai internetin nopeustesti.
+
+Start Session tyhjentää vain Game Toolsin tilapäisen välimuistin ja näyttää tavut ennen tyhjennystä, poistetut tavut ja jäljellä olevan määrän. Muiden sovellusten välimuisti tyhjennetään käsin Androidin asetuksissa. Viiden suurimman välimuistin lista vaatii käyttötietojen käyttöoikeuden ja Android 8:n tai uudemman.
+
+Avaa peleiksi tunnistettuja sovelluksia, Androidin näyttöasetukset ja akun tiedot. Näytön virkistystaajuus mitataan hertseinä, ei pelin FPS:nä. Pelin grafiikka asetetaan itse pelissä.
+
+Valinnainen Älä häiritse voi mykistää herätykset ja median, mutta ei hylkää puheluja. Valinnainen virkistystaajuuspalkki vaatii käyttötietojen ja muiden sovellusten päällä näyttämisen oikeudet.
+
+Tulokset käsitellään laitteessasi. Käynnistämäsi verkkotarkistus ottaa yhteyden Cloudflareen, joka voi saada julkisen IP-osoitteesi. Ei mainos- tai analytiikka-SDK:ita. Käyttöliittymä on englanniksi. Toiminnot riippuvat laitteesta, Android-versiosta ja käyttöoikeuksista.
+
+PT Deploy Dulu Pulang Nanti
+Support: seandyadryan2@gmail.com

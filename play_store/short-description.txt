@@ -1,1 +1,1 @@
-Check network latency, clear app cache, and launch games in one place.
+Check TCP latency, clear this app's cache, and launch your games.

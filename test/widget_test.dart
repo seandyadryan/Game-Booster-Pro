@@ -99,14 +99,14 @@ void main() {
               if (failDisable && (call.arguments as Map)['enabled'] == false) {
                 throw PlatformException(
                   code: 'DENIED',
-                  message: 'Dont Disturb permission revoked.',
+                  message: 'Do Not Disturb permission revoked.',
                 );
               }
               dnd = permission && (call.arguments as Map)['enabled'] == true;
               return {
                 'enabled': dnd,
                 'permission': permission,
-                'message': 'Dont Disturb is active.',
+                'message': 'Do Not Disturb is active.',
               };
           }
           return null;
@@ -126,11 +126,11 @@ void main() {
       await tester.pump();
       await tester.drag(find.byType(CustomScrollView), const Offset(0, -500));
       await tester.pumpAndSettle();
-      await tester.tap(find.text(throughGfx ? 'GFX Tools' : 'My games'));
+      await tester.tap(find.text(throughGfx ? 'Display & games' : 'My games'));
       await tester.pumpAndSettle();
       if (throughGfx) {
         await tester.tap(
-          find.widgetWithText(ListTile, 'Launch game with monitor bar'),
+          find.widgetWithText(ListTile, 'Launch game with display bar'),
         );
         await tester.pumpAndSettle();
       }
@@ -157,27 +157,27 @@ void main() {
     await tester.pumpWidget(const GameBoosterProApp());
     await tester.pump();
 
-    expect(find.text('Game Booster Pro'), findsOneWidget);
-    expect(find.text('BOOST NOW'), findsOneWidget);
+    expect(find.text('Game Tools'), findsOneWidget);
+    expect(find.text('Start Session'), findsOneWidget);
     expect(find.text('RAM'), findsNothing);
     expect(find.text('Disconnected'), findsNothing);
-    expect(find.byIcon(Icons.rocket_launch), findsOneWidget);
+    expect(find.byIcon(Icons.play_arrow), findsOneWidget);
 
-    await tester.tap(find.text('BOOST NOW'));
+    await tester.tap(find.text('Start Session'));
     await tester.pumpAndSettle();
-    expect(find.text('CONNECTING'), findsOneWidget);
+    expect(find.text('Starting Session'), findsOneWidget);
     await tester.tap(find.text('Enable'));
     await tester.pumpAndSettle();
-    expect(find.text('DISCONNECT'), findsOneWidget);
+    expect(find.text('End Session'), findsOneWidget);
     expect(calls, isNot(contains('closeBackgroundApps')));
-    await tester.tap(find.text('DISCONNECT'));
+    await tester.tap(find.text('End Session'));
     await tester.pumpAndSettle();
     expect(dnd, isFalse);
 
     await tester.drag(find.byType(CustomScrollView), const Offset(0, -500));
     await tester.pumpAndSettle();
-    expect(find.text('GFX Tools'), findsOneWidget);
-    await tester.tap(find.text('GFX Tools'));
+    expect(find.text('Display & games'), findsOneWidget);
+    await tester.tap(find.text('Display & games'));
     await tester.pumpAndSettle();
     expect(find.text('APPLY PROFILE'), findsNothing);
     await tester.tap(find.text('Android display settings'));
@@ -185,15 +185,15 @@ void main() {
     expect(calls, contains('openDisplaySettings'));
   });
 
-  testWidgets('Boost cleans cache even without Dont Disturb access', (
+  testWidgets('Boost cleans cache even without Do Not Disturb access', (
     tester,
   ) async {
     permission = false;
     await tester.pumpWidget(const GameBoosterProApp());
     await tester.pump();
-    await tester.tap(find.text('BOOST NOW'));
+    await tester.tap(find.text('Start Session'));
     await tester.pumpAndSettle();
-    expect(find.text('DISCONNECT'), findsOneWidget);
+    expect(find.text('End Session'), findsOneWidget);
     expect(calls, contains('cleanCache'));
     expect(calls, isNot(contains('toggleDnd')));
     expect(
@@ -207,24 +207,24 @@ void main() {
   ) async {
     await tester.pumpWidget(const GameBoosterProApp());
     await tester.pump();
-    await tester.tap(find.text('BOOST NOW'));
+    await tester.tap(find.text('Start Session'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Enable'));
     await tester.pumpAndSettle();
     failDisable = true;
-    await tester.tap(find.text('DISCONNECT'));
+    await tester.tap(find.text('End Session'));
     await tester.pumpAndSettle();
-    expect(find.text('DISCONNECT'), findsOneWidget);
-    expect(find.text('Dont Disturb permission revoked.'), findsOneWidget);
+    expect(find.text('End Session'), findsOneWidget);
+    expect(find.text('Do Not Disturb permission revoked.'), findsOneWidget);
   });
 
   testWidgets('existing DND is preserved when a session ends', (tester) async {
     dnd = true;
     await tester.pumpWidget(const GameBoosterProApp());
     await tester.pump();
-    await tester.tap(find.text('BOOST NOW'));
+    await tester.tap(find.text('Start Session'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('DISCONNECT'));
+    await tester.tap(find.text('End Session'));
     await tester.pumpAndSettle();
     expect(dnd, isTrue);
     expect(calls, isNot(contains('toggleDnd')));
@@ -236,7 +236,7 @@ void main() {
     dnd = true;
     await tester.pumpWidget(const GameBoosterProApp());
     await tester.pump();
-    await tester.tap(find.text('BOOST NOW'));
+    await tester.tap(find.text('Start Session'));
     await tester.pump(const Duration(milliseconds: 100));
     await tester.pumpWidget(const SizedBox());
     await tester.pump();
@@ -264,7 +264,7 @@ void main() {
     permission = false;
     await tester.pumpWidget(const GameBoosterProApp());
     await tester.pump();
-    await tester.tap(find.text('BOOST NOW'));
+    await tester.tap(find.text('Start Session'));
     await tester.pumpAndSettle();
     expect(
       find.textContaining('0 B before, 0 B cleared, 0 B remaining'),
@@ -276,10 +276,10 @@ void main() {
     failCache = true;
     await tester.pumpWidget(const GameBoosterProApp());
     await tester.pump();
-    await tester.tap(find.text('BOOST NOW'));
+    await tester.tap(find.text('Start Session'));
     await tester.pumpAndSettle();
     expect(find.text('Cache cleanup failed.'), findsOneWidget);
-    expect(find.text('DISCONNECT'), findsNothing);
+    expect(find.text('End Session'), findsNothing);
   });
 
   testWidgets('cache sheet clears cache and shows before and after', (
@@ -307,36 +307,37 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('12.0 MB'), findsOneWidget);
-    await tester.tap(find.text('Clear cache'));
+    await tester.tap(find.text('Clear This App\'s Cache'));
     await tester.pumpAndSettle();
     expect(find.text('Cleared'), findsOneWidget);
     expect(find.text('Remaining'), findsOneWidget);
     expect(find.text('0 B'), findsNWidgets(2));
   });
 
-  testWidgets('AI Network renders measured values and failures and retries', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(body: NetworkCheckSheet(channel: channel)),
-      ),
-    );
-    await tester.pumpAndSettle();
-    expect(calls, isNot(contains('checkNetworkLatency')));
-    await tester.tap(find.text('Check now'));
-    await tester.pumpAndSettle();
-    expect(find.text('Wi-Fi'), findsOneWidget);
-    expect(find.text('1 / 5'), findsOneWidget);
-    expect(find.text('Failed'), findsOneWidget);
-    expect(find.text('0.0 ms'), findsNothing);
-    expect(find.text('16.0 ms'), findsNWidgets(3));
-    failNetwork = true;
-    await tester.ensureVisible(find.text('Check again'));
-    await tester.tap(find.text('Check again'));
-    await tester.pumpAndSettle();
-    expect(find.text('No active network.'), findsOneWidget);
-    expect(find.text('16.0 ms'), findsNothing);
-    expect(find.text('Check now'), findsOneWidget);
-  });
+  testWidgets(
+    'Network Latency renders measured values and failures and retries',
+    (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(body: NetworkCheckSheet(channel: channel)),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(calls, isNot(contains('checkNetworkLatency')));
+      await tester.tap(find.text('Check now'));
+      await tester.pumpAndSettle();
+      expect(find.text('Wi-Fi'), findsOneWidget);
+      expect(find.text('1 / 5'), findsOneWidget);
+      expect(find.text('Failed'), findsOneWidget);
+      expect(find.text('0.0 ms'), findsNothing);
+      expect(find.text('16.0 ms'), findsNWidgets(3));
+      failNetwork = true;
+      await tester.ensureVisible(find.text('Check again'));
+      await tester.tap(find.text('Check again'));
+      await tester.pumpAndSettle();
+      expect(find.text('No active network.'), findsOneWidget);
+      expect(find.text('16.0 ms'), findsNothing);
+      expect(find.text('Check now'), findsOneWidget);
+    },
+  );
 }

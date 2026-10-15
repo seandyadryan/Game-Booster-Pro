@@ -1,0 +1,299 @@
+{
+  "status": "prepared_locally_not_applied_to_play_console",
+  "existingCustomListingIds": [],
+  "inventoryStatus": "No Play Console export or authenticated inventory was supplied.",
+  "action": "For each existing custom store listing, replace every supported locale with the matching metadata folder and replace the icon, feature graphic and screenshots with the shared assets. Remove superseded claims and media. Preserve the existing targeting unless intentionally changing it.",
+  "localeMapping": {
+    "en-US": {
+      "characters": {
+        "title": 27,
+        "short": 65,
+        "full": 1287
+      },
+      "metadataDirectory": "metadata/en-US",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "id": {
+      "characters": {
+        "title": 28,
+        "short": 65,
+        "full": 1375
+      },
+      "metadataDirectory": "metadata/id",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ar": {
+      "characters": {
+        "title": 27,
+        "short": 58,
+        "full": 1216
+      },
+      "metadataDirectory": "metadata/ar",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "cs-CZ": {
+      "characters": {
+        "title": 27,
+        "short": 68,
+        "full": 1352
+      },
+      "metadataDirectory": "metadata/cs-CZ",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "da-DK": {
+      "characters": {
+        "title": 28,
+        "short": 57,
+        "full": 1311
+      },
+      "metadataDirectory": "metadata/da-DK",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "de-DE": {
+      "characters": {
+        "title": 28,
+        "short": 66,
+        "full": 1538
+      },
+      "metadataDirectory": "metadata/de-DE",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "es-419": {
+      "characters": {
+        "title": 23,
+        "short": 72,
+        "full": 1448
+      },
+      "metadataDirectory": "metadata/es-419",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "es-ES": {
+      "characters": {
+        "title": 23,
+        "short": 72,
+        "full": 1478
+      },
+      "metadataDirectory": "metadata/es-ES",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "fi-FI": {
+      "characters": {
+        "title": 26,
+        "short": 71,
+        "full": 1445
+      },
+      "metadataDirectory": "metadata/fi-FI",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "fr-FR": {
+      "characters": {
+        "title": 27,
+        "short": 71,
+        "full": 1570
+      },
+      "metadataDirectory": "metadata/fr-FR",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "hi-IN": {
+      "characters": {
+        "title": 26,
+        "short": 60,
+        "full": 1303
+      },
+      "metadataDirectory": "metadata/hi-IN",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "hu-HU": {
+      "characters": {
+        "title": 29,
+        "short": 71,
+        "full": 1465
+      },
+      "metadataDirectory": "metadata/hu-HU",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "it-IT": {
+      "characters": {
+        "title": 24,
+        "short": 75,
+        "full": 1461
+      },
+      "metadataDirectory": "metadata/it-IT",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "iw-IL": {
+      "characters": {
+        "title": 22,
+        "short": 60,
+        "full": 1118
+      },
+      "metadataDirectory": "metadata/iw-IL",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ja-JP": {
+      "characters": {
+        "title": 20,
+        "short": 34,
+        "full": 736
+      },
+      "metadataDirectory": "metadata/ja-JP",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ko-KR": {
+      "characters": {
+        "title": 19,
+        "short": 40,
+        "full": 801
+      },
+      "metadataDirectory": "metadata/ko-KR",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "nl-NL": {
+      "characters": {
+        "title": 28,
+        "short": 63,
+        "full": 1402
+      },
+      "metadataDirectory": "metadata/nl-NL",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "no-NO": {
+      "characters": {
+        "title": 29,
+        "short": 66,
+        "full": 1337
+      },
+      "metadataDirectory": "metadata/no-NO",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "pl-PL": {
+      "characters": {
+        "title": 24,
+        "short": 76,
+        "full": 1400
+      },
+      "metadataDirectory": "metadata/pl-PL",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "pt-BR": {
+      "characters": {
+        "title": 24,
+        "short": 66,
+        "full": 1384
+      },
+      "metadataDirectory": "metadata/pt-BR",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ro": {
+      "characters": {
+        "title": 26,
+        "short": 74,
+        "full": 1444
+      },
+      "metadataDirectory": "metadata/ro",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ru-RU": {
+      "characters": {
+        "title": 22,
+        "short": 73,
+        "full": 1424
+      },
+      "metadataDirectory": "metadata/ru-RU",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "sk": {
+      "characters": {
+        "title": 24,
+        "short": 70,
+        "full": 1343
+      },
+      "metadataDirectory": "metadata/sk",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "sv-SE": {
+      "characters": {
+        "title": 29,
+        "short": 64,
+        "full": 1338
+      },
+      "metadataDirectory": "metadata/sv-SE",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "th": {
+      "characters": {
+        "title": 27,
+        "short": 52,
+        "full": 1163
+      },
+      "metadataDirectory": "metadata/th",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "tr-TR": {
+      "characters": {
+        "title": 26,
+        "short": 74,
+        "full": 1361
+      },
+      "metadataDirectory": "metadata/tr-TR",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "uk": {
+      "characters": {
+        "title": 24,
+        "short": 71,
+        "full": 1365
+      },
+      "metadataDirectory": "metadata/uk",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "vi": {
+      "characters": {
+        "title": 25,
+        "short": 62,
+        "full": 1376
+      },
+      "metadataDirectory": "metadata/vi",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "zh-CN": {
+      "characters": {
+        "title": 16,
+        "short": 23,
+        "full": 600
+      },
+      "metadataDirectory": "metadata/zh-CN",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    }
+  },
+  "screenshotLanguage": "en"
+}

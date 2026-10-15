@@ -1,56 +1,28 @@
-# English Store Listing
+# Current Store Listing
 
-App: Game Booster Pro
+The current listing title is **Game Tools: Network & Cache**.
 
-Developer: PT Deploy Dulu Pulang Nanti
+Use [latest/README.md](latest/README.md) for the current 29-language upload package, images, privacy policy and default/custom listing instructions. The ZIP deliverable is game-tools-store-listing-latest.zip in this directory.
 
-Support: seandyadryan2@gmail.com
+The current English fields are also available as title.txt, short-description.txt and full-description.txt. Canonical translations are stored in listing-source.json. Each locale has a title, short description and full description. The app interface and shared images are in English, as disclosed in every description.
 
-Package: com.deploydulupulangnanti.gameboosterpro
+Current screen captures use Start Session, Network Latency, This app's cache, Display & games, and session Active/Inactive. The display monitor shows only refresh rate in Hz. The icon and feature graphic use the new Game Tools identity.
 
-## Upload Files
+Older release-note files refer to their historical release and are not part of the latest upload bundle. Previous promotional assets under assets/play_store are superseded. Do not upload them together with this package.
 
-- `short-description.txt`: English short description, maximum 80 characters.
-- `full-description.txt`: English full description, maximum 4,000 characters.
-- `feature-graphic.png`: PNG, exactly 1024 x 500, below 15 MB.
-- `phone/`: four PNG screenshots, 1080 x 1920, 9:16, below 8 MB each.
-- `desktop/`: four PNG screenshots, 1920 x 1080, 16:9, below 8 MB each.
-- `asset-validation.json`: exact character counts, dimensions, and file sizes.
+## Reproduce
 
-Upload numbered screenshots in order. They show the dashboard, tool grid, GFX Tools, and AI Network.
+Render the actual Flutter widgets with FVM Flutter 3.41.2:
 
-Screenshots are captures of the real Flutter widgets, not stock photos or AI-generated app interfaces. Native Android readings are intentionally unavailable during these renderer captures; no sample ping, FPS, cache savings, or battery values were invented. For screenshots showing live Android measurements, replace them with captures from the release on a physical Android device. Desktop images show the responsive large-screen layout and do not certify Windows or Google Play Games on PC support; use that upload category only for a supported target.
+    fvm flutter test tool/capture_play_store_test.dart --reporter expanded
 
-The feature graphic uses generated brand artwork, not a performance report. Its English copy is: "Game Booster Pro", "Your gaming companion", and "Cache tools. Network checks. Game launcher." It was generated with the built-in imagegen tool using the existing app icon as a visual reference, then fitted to the required dimensions without cropping the copy.
+With Node.js and Sharp available, package and validate all locales and current images:
 
-## Privacy Policy
+    node scripts/package_listing.cjs
+    node scripts/validate_play_store.cjs
 
-`../docs/index.html` is the standalone English privacy policy. `../assets/privacy-policy.txt` is generated from the same document for in-app access through the header's Privacy policy button.
+Prepare the artwork with scripts/prepare_brand_assets.cjs, passing the generated feature image and icon paths. That script resizes the artwork and updates launcher PNGs. It does not generate app screenshots.
 
-Host `docs/index.html` at a public HTTPS URL before entering the privacy-policy URL in Play Console. For GitHub Pages, configure this repository's `main` branch and `/docs` directory. This task creates the document; it does not configure public hosting.
+Export in-app policy text from docs/index.html with scripts/export_privacy_text.py. Browser layout checks are in scripts/check_privacy_page.cjs.
 
-The policy describes local cache and usage-event processing, optional Android permissions, the Cloudflare endpoint contacted by network checks, and support email. Ensure the Play Console Data safety answers match the release and any SDKs added later. In particular, do not claim that the app never connects to third parties: AI Network makes user-requested TCP probes, exposing connection metadata to the destination and network operators.
-
-## Reproduction
-
-With Flutter 3.41.2, render screenshots with:
-
-```powershell
-fvm flutter test tool/capture_play_store_test.dart --reporter expanded
-```
-
-The capture tool loads Roboto fonts from the local FVM 3.41.2 SDK. Update the font location if that SDK is installed elsewhere.
-
-Export updated policy text with Python:
-
-```powershell
-python scripts/export_privacy_text.py
-```
-
-With Node.js and Sharp available, validate assets and listing lengths:
-
-```powershell
-node scripts/validate_play_store.cjs
-```
-
-`scripts/check_privacy_page.cjs` uses Playwright and Chrome to check the policy's mobile and desktop layout.
+The screenshot renderer does not execute Android-native APIs and supplies no invented telemetry. Test the matching Android release on a device before resubmission. The current package has not been applied to Play Console; the custom-store-listing inventory and remote edits require an authenticated account.

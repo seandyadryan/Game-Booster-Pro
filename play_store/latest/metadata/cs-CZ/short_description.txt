@@ -1,0 +1,1 @@
+Změřte latenci TCP, vyčistěte mezipaměť této aplikace a spusťte hry.

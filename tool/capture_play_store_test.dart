@@ -18,7 +18,7 @@ void main() {
     ) async {
       final logicalSize = desktop
           ? const Size(1280, 720)
-          : const Size(360, 640);
+          : const Size(432, 768);
       tester.view.physicalSize = logicalSize;
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
@@ -68,7 +68,7 @@ void main() {
         final boundary =
             key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
         await tester.runAsync(() async {
-          final image = await boundary.toImage(pixelRatio: desktop ? 1.5 : 3);
+          final image = await boundary.toImage(pixelRatio: desktop ? 1.5 : 2.5);
           final data = await image.toByteData(format: ui.ImageByteFormat.png);
           final folder = Directory(
             'play_store/${desktop ? 'desktop' : 'phone'}',
@@ -85,21 +85,21 @@ void main() {
       await tester.drag(find.byType(CustomScrollView), const Offset(0, -620));
       await tester.pumpAndSettle();
       await capture('02-tools');
-      await tester.ensureVisible(find.text('GFX Tools'));
+      await tester.ensureVisible(find.text('Display & games'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('GFX Tools'));
+      await tester.tap(find.text('Display & games'));
       await tester.pumpAndSettle();
-      await capture('03-gfx-tools');
+      await capture('03-display-game-tools');
       final context = tester.element(find.text('Android display settings'));
       Navigator.of(context).pop();
       await tester.pumpAndSettle();
       await tester.drag(find.byType(CustomScrollView), const Offset(0, 900));
       await tester.pumpAndSettle();
-      await tester.ensureVisible(find.text('AI Network'));
+      await tester.ensureVisible(find.text('Network Latency'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('AI Network'));
+      await tester.tap(find.text('Network Latency'));
       await tester.pumpAndSettle();
-      await capture('04-ai-network');
+      await capture('04-network-latency');
       await tester.pumpWidget(const SizedBox());
       await tester.pump();
     });

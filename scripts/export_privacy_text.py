@@ -28,7 +28,7 @@ class PolicyText(HTMLParser):
 root = Path(__file__).resolve().parent.parent
 parser = PolicyText()
 parser.feed((root / 'docs' / 'index.html').read_text(encoding='utf-8'))
-text = 'Game Booster Pro - Privacy Policy\nPT Deploy Dulu Pulang Nanti\n\n'
+text = 'Game Tools - Privacy Policy\nPT Deploy Dulu Pulang Nanti\n\n'
 text += ''.join(parser.parts).strip() + '\n'
 (root / 'assets' / 'privacy-policy.txt').write_text(text, encoding='utf-8')
 print('Exported the policy text for in-app access.')

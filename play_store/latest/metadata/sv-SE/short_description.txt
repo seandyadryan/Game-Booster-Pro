@@ -1,0 +1,1 @@
+Mät TCP-latens, rensa den här appens cache och starta dina spel.

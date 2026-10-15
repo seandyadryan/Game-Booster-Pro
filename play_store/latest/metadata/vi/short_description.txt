@@ -1,0 +1,1 @@
+Đo độ trễ TCP, xóa bộ nhớ đệm của ứng dụng này và mở trò chơi.

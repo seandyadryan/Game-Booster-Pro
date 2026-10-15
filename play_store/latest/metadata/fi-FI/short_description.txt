@@ -1,0 +1,1 @@
+Mittaa TCP-viive, tyhjennä tämän sovelluksen välimuisti ja avaa pelejä.

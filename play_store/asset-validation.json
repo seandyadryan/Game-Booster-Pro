@@ -1,11 +1,11 @@
 {
   "descriptions": {
     "short-description": {
-      "characters": 70,
+      "characters": 65,
       "maximum": 80
     },
     "full-description": {
-      "characters": 3194,
+      "characters": 1287,
       "maximum": 4000
     }
   },
@@ -14,55 +14,55 @@
       "file": "feature-graphic.png",
       "width": 1024,
       "height": 500,
-      "bytes": 784396
+      "bytes": 775904
     },
     {
       "file": "phone/01-dashboard.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 329624
+      "bytes": 395458
     },
     {
       "file": "phone/02-tools.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 215086
+      "bytes": 189991
     },
     {
-      "file": "phone/03-gfx-tools.png",
+      "file": "phone/03-display-game-tools.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 153398
+      "bytes": 144988
     },
     {
-      "file": "phone/04-ai-network.png",
+      "file": "phone/04-network-latency.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 148295
+      "bytes": 156495
     },
     {
       "file": "desktop/01-dashboard.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 238987
+      "bytes": 282808
     },
     {
       "file": "desktop/02-tools.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 230650
+      "bytes": 230289
     },
     {
-      "file": "desktop/03-gfx-tools.png",
+      "file": "desktop/03-display-game-tools.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 161293
+      "bytes": 167162
     },
     {
-      "file": "desktop/04-ai-network.png",
+      "file": "desktop/04-network-latency.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 161230
+      "bytes": 163365
     }
   ]
 }

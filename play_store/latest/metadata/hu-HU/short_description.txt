@@ -1,0 +1,1 @@
+TCP-késleltetés mérése, az app gyorsítótárának törlése és játékindítás.

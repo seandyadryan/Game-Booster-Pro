@@ -1,0 +1,14 @@
+Game Tools là tiện ích Android cho độ trễ mạng TCP, bộ nhớ đệm của ứng dụng này, lối tắt trò chơi và thông tin màn hình.
+
+Network Latency thực hiện năm kết nối TCP tới Cloudflare 1.1.1.1:443, hiển thị độ trễ trung bình, thấp nhất, cao nhất, độ dao động và các lần thử thất bại. Đây là thời gian kết nối, không phải ping máy chủ trò chơi hay bài kiểm tra tốc độ Internet.
+
+Start Session chỉ xóa bộ nhớ đệm tạm thời của Game Tools và hiển thị số byte ban đầu, đã xóa và còn lại. Bộ nhớ đệm của ứng dụng khác được xóa thủ công trong cài đặt Android. Danh sách năm bộ nhớ đệm lớn nhất cần quyền truy cập dữ liệu sử dụng và Android 8 trở lên.
+
+Mở ứng dụng đã cài được nhận diện là trò chơi, mở cài đặt màn hình Android và xem pin. Tần số quét màn hình được đo bằng Hz, không phải FPS của trò chơi. Đồ họa trong trò chơi do chính trò chơi kiểm soát.
+
+Chế độ Không làm phiền là tùy chọn, có thể tắt tiếng báo thức và nội dung nghe nhìn nhưng không từ chối cuộc gọi. Thanh tần số quét tùy chọn cần quyền truy cập dữ liệu sử dụng và hiển thị trên ứng dụng khác.
+
+Kết quả được xử lý trên thiết bị. Kiểm tra mạng do bạn yêu cầu liên hệ Cloudflare, nơi có thể nhận địa chỉ IP công khai của bạn. Không có SDK quảng cáo hoặc phân tích. Giao diện bằng tiếng Anh. Tính năng phụ thuộc thiết bị, phiên bản Android và quyền được cấp.
+
+PT Deploy Dulu Pulang Nanti
+Support: seandyadryan2@gmail.com

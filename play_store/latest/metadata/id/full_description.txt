@@ -1,0 +1,14 @@
+Game Tools adalah utilitas Android untuk latensi jaringan TCP, cache aplikasi ini, pintasan game, dan informasi layar.
+
+Network Latency menjalankan lima koneksi TCP ke Cloudflare 1.1.1.1:443 dan menampilkan latensi rata-rata, minimum, maksimum, jitter, serta probe gagal. Hasilnya adalah waktu koneksi, bukan ping server game atau uji kecepatan internet.
+
+Start Session hanya membersihkan cache sementara Game Tools dan menampilkan byte sebelum, dibersihkan, serta tersisa. Cache aplikasi lain dibersihkan secara manual melalui pengaturan Android. Peringkat lima cache terbesar memerlukan Usage Access dan Android 8 atau lebih baru.
+
+Buka aplikasi terpasang yang dikenali sebagai game, pengaturan layar Android, dan informasi baterai. Refresh rate layar ditampilkan dalam Hz, bukan FPS game. Grafis di dalam game tetap diatur oleh game tersebut.
+
+Do Not Disturb bersifat opsional dan dapat membisukan alarm serta media, tetapi tidak menolak panggilan. Bar refresh rate opsional memerlukan Usage Access dan izin tampil di atas aplikasi lain.
+
+Hasil diproses di perangkat Anda. Pemeriksaan jaringan yang Anda jalankan menghubungi Cloudflare, yang dapat menerima alamat IP publik Anda. Tidak ada SDK iklan atau analitik. Antarmuka aplikasi berbahasa Inggris. Fitur bergantung pada perangkat, versi Android, dan izin.
+
+PT Deploy Dulu Pulang Nanti
+Support: seandyadryan2@gmail.com

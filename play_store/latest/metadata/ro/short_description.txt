@@ -1,0 +1,1 @@
+Măsoară latența TCP, șterge cache-ul acestei aplicații și pornește jocuri.

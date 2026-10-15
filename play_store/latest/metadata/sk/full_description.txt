@@ -1,0 +1,14 @@
+Game Tools je nástroj Android na meranie latencie TCP, vyrovnávaciu pamäť tejto aplikácie, herné skratky a informácie o displeji.
+
+Network Latency vytvorí päť TCP-pripojení ku Cloudflare 1.1.1.1:443 a zobrazí priemernú, minimálnu a maximálnu latenciu, kolísanie a neúspešné pokusy. Ide o časy pripojenia, nie ping herného servera ani test rýchlosti internetu.
+
+Start Session vymaže iba dočasnú vyrovnávaciu pamäť Game Tools a zobrazí pôvodné, odstránené a zostávajúce bajty. Pamäť iných aplikácií sa čistí ručne v nastaveniach Androidu. Rebríček piatich najväčších pamätí vyžaduje prístup k údajom o používaní a Android 8 alebo novší.
+
+Spúšťajte nainštalované aplikácie rozpoznané ako hry, otvorte nastavenia displeja Androidu a zobrazte stav batérie. Obnovovacia frekvencia displeja je v Hz, nie FPS hry. Grafiku v hre nastavuje samotná hra.
+
+Voliteľný režim Nerušiť môže stíšiť budíky a médiá, ale neodmieta hovory. Voliteľný panel frekvencie vyžaduje prístup k údajom o používaní a povolenie zobrazovať nad inými aplikáciami.
+
+Výsledky sa spracúvajú v zariadení. Sieťové kontroly na váš pokyn kontaktujú Cloudflare, ktorý môže získať vašu verejnú IP adresu. Bez reklamných a analytických SDK. Rozhranie je v angličtine. Funkcie závisia od zariadenia, verzie Androidu a povolení.
+
+PT Deploy Dulu Pulang Nanti
+Support: seandyadryan2@gmail.com

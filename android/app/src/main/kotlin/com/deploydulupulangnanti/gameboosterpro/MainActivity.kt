@@ -56,7 +56,7 @@ class MainActivity : FlutterActivity() {
                     if (monitorPackage != target) return@post
                     if (foreground == target) monitorHasSeenGame = true
                     monitorView?.visibility = if (foreground == target) View.VISIBLE else View.GONE
-                    monitorView?.text = "FPS --  |  Display ${getRefreshRate().toInt()} Hz  |  ×"
+                    monitorView?.text = "Display Refresh Rate: ${getRefreshRate().toInt()} Hz  |  ×"
                     if (monitorHasSeenGame && foreground == packageName) stopGameMonitor()
                     else monitorHandler.postDelayed(this, 1000)
                 }
@@ -239,7 +239,7 @@ class MainActivity : FlutterActivity() {
         if (!Settings.canDrawOverlays(this)) return
         val wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val view = TextView(this).apply {
-            text = "FPS --  |  Display ${getRefreshRate().toInt()} Hz  |  ×"
+            text = "Display Refresh Rate: ${getRefreshRate().toInt()} Hz  |  ×"
             setTextColor(Color.WHITE)
             textSize = 13f
             setPadding(18, 12, 18, 12)
@@ -362,7 +362,7 @@ class MainActivity : FlutterActivity() {
             return mapOf(
                 "enabled" to false,
                 "permission" to false,
-                "message" to "Dont Disturb requires Android 6 or later."
+                "message" to "Do Not Disturb requires Android 6 or later."
             )
         }
 
@@ -371,7 +371,7 @@ class MainActivity : FlutterActivity() {
             return mapOf(
                 "enabled" to false,
                 "permission" to false,
-                "message" to "Allow Dont Disturb access for Game Booster Pro."
+                "message" to "Allow Do Not Disturb access for Game Tools."
             )
         }
 
@@ -393,11 +393,11 @@ class MainActivity : FlutterActivity() {
             "enabled" to actual,
             "permission" to true,
             "message" to if (enabled) {
-                "Strict Dont Disturb requested. Calls can still arrive, but sounds including alarms and media are silenced."
+                "Strict Do Not Disturb requested. Calls can still arrive, but sounds including alarms and media are silenced."
             } else if (actual) {
-                "The app's Dont Disturb request ended. System Dont Disturb is still active; check other rules."
+                "The app's Do Not Disturb request ended. System Do Not Disturb is still active; check other rules."
             } else {
-                "Previous Dont Disturb settings restored."
+                "Previous Do Not Disturb settings restored."
             }
         )
     }

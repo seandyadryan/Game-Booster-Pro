@@ -1,0 +1,1 @@
+Mierz opóźnienie TCP, czyść pamięć podręczną tej aplikacji i uruchamiaj gry.

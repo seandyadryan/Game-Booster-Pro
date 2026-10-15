@@ -1,0 +1,1 @@
+Consulta la latencia TCP, limpia la caché de esta app y abre tus juegos.

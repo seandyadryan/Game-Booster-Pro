@@ -1,0 +1,14 @@
+A Game Tools Android-segédprogram TCP-késleltetéshez, az alkalmazás saját gyorsítótárához, játékparancsikonokhoz és kijelzőadatokhoz.
+
+A Network Latency öt TCP-kapcsolatot létesít a Cloudflare 1.1.1.1:443 címével. Megjeleníti az átlagos, legkisebb és legnagyobb késleltetést, az ingadozást és a sikertelen próbákat. Ezek kapcsolódási idők, nem játékszerver-ping vagy internetsebesség-teszt.
+
+A Start Session csak a Game Tools ideiglenes gyorsítótárát törli, és mutatja az eredeti, törölt és megmaradt bájtokat. Más alkalmazások gyorsítótárát kézzel, az Android beállításaiban lehet törölni. Az öt legnagyobb gyorsítótár listájához használati hozzáférés és Android 8 vagy újabb kell.
+
+Indítson játékként felismert alkalmazásokat, nyissa meg a kijelző beállításait és tekintse meg az akkumulátor állapotát. A kijelző képfrissítése Hz-ben látható, nem a játék FPS-e. A játék grafikáját maga a játék szabályozza.
+
+Az opcionális Ne zavarjanak mód az ébresztéseket és a médiát is némíthatja, de nem utasítja el a hívásokat. A képfrissítési sávhoz használati hozzáférés és más alkalmazások feletti megjelenítési engedély kell.
+
+Az eredmények az eszközön kerülnek feldolgozásra. A kért hálózati teszt kapcsolatba lép a Cloudflare-rel, amely megkaphatja a nyilvános IP-címét. Nincs hirdetési vagy analitikai SDK. A felület angol nyelvű. A funkciók az eszköztől, az Android-verziótól és az engedélyektől függenek.
+
+PT Deploy Dulu Pulang Nanti
+Support: seandyadryan2@gmail.com

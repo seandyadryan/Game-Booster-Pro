@@ -1,0 +1,1 @@
+Zmerajte latenciu TCP, vyčistite cache tejto aplikácie a spustite hry.

@@ -1,0 +1,1 @@
+Mesurez la latence TCP, videz le cache de cette app et lancez vos jeux.

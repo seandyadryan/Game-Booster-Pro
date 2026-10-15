@@ -1,0 +1,14 @@
+Game Tools ist ein Android-Werkzeug für TCP-Netzwerklatenz, den Cache dieser App, Spielverknüpfungen und Displayinformationen.
+
+Network Latency stellt fünf TCP-Verbindungen zu Cloudflare 1.1.1.1:443 her und zeigt durchschnittliche, minimale und maximale Latenz, Jitter sowie fehlgeschlagene Versuche. Gemessen werden Verbindungszeiten, kein Spielserver-Ping und keine Internetgeschwindigkeit.
+
+Start Session leert nur den temporären Cache von Game Tools und zeigt die vorherigen, entfernten und verbleibenden Bytes. Caches anderer Apps werden manuell in den Android-Einstellungen geleert. Die Rangliste der fünf größten Caches benötigt Nutzungsdatenzugriff und Android 8 oder neuer.
+
+Starten Sie installierte Apps, die als Spiele erkannt werden, öffnen Sie die Android-Displayeinstellungen und sehen Sie den Akkustatus. Die Bildwiederholrate des Displays wird in Hz gemessen, nicht als Spiel-FPS. Die Grafik im Spiel steuert das jeweilige Spiel.
+
+Der optionale Nicht-stören-Modus kann Wecker und Medien stummschalten, weist aber keine Anrufe ab. Die optionale Anzeigeleiste der Bildwiederholrate benötigt Nutzungsdatenzugriff und die Berechtigung, über anderen Apps zu erscheinen.
+
+Ergebnisse werden auf Ihrem Gerät verarbeitet. Von Ihnen gestartete Netzwerkprüfungen kontaktieren Cloudflare, das Ihre öffentliche IP-Adresse erhalten kann. Keine Werbe- oder Analyse-SDKs. Die App-Oberfläche ist auf Englisch. Funktionen hängen von Gerät, Android-Version und Berechtigungen ab.
+
+PT Deploy Dulu Pulang Nanti
+Support: seandyadryan2@gmail.com

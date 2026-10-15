@@ -1,0 +1,14 @@
+Game Tools este un utilitar Android pentru latența TCP, memoria cache a acestei aplicații, scurtături către jocuri și informații despre ecran.
+
+Network Latency realizează cinci conexiuni TCP la Cloudflare 1.1.1.1:443 și arată latența medie, minimă și maximă, variația latenței și încercările eșuate. Sunt timpi de conectare, nu ping către serverul jocului sau test de viteză a internetului.
+
+Start Session șterge doar memoria cache temporară a Game Tools și arată octeții inițiali, eliminați și rămași. Cache-ul altor aplicații se șterge manual din setările Android. Lista celor mai mari cinci memorii cache necesită acces la datele de utilizare și Android 8 sau mai nou.
+
+Pornește aplicațiile instalate identificate ca jocuri, deschide setările de afișare Android și vezi bateria. Rata de reîmprospătare a ecranului se măsoară în Hz, nu în FPS ai jocului. Grafica este controlată de fiecare joc.
+
+Modul opțional Nu deranja poate opri sunetul alarmelor și conținutului media, dar nu respinge apeluri. Bara opțională a ratei de reîmprospătare necesită acces la utilizare și permisiunea de afișare peste alte aplicații.
+
+Rezultatele sunt procesate pe dispozitiv. Verificările de rețea cerute contactează Cloudflare, care poate primi adresa IP publică. Fără SDK-uri de publicitate sau analiză. Interfața este în engleză. Funcțiile depind de dispozitiv, versiunea Android și permisiuni.
+
+PT Deploy Dulu Pulang Nanti
+Support: seandyadryan2@gmail.com

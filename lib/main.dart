@@ -17,7 +17,7 @@ class GameBoosterProApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: const Locale('en'),
-      title: 'Game Booster Pro',
+      title: 'Game Tools',
       theme: ThemeData(
         brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
@@ -142,7 +142,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         builder: (context) => AlertDialog(
           title: const Text('Usage Access'),
           content: const Text(
-            'Game Booster Pro uses Usage Access to read cache sizes for launchable apps and rank the five largest. Android does not allow this permission to clear another app’s cache automatically. You can open each app’s Storage settings and clear it there.',
+            'Game Tools uses Usage Access to read cache sizes for launchable apps and rank the five largest. Android does not allow this permission to clear another app’s cache automatically. You can open each app’s Storage settings and clear it there.',
           ),
           actions: [
             TextButton(
@@ -311,9 +311,9 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       final accepted = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Game monitor access'),
+          title: const Text('Display monitor access'),
           content: const Text(
-            'Usage Access detects when the selected game is on screen. Display over other apps shows a small monitor bar. Android does not expose another game’s actual FPS to regular apps; the bar reports screen refresh rate in Hz and shows FPS as unavailable.',
+            'Usage Access detects when the selected game is on screen. Display over other apps shows the display refresh rate in Hz. This measures the screen, not the selected game\'s rendered frame rate.',
           ),
           actions: [
             TextButton(
@@ -336,9 +336,9 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       final accepted = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Allow the game monitor bar?'),
+          title: const Text('Allow the display monitor bar?'),
           content: const Text(
-            'Allow Game Booster Pro to display a small bar over the selected game. You can remove it by tapping the bar.',
+            'Allow Game Tools to show the display refresh rate over the selected game. Tap the bar to remove it.',
           ),
           actions: [
             TextButton(
@@ -422,14 +422,14 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       if (!mounted) return;
       setState(() {
         _connected = false;
-        _status = 'Disconnected. Boost session ended.';
+        _status = 'Session ended.';
       });
       return;
     }
 
     setState(() {
       _boosting = true;
-      _status = 'Starting boost...';
+      _status = 'Starting session...';
     });
     final flight = _flightController
         .forward(from: 0)
@@ -459,12 +459,14 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         _boosting = false;
         _connected = true;
         _status =
-            'Boost ready. Game Booster Pro cache: ${formatBytes((report['beforeBytes'] as num).toInt())} before, ${formatBytes((report['freedBytes'] as num).toInt())} cleared, ${formatBytes((report['afterBytes'] as num).toInt())} remaining.${failedFiles > 0 ? ' $failedFiles files could not be removed.' : ''}${_dndEnabled ? ' Dont Disturb active.' : ''}';
+            'Session active. This app\'s cache: ${formatBytes((report['beforeBytes'] as num).toInt())} before, ${formatBytes((report['freedBytes'] as num).toInt())} cleared, ${formatBytes((report['afterBytes'] as num).toInt())} remaining.${failedFiles > 0 ? ' $failedFiles files could not be removed.' : ''}${_dndEnabled ? ' Do Not Disturb active.' : ''}';
       });
     } on TickerCanceled {
       // The dashboard was disposed while its launch animation was active.
     } on MissingPluginException {
-      if (mounted) setState(() => _status = 'Boost is available on Android.');
+      if (mounted) {
+        setState(() => _status = 'Sessions are available on Android.');
+      }
     } on PlatformException catch (error) {
       if (mounted) {
         setState(() => _status = error.message ?? 'Unable to clear app cache.');
@@ -521,7 +523,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
         setState(() {
           _ownCacheBytes = (report['afterBytes'] as num).toInt();
           _status =
-              'Game Booster Pro cache: ${formatBytes((report['freedBytes'] as num).toInt())} cleared; ${formatBytes(_ownCacheBytes!)} remaining.';
+              'This app\'s cache: ${formatBytes((report['freedBytes'] as num).toInt())} cleared; ${formatBytes(_ownCacheBytes!)} remaining.';
         });
       }
       return report;
@@ -618,9 +620,9 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       final confirmed = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Enable strict Dont Disturb?'),
+          title: const Text('Enable strict Do Not Disturb?'),
           content: const Text(
-            'Calls and notifications will be silenced, including alarms and media. WhatsApp calls can still arrive; Dont Disturb does not reject calls.',
+            'Calls and notifications will be silenced, including alarms and media. WhatsApp calls can still arrive; Do Not Disturb does not reject calls.',
           ),
           actions: [
             TextButton(
@@ -656,14 +658,14 @@ class _BoosterDashboardState extends State<BoosterDashboard>
           _pendingDnd = enabled && !_dndPermission;
           _status =
               result?['message'] as String? ??
-              'Dont Disturb request processed.';
+              'Do Not Disturb request processed.';
         });
       }
       return resultEnabled;
     } on PlatformException catch (error) {
       if (mounted) {
         setState(
-          () => _status = error.message ?? 'Unable to update Dont Disturb.',
+          () => _status = error.message ?? 'Unable to update Do Not Disturb.',
         );
       }
       _dndRequestFailed = true;
@@ -671,7 +673,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     } on MissingPluginException {
       _dndRequestFailed = true;
       if (mounted) {
-        setState(() => _status = 'Dont Disturb is available on Android.');
+        setState(() => _status = 'Do Not Disturb is available on Android.');
       }
       return false;
     } finally {
@@ -690,12 +692,12 @@ class _BoosterDashboardState extends State<BoosterDashboard>
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                'GFX Tools',
+                'Display & Game Tools',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               const Text(
-                'Launch a game and show a monitor bar. Android exposes screen refresh rate, but not another game’s actual FPS to regular apps.',
+                'Open Android display settings or launch a game with a display refresh-rate bar. Graphics options inside a game remain controlled by that game.',
               ),
               ListTile(
                 leading: const Icon(Icons.display_settings),
@@ -707,7 +709,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
               ),
               ListTile(
                 leading: const Icon(Icons.sports_esports),
-                title: const Text('Launch game with monitor bar'),
+                title: const Text('Launch game with display bar'),
                 onTap: () {
                   Navigator.pop(context);
                   _showGames();
@@ -844,16 +846,16 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       children: [
                         _ActionTile(
                           icon: Icons.cleaning_services_outlined,
-                          title: 'App cache',
+                          title: 'This app\'s cache',
                           value: _ownCacheBytes == null
-                              ? 'Clear cache'
+                              ? 'View cache'
                               : formatBytes(_ownCacheBytes!),
                           color: const Color(0xFF20D38B),
                           onTap: _showAppCache,
                         ),
                         _ActionTile(
                           icon: Icons.network_check,
-                          title: 'AI Network',
+                          title: 'Network Latency',
                           value: 'Check latency',
                           color: const Color(0xFF46C7F4),
                           onTap: _showNetworkCheck,
@@ -869,7 +871,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                           icon: _dndEnabled
                               ? Icons.notifications_off
                               : Icons.notifications_active_outlined,
-                          title: 'Dont Disturb',
+                          title: 'Do Not Disturb',
                           value: _dndEnabled
                               ? 'Active'
                               : (_dndPermission ? 'Ready' : 'Allow access'),
@@ -886,9 +888,11 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                           onTap: _loadSystemStatus,
                         ),
                         _ActionTile(
-                          icon: _connected ? Icons.link : Icons.link_off,
-                          title: 'Connection',
-                          value: _connected ? 'Connected' : 'Disconnected',
+                          icon: _connected
+                              ? Icons.pause_circle_outline
+                              : Icons.play_circle_outline,
+                          title: 'Session',
+                          value: _connected ? 'Active' : 'Inactive',
                           color: _connected
                               ? const Color(0xFF20D38B)
                               : const Color(0xFF8B9390),
@@ -896,8 +900,8 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         ),
                         _ActionTile(
                           icon: Icons.tune,
-                          title: 'GFX Tools',
-                          value: 'Display & games',
+                          title: 'Display & games',
+                          value: 'Open tools',
                           color: const Color(0xFFB788FF),
                           onTap: _showGfxTools,
                         ),
@@ -1006,7 +1010,7 @@ class _Header extends StatelessWidget {
         const SizedBox(width: 40),
         Expanded(
           child: Text(
-            'Game Booster Pro',
+            'Game Tools',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w900,
@@ -1103,13 +1107,15 @@ class _BoosterCore extends StatelessWidget {
               onPressed: boosting ? null : onBoost,
               icon: Icon(
                 boosting
-                    ? Icons.bolt
-                    : (connected ? Icons.link_off : Icons.rocket_launch),
+                    ? Icons.hourglass_top
+                    : (connected
+                          ? Icons.stop_circle_outlined
+                          : Icons.play_arrow),
               ),
               label: Text(
                 boosting
-                    ? 'CONNECTING'
-                    : (connected ? 'DISCONNECT' : 'BOOST NOW'),
+                    ? 'Starting Session'
+                    : (connected ? 'End Session' : 'Start Session'),
                 style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 16,
@@ -1129,6 +1135,12 @@ class _BoosterCore extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
+          const Text(
+            'Clears this app\'s cache. Do Not Disturb is optional.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white70),
+          ),
+          const SizedBox(height: 8),
           Text(
             status,
             textAlign: TextAlign.center,
@@ -1210,12 +1222,12 @@ class _RocketFlight extends StatelessWidget {
       child: Container(
         width: 158,
         height: 178,
-        clipBehavior: Clip.hardEdge,
-        decoration: const BoxDecoration(),
+        clipBehavior: Clip.antiAlias,
+        decoration: const BoxDecoration(shape: BoxShape.circle),
         child: Transform.scale(
-          scale: 1.35,
+          scale: 1.0,
           child: Image.asset(
-            'assets/flying_rocket.png',
+            'assets/app_icon.png',
             fit: BoxFit.contain,
             alignment: Alignment.center,
             filterQuality: FilterQuality.high,

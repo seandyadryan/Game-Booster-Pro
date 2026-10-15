@@ -1,0 +1,1 @@
+Mål TCP-latens, ryd denne apps cache, og start dine spil.

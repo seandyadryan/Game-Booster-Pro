@@ -1,0 +1,369 @@
+{
+  "appPackage": "com.deploydulupulangnanti.gameboosterpro",
+  "appInterfaceLanguage": "en",
+  "consoleApplied": false,
+  "locales": {
+    "en-US": {
+      "characters": {
+        "title": 27,
+        "short": 65,
+        "full": 1287
+      },
+      "metadataDirectory": "metadata/en-US",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "id": {
+      "characters": {
+        "title": 28,
+        "short": 65,
+        "full": 1375
+      },
+      "metadataDirectory": "metadata/id",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ar": {
+      "characters": {
+        "title": 27,
+        "short": 58,
+        "full": 1216
+      },
+      "metadataDirectory": "metadata/ar",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "cs-CZ": {
+      "characters": {
+        "title": 27,
+        "short": 68,
+        "full": 1352
+      },
+      "metadataDirectory": "metadata/cs-CZ",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "da-DK": {
+      "characters": {
+        "title": 28,
+        "short": 57,
+        "full": 1311
+      },
+      "metadataDirectory": "metadata/da-DK",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "de-DE": {
+      "characters": {
+        "title": 28,
+        "short": 66,
+        "full": 1538
+      },
+      "metadataDirectory": "metadata/de-DE",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "es-419": {
+      "characters": {
+        "title": 23,
+        "short": 72,
+        "full": 1448
+      },
+      "metadataDirectory": "metadata/es-419",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "es-ES": {
+      "characters": {
+        "title": 23,
+        "short": 72,
+        "full": 1478
+      },
+      "metadataDirectory": "metadata/es-ES",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "fi-FI": {
+      "characters": {
+        "title": 26,
+        "short": 71,
+        "full": 1445
+      },
+      "metadataDirectory": "metadata/fi-FI",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "fr-FR": {
+      "characters": {
+        "title": 27,
+        "short": 71,
+        "full": 1570
+      },
+      "metadataDirectory": "metadata/fr-FR",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "hi-IN": {
+      "characters": {
+        "title": 26,
+        "short": 60,
+        "full": 1303
+      },
+      "metadataDirectory": "metadata/hi-IN",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "hu-HU": {
+      "characters": {
+        "title": 29,
+        "short": 71,
+        "full": 1465
+      },
+      "metadataDirectory": "metadata/hu-HU",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "it-IT": {
+      "characters": {
+        "title": 24,
+        "short": 75,
+        "full": 1461
+      },
+      "metadataDirectory": "metadata/it-IT",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "iw-IL": {
+      "characters": {
+        "title": 22,
+        "short": 60,
+        "full": 1118
+      },
+      "metadataDirectory": "metadata/iw-IL",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ja-JP": {
+      "characters": {
+        "title": 20,
+        "short": 34,
+        "full": 736
+      },
+      "metadataDirectory": "metadata/ja-JP",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ko-KR": {
+      "characters": {
+        "title": 19,
+        "short": 40,
+        "full": 801
+      },
+      "metadataDirectory": "metadata/ko-KR",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "nl-NL": {
+      "characters": {
+        "title": 28,
+        "short": 63,
+        "full": 1402
+      },
+      "metadataDirectory": "metadata/nl-NL",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "no-NO": {
+      "characters": {
+        "title": 29,
+        "short": 66,
+        "full": 1337
+      },
+      "metadataDirectory": "metadata/no-NO",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "pl-PL": {
+      "characters": {
+        "title": 24,
+        "short": 76,
+        "full": 1400
+      },
+      "metadataDirectory": "metadata/pl-PL",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "pt-BR": {
+      "characters": {
+        "title": 24,
+        "short": 66,
+        "full": 1384
+      },
+      "metadataDirectory": "metadata/pt-BR",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ro": {
+      "characters": {
+        "title": 26,
+        "short": 74,
+        "full": 1444
+      },
+      "metadataDirectory": "metadata/ro",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "ru-RU": {
+      "characters": {
+        "title": 22,
+        "short": 73,
+        "full": 1424
+      },
+      "metadataDirectory": "metadata/ru-RU",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "sk": {
+      "characters": {
+        "title": 24,
+        "short": 70,
+        "full": 1343
+      },
+      "metadataDirectory": "metadata/sk",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "sv-SE": {
+      "characters": {
+        "title": 29,
+        "short": 64,
+        "full": 1338
+      },
+      "metadataDirectory": "metadata/sv-SE",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "th": {
+      "characters": {
+        "title": 27,
+        "short": 52,
+        "full": 1163
+      },
+      "metadataDirectory": "metadata/th",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "tr-TR": {
+      "characters": {
+        "title": 26,
+        "short": 74,
+        "full": 1361
+      },
+      "metadataDirectory": "metadata/tr-TR",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "uk": {
+      "characters": {
+        "title": 24,
+        "short": 71,
+        "full": 1365
+      },
+      "metadataDirectory": "metadata/uk",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "vi": {
+      "characters": {
+        "title": 25,
+        "short": 62,
+        "full": 1376
+      },
+      "metadataDirectory": "metadata/vi",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    },
+    "zh-CN": {
+      "characters": {
+        "title": 16,
+        "short": 23,
+        "full": 600
+      },
+      "metadataDirectory": "metadata/zh-CN",
+      "sharedAssets": "assets",
+      "interfaceLanguage": "en"
+    }
+  },
+  "assets": [
+    {
+      "file": "assets/feature-graphic.png",
+      "width": 1024,
+      "height": 500,
+      "bytes": 775904,
+      "sha256": "bbbfa763a81638ddd9e866a6ecc7fa440d3594c598cad9e054f63d646c2c6f24"
+    },
+    {
+      "file": "assets/app-icon.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 352592,
+      "sha256": "876fed3d262898b2ff7f1612621faf57f2f34672d29f3dd60a22fa5bde1a2c87"
+    },
+    {
+      "file": "assets/phone/01-dashboard.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 395458,
+      "sha256": "5a9c6ef13a33735e8925b9b6e9b468b7b8838fca4c092ec2bb3665d3706d7486"
+    },
+    {
+      "file": "assets/phone/02-tools.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 189991,
+      "sha256": "005222cd67d41d25d846fc1d0526ecb31f14bdb809673556ad392f4c18fc841c"
+    },
+    {
+      "file": "assets/phone/03-display-game-tools.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 144988,
+      "sha256": "73a5ecb760d81aa730bc5b16f10d1b3c53a75d60ad561b156dd8c8cd6c778a39"
+    },
+    {
+      "file": "assets/phone/04-network-latency.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 156495,
+      "sha256": "ad936a56369d2db68a742d8f81861ee10de35bf61ae1c7bb56f3e9cea553ec4d"
+    },
+    {
+      "file": "assets/desktop/01-dashboard.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 282808,
+      "sha256": "f5daa492a2a6dcdcc17a0ceaa8d6390b9a1a0d05e469123bda2ecb6fba65f51e"
+    },
+    {
+      "file": "assets/desktop/02-tools.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 230289,
+      "sha256": "70b267805d261a4d35e5e68e7123d71ad3260e3f661b46536bb23ae1448a0784"
+    },
+    {
+      "file": "assets/desktop/03-display-game-tools.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 167162,
+      "sha256": "2509f297171e5c3cdabd928ea3af01ff5fa03ccacef9485df12f8517d4132efb"
+    },
+    {
+      "file": "assets/desktop/04-network-latency.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 163365,
+      "sha256": "af5eb321a043d96c828ec70db2ba00b149b805000d08b9a912c83474111bf817"
+    }
+  ]
+}
