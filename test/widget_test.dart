@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:ui' show FrameTiming;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:game_booster_pro/main.dart';
 import 'package:game_booster_pro/system_tools.dart';
+import 'package:game_booster_pro/fps_monitor.dart';
 
 void main() {
   const channel = MethodChannel('game_booster_pro/system');
@@ -243,7 +245,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('small screen reports real display telemetry', (tester) async {
+  testWidgets('FPS menu does not relabel screen refresh rate', (tester) async {
     tester.view.physicalSize = const Size(360, 800);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -252,8 +254,95 @@ void main() {
     await tester.pump();
     await tester.drag(find.byType(CustomScrollView), const Offset(0, -450));
     await tester.pumpAndSettle();
-    expect(find.text('120 Hz'), findsOneWidget);
+    expect(find.text('FPS'), findsOneWidget);
+    expect(find.text('App only'), findsOneWidget);
+    expect(find.text('Refresh rate'), findsNothing);
+    expect(find.text('120 Hz'), findsNothing);
     expect(find.text('120 FPS'), findsNothing);
+    await tester.tap(find.text('FPS'));
+    await tester.pumpAndSettle();
+    expect(find.text('App animation only'), findsOneWidget);
+    expect(find.textContaining('Game FPS is unavailable.'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('dashboard restores original rocket artwork', (tester) async {
+    await tester.pumpWidget(const GameBoosterProApp());
+    await tester.pump();
+    final images = tester.widgetList<Image>(find.byType(Image));
+    expect(
+      images.any(
+        (image) =>
+            image.image is AssetImage &&
+            (image.image as AssetImage).assetName == 'assets/flying_rocket.png',
+      ),
+      isTrue,
+    );
+    expect(
+      images.any(
+        (image) =>
+            image.image is AssetImage &&
+            (image.image as AssetImage).assetName == 'assets/app_icon.png',
+      ),
+      isFalse,
+    );
+  });
+
+  test(
+    'frame cadence uses actual frame intervals and includes slow frames',
+    () {
+      final window = FrameRateWindow();
+      expect(window.add(0), isNull);
+      double? fps;
+      for (var index = 1; index <= 60; index++) {
+        fps = window.add((index * 1000000 / 60).round()) ?? fps;
+      }
+      expect(fps, closeTo(60, 0.01));
+      expect(window.add(5000000), closeTo(0.25, 0.001));
+      expect(window.add(5000000), isNull);
+      expect(window.add(4000000), isNull);
+      window.reset();
+      expect(window.add(0), isNull);
+      for (var index = 1; index <= 30; index++) {
+        fps = window.add((index * 1000000 / 30).round()) ?? fps;
+      }
+      expect(fps, closeTo(30, 0.01));
+    },
+  );
+
+  testWidgets('FPS sampling stops on pause and disposes safely', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(home: Scaffold(body: FpsMonitorSheet())),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('-- FPS'), findsOneWidget);
+    await tester.tap(find.text('Start measurement'));
+    await tester.pump();
+    expect(find.text('Measuring...'), findsOneWidget);
+    tester.binding.platformDispatcher.onReportTimings!([
+      for (var index = 0; index <= 60; index++)
+        FrameTiming(
+          vsyncStart: (index * 1000000 / 60).round(),
+          buildStart: (index * 1000000 / 60).round() + 100,
+          buildFinish: (index * 1000000 / 60).round() + 200,
+          rasterStart: (index * 1000000 / 60).round() + 300,
+          rasterFinish: (index * 1000000 / 60).round() + 400,
+          rasterFinishWallTime: (index * 1000000 / 60).round() + 400,
+        ),
+    ]);
+    await tester.pump();
+    expect(find.text('60.0 FPS'), findsOneWidget);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    await tester.pump();
+    expect(find.text('-- FPS'), findsOneWidget);
+    expect(find.text('Start measurement'), findsOneWidget);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.tap(find.text('Start measurement'));
+    await tester.pump();
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump();
     expect(tester.takeException(), isNull);
   });
 

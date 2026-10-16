@@ -71,7 +71,7 @@ void main() {
           final image = await boundary.toImage(pixelRatio: desktop ? 1.5 : 2.5);
           final data = await image.toByteData(format: ui.ImageByteFormat.png);
           final folder = Directory(
-            'play_store/${desktop ? 'desktop' : 'phone'}',
+            '${Platform.environment['CAPTURE_OUTPUT'] ?? 'play_store'}/${desktop ? 'desktop' : 'phone'}',
           );
           await folder.create(recursive: true);
           await File(
@@ -85,6 +85,15 @@ void main() {
       await tester.drag(find.byType(CustomScrollView), const Offset(0, -620));
       await tester.pumpAndSettle();
       await capture('02-tools');
+      if (Platform.environment['CAPTURE_OUTPUT'] != null) {
+        await tester.ensureVisible(find.text('FPS'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('FPS'));
+        await tester.pumpAndSettle();
+        await capture('05-fps');
+        Navigator.of(tester.element(find.text('App animation only'))).pop();
+        await tester.pumpAndSettle();
+      }
       await tester.ensureVisible(find.text('Display & games'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Display & games'));

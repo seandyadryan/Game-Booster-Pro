@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'system_tools.dart';
+import 'fps_monitor.dart';
 
 void main() {
   runApp(const GameBoosterProApp());
@@ -49,7 +50,6 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   late final AnimationController _flightController;
   Timer? _refreshTimer;
 
-  double _refreshRate = 0;
   int _battery = -1;
   double _temperature = -1;
   bool _pendingDnd = false;
@@ -384,7 +384,6 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       }
 
       setState(() {
-        _refreshRate = (data['refreshRate'] as num?)?.toDouble() ?? 0;
         _battery = (data['batteryPercent'] as num?)?.toInt() ?? -1;
         _temperature = (data['batteryTemperature'] as num?)?.toDouble() ?? -1;
         _dndEnabled = data['dndEnabled'] == true;
@@ -880,12 +879,14 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         ),
                         _ActionTile(
                           icon: Icons.speed_outlined,
-                          title: 'Refresh rate',
-                          value: (_refreshRate > 0
-                              ? '${_refreshRate.round()} Hz'
-                              : 'Waiting'),
+                          title: 'FPS',
+                          value: 'App only',
                           color: const Color(0xFF46C7F4),
-                          onTap: _loadSystemStatus,
+                          onTap: () => showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (_) => const FpsMonitorSheet(),
+                          ),
                         ),
                         _ActionTile(
                           icon: _connected
@@ -1222,12 +1223,12 @@ class _RocketFlight extends StatelessWidget {
       child: Container(
         width: 158,
         height: 178,
-        clipBehavior: Clip.antiAlias,
-        decoration: const BoxDecoration(shape: BoxShape.circle),
+        clipBehavior: Clip.hardEdge,
+        decoration: const BoxDecoration(),
         child: Transform.scale(
-          scale: 1.0,
+          scale: 1.35,
           child: Image.asset(
-            'assets/app_icon.png',
+            'assets/flying_rocket.png',
             fit: BoxFit.contain,
             alignment: Alignment.center,
             filterQuality: FilterQuality.high,
