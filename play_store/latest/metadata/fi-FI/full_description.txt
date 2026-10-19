@@ -10,5 +10,7 @@ Valinnainen Älä häiritse voi mykistää herätykset ja median, mutta ei hylk�
 
 Tulokset käsitellään laitteessasi. Käynnistämäsi verkkotarkistus ottaa yhteyden Cloudflareen, joka voi saada julkisen IP-osoitteesi. Ei mainos- tai analytiikka-SDK:ita. Käyttöliittymä on englanniksi. Toiminnot riippuvat laitteesta, Android-versiosta ja käyttöoikeuksista.
 
+Animation FPS mittaa vain tämän sovelluksen testianimaatiota, ei muiden pelien FPS-lukemaa, eikä näytä pelin FPS-peittokuvaa. App settings avaa vain Android-asetukset; se ei sulje viimeaikaisia sovelluksia, pysäytä muita sovelluksia tai muuta pelien grafiikkaa. Sovellus ei paranna pelien suorituskykyä.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

@@ -10,5 +10,7 @@ Der optionale Nicht-stören-Modus kann Wecker und Medien stummschalten, weist ab
 
 Ergebnisse werden auf Ihrem Gerät verarbeitet. Von Ihnen gestartete Netzwerkprüfungen kontaktieren Cloudflare, das Ihre öffentliche IP-Adresse erhalten kann. Keine Werbe- oder Analyse-SDKs. Die App-Oberfläche ist auf Englisch. Funktionen hängen von Gerät, Android-Version und Berechtigungen ab.
 
+Animation FPS misst nur die Testanimation dieser App, nicht die FPS anderer Spiele, und bietet kein Spiel-FPS-Overlay. App settings öffnet lediglich die Android-Einstellungen; zuletzt verwendete Apps werden nicht geschlossen, andere Apps nicht beendet und Spielgrafiken nicht verändert. Die App steigert nicht die Spielleistung.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

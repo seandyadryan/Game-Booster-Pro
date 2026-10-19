@@ -10,5 +10,7 @@ Optioneel Niet storen kan alarmen en media dempen, maar weigert geen oproepen. D
 
 Resultaten worden op je apparaat verwerkt. Netwerkcontroles die je zelf start maken verbinding met Cloudflare, dat je openbare IP-adres kan ontvangen. Geen advertentie- of analyse-SDK's. De interface is in het Engels. Functies hangen af van apparaat, Android-versie en rechten.
 
+Animation FPS meet alleen de testanimatie van deze app, niet de FPS van andere games, en biedt geen game-FPS-overlay. App settings opent alleen de Android-instellingen; het sluit geen recente apps, stopt geen andere apps en wijzigt geen gamegraphics. Deze app verhoogt de gameprestaties niet.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

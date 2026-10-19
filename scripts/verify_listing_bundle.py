@@ -11,6 +11,10 @@ with ZipFile(archive) as bundle:
     report = json.loads(bundle.read(prefix + 'asset-validation.json'))
     assert len(report['locales']) == 29
     assert report['consoleApplied'] is False
+    provenance = json.loads(bundle.read(prefix + 'capture-provenance.json'))
+    assert provenance['runtime']['sha256'] == report['runtimeSha256']
+    assert provenance['androidDeviceVerified'] is False
+    assert provenance['consoleApplied'] is False
     combined = bundle.read(prefix + 'ALL_LANGUAGES.md').decode('utf-8')
     for locale, entry in report['locales'].items():
         assert '<' + locale + '>' in combined
@@ -22,10 +26,13 @@ with ZipFile(archive) as bundle:
         data = bundle.read(prefix + asset['file'])
         assert hashlib.sha256(data).hexdigest() == asset['sha256']
         assert len(data) == asset['bytes']
+        if '/phone/' in asset['file'] or '/desktop/' in asset['file']:
+            relative = asset['file'].removeprefix('assets/')
+            assert provenance['screenshots'][relative] == asset['sha256']
     custom = json.loads(bundle.read(prefix + 'custom-store-listings/apply-to-existing-listings.json'))
     assert custom['status'] == 'prepared_locally_not_applied_to_play_console'
     images = [name for name in bundle.namelist() if name.endswith('.png')]
-    assert len(images) == 10
+    assert len(images) == 12
     assert all('ai-network' not in name and 'gfx-tools' not in name for name in images)
     assert bundle.testzip() is None
-print('ZIP verified: 29 locales, all language tags, 10 image hashes, and explicit local-only status.')
+print('ZIP verified: 29 locales, all language tags, 12 images, capture provenance and explicit local-only status.')

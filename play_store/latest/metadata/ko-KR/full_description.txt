@@ -10,5 +10,7 @@ Start Session은 Game Tools 자체의 임시 캐시만 정리하며 정리 전, 
 
 결과는 기기에서 처리합니다. 사용자가 실행하는 네트워크 검사는 Cloudflare에 연결하며 공개 IP 주소가 전달될 수 있습니다. 광고 또는 분석 SDK는 포함하지 않습니다. 앱 인터페이스는 영어입니다. 기능은 기기, Android 버전 및 권한에 따라 달라집니다.
 
+Animation FPS는 이 앱의 테스트 애니메이션만 측정하며 다른 게임의 FPS를 측정하거나 게임 FPS 오버레이를 제공하지 않습니다. App settings는 Android 설정만 열며 최근 앱을 닫거나 다른 앱을 중지하거나 게임 그래픽을 변경하지 않습니다. 이 앱은 게임 성능을 향상하지 않습니다.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

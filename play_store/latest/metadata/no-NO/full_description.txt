@@ -10,5 +10,7 @@ Valgfri Ikke forstyrr kan dempe alarmer og medier, men avviser ikke anrop. Den v
 
 Resultater behandles på enheten. Nettverkskontroller du starter kontakter Cloudflare, som kan motta din offentlige IP-adresse. Ingen reklame- eller analyse-SDK-er. Grensesnittet er på engelsk. Funksjoner avhenger av enhet, Android-versjon og tillatelser.
 
+Animation FPS måler bare denne appens testanimasjon, ikke FPS i andre spill, og tilbyr ikke et spill-FPS-overlegg. App settings åpner bare Android-innstillinger; funksjonen lukker ikke nylige apper, stopper ikke andre apper og endrer ikke spillgrafikk. Appen øker ikke spillytelsen.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

@@ -2,12 +2,13 @@
   "appPackage": "com.deploydulupulangnanti.gameboosterpro",
   "appInterfaceLanguage": "en",
   "consoleApplied": false,
+  "runtimeSha256": "b927ae9e11fe555f1552a46de89884fe676c6adffae1f715fb9fcf71df5581a0",
   "locales": {
     "en-US": {
       "characters": {
         "title": 27,
         "short": 65,
-        "full": 1287
+        "full": 1579
       },
       "metadataDirectory": "metadata/en-US",
       "sharedAssets": "assets",
@@ -17,7 +18,7 @@
       "characters": {
         "title": 28,
         "short": 65,
-        "full": 1375
+        "full": 1686
       },
       "metadataDirectory": "metadata/id",
       "sharedAssets": "assets",
@@ -27,7 +28,7 @@
       "characters": {
         "title": 27,
         "short": 58,
-        "full": 1216
+        "full": 1481
       },
       "metadataDirectory": "metadata/ar",
       "sharedAssets": "assets",
@@ -37,7 +38,7 @@
       "characters": {
         "title": 27,
         "short": 68,
-        "full": 1352
+        "full": 1633
       },
       "metadataDirectory": "metadata/cs-CZ",
       "sharedAssets": "assets",
@@ -47,7 +48,7 @@
       "characters": {
         "title": 28,
         "short": 57,
-        "full": 1311
+        "full": 1589
       },
       "metadataDirectory": "metadata/da-DK",
       "sharedAssets": "assets",
@@ -57,7 +58,7 @@
       "characters": {
         "title": 28,
         "short": 66,
-        "full": 1538
+        "full": 1868
       },
       "metadataDirectory": "metadata/de-DE",
       "sharedAssets": "assets",
@@ -67,7 +68,7 @@
       "characters": {
         "title": 23,
         "short": 72,
-        "full": 1448
+        "full": 1774
       },
       "metadataDirectory": "metadata/es-419",
       "sharedAssets": "assets",
@@ -77,7 +78,7 @@
       "characters": {
         "title": 23,
         "short": 72,
-        "full": 1478
+        "full": 1834
       },
       "metadataDirectory": "metadata/es-ES",
       "sharedAssets": "assets",
@@ -87,7 +88,7 @@
       "characters": {
         "title": 26,
         "short": 71,
-        "full": 1445
+        "full": 1750
       },
       "metadataDirectory": "metadata/fi-FI",
       "sharedAssets": "assets",
@@ -97,7 +98,7 @@
       "characters": {
         "title": 27,
         "short": 71,
-        "full": 1570
+        "full": 1959
       },
       "metadataDirectory": "metadata/fr-FR",
       "sharedAssets": "assets",
@@ -107,7 +108,7 @@
       "characters": {
         "title": 26,
         "short": 60,
-        "full": 1303
+        "full": 1577
       },
       "metadataDirectory": "metadata/hi-IN",
       "sharedAssets": "assets",
@@ -117,7 +118,7 @@
       "characters": {
         "title": 29,
         "short": 71,
-        "full": 1465
+        "full": 1806
       },
       "metadataDirectory": "metadata/hu-HU",
       "sharedAssets": "assets",
@@ -127,7 +128,7 @@
       "characters": {
         "title": 24,
         "short": 75,
-        "full": 1461
+        "full": 1790
       },
       "metadataDirectory": "metadata/it-IT",
       "sharedAssets": "assets",
@@ -137,7 +138,7 @@
       "characters": {
         "title": 22,
         "short": 60,
-        "full": 1118
+        "full": 1392
       },
       "metadataDirectory": "metadata/iw-IL",
       "sharedAssets": "assets",
@@ -147,7 +148,7 @@
       "characters": {
         "title": 20,
         "short": 34,
-        "full": 736
+        "full": 899
       },
       "metadataDirectory": "metadata/ja-JP",
       "sharedAssets": "assets",
@@ -157,7 +158,7 @@
       "characters": {
         "title": 19,
         "short": 40,
-        "full": 801
+        "full": 973
       },
       "metadataDirectory": "metadata/ko-KR",
       "sharedAssets": "assets",
@@ -167,7 +168,7 @@
       "characters": {
         "title": 28,
         "short": 63,
-        "full": 1402
+        "full": 1696
       },
       "metadataDirectory": "metadata/nl-NL",
       "sharedAssets": "assets",
@@ -177,7 +178,7 @@
       "characters": {
         "title": 29,
         "short": 66,
-        "full": 1337
+        "full": 1621
       },
       "metadataDirectory": "metadata/no-NO",
       "sharedAssets": "assets",
@@ -187,7 +188,7 @@
       "characters": {
         "title": 24,
         "short": 76,
-        "full": 1400
+        "full": 1703
       },
       "metadataDirectory": "metadata/pl-PL",
       "sharedAssets": "assets",
@@ -197,7 +198,7 @@
       "characters": {
         "title": 24,
         "short": 66,
-        "full": 1384
+        "full": 1702
       },
       "metadataDirectory": "metadata/pt-BR",
       "sharedAssets": "assets",
@@ -207,7 +208,7 @@
       "characters": {
         "title": 26,
         "short": 74,
-        "full": 1444
+        "full": 1763
       },
       "metadataDirectory": "metadata/ro",
       "sharedAssets": "assets",
@@ -217,7 +218,7 @@
       "characters": {
         "title": 22,
         "short": 73,
-        "full": 1424
+        "full": 1750
       },
       "metadataDirectory": "metadata/ru-RU",
       "sharedAssets": "assets",
@@ -227,7 +228,7 @@
       "characters": {
         "title": 24,
         "short": 70,
-        "full": 1343
+        "full": 1628
       },
       "metadataDirectory": "metadata/sk",
       "sharedAssets": "assets",
@@ -237,7 +238,7 @@
       "characters": {
         "title": 29,
         "short": 64,
-        "full": 1338
+        "full": 1621
       },
       "metadataDirectory": "metadata/sv-SE",
       "sharedAssets": "assets",
@@ -247,7 +248,7 @@
       "characters": {
         "title": 27,
         "short": 52,
-        "full": 1163
+        "full": 1391
       },
       "metadataDirectory": "metadata/th",
       "sharedAssets": "assets",
@@ -257,7 +258,7 @@
       "characters": {
         "title": 26,
         "short": 74,
-        "full": 1361
+        "full": 1669
       },
       "metadataDirectory": "metadata/tr-TR",
       "sharedAssets": "assets",
@@ -267,7 +268,7 @@
       "characters": {
         "title": 24,
         "short": 71,
-        "full": 1365
+        "full": 1668
       },
       "metadataDirectory": "metadata/uk",
       "sharedAssets": "assets",
@@ -277,7 +278,7 @@
       "characters": {
         "title": 25,
         "short": 62,
-        "full": 1376
+        "full": 1680
       },
       "metadataDirectory": "metadata/vi",
       "sharedAssets": "assets",
@@ -287,7 +288,7 @@
       "characters": {
         "title": 16,
         "short": 23,
-        "full": 600
+        "full": 717
       },
       "metadataDirectory": "metadata/zh-CN",
       "sharedAssets": "assets",
@@ -313,57 +314,71 @@
       "file": "assets/phone/01-dashboard.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 395458,
-      "sha256": "5a9c6ef13a33735e8925b9b6e9b468b7b8838fca4c092ec2bb3665d3706d7486"
+      "bytes": 289625,
+      "sha256": "1a4feaac14aba183801cc55181ebbb04cc035702f312684382092a01d8ff7824"
     },
     {
       "file": "assets/phone/02-tools.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 189991,
-      "sha256": "005222cd67d41d25d846fc1d0526ecb31f14bdb809673556ad392f4c18fc841c"
+      "bytes": 191009,
+      "sha256": "9b94694843e48aeb1252b15fd4acb9ae4813e5d3a59f6e89b61667f28e0653c9"
     },
     {
       "file": "assets/phone/03-display-game-tools.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 144988,
-      "sha256": "73a5ecb760d81aa730bc5b16f10d1b3c53a75d60ad561b156dd8c8cd6c778a39"
+      "bytes": 145353,
+      "sha256": "9696c8855ca331c053fa4a0107975126e7366dbae7fe2167dc1bc11c9b23cac9"
     },
     {
       "file": "assets/phone/04-network-latency.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 156495,
-      "sha256": "ad936a56369d2db68a742d8f81861ee10de35bf61ae1c7bb56f3e9cea553ec4d"
+      "bytes": 155930,
+      "sha256": "3e0fbc9f327a0db85fcb68246b86a7daa0f938a77b7499831f9d8755d83f4e75"
+    },
+    {
+      "file": "assets/phone/05-fps.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 133470,
+      "sha256": "bf8340a186ea38d5f3b8e3af23a08e6bce38511cf87958e9a6e8c3f96b77486a"
     },
     {
       "file": "assets/desktop/01-dashboard.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 282808,
-      "sha256": "f5daa492a2a6dcdcc17a0ceaa8d6390b9a1a0d05e469123bda2ecb6fba65f51e"
+      "bytes": 239033,
+      "sha256": "6a167535824b8d136bd2c15d41a07cdc7b79247a5a50ee2fd4c2792447427ce6"
     },
     {
       "file": "assets/desktop/02-tools.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 230289,
-      "sha256": "70b267805d261a4d35e5e68e7123d71ad3260e3f661b46536bb23ae1448a0784"
+      "bytes": 229402,
+      "sha256": "3613bef42e45a00bc1937a6f90166733a694c55faa5f12cb5ec8ee8dea62c6ae"
     },
     {
       "file": "assets/desktop/03-display-game-tools.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 167162,
-      "sha256": "2509f297171e5c3cdabd928ea3af01ff5fa03ccacef9485df12f8517d4132efb"
+      "bytes": 167039,
+      "sha256": "f8fa12c884e3d03ce23c70689aa75078179368c822b25e88f1de6f3fb9306d7c"
     },
     {
       "file": "assets/desktop/04-network-latency.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 163365,
-      "sha256": "af5eb321a043d96c828ec70db2ba00b149b805000d08b9a912c83474111bf817"
+      "bytes": 163550,
+      "sha256": "747372b7491e81ae5be4a99ecedcde7a886ad5a4de12ae369e9326e9ad137271"
+    },
+    {
+      "file": "assets/desktop/05-fps.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 156207,
+      "sha256": "2546b8cb61006709e001056e58c364765f7717a0b8b80c55c033d5d2f3ef80d4"
     }
   ]
 }

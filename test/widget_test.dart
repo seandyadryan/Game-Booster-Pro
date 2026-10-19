@@ -254,12 +254,13 @@ void main() {
     await tester.pump();
     await tester.drag(find.byType(CustomScrollView), const Offset(0, -450));
     await tester.pumpAndSettle();
-    expect(find.text('FPS'), findsOneWidget);
-    expect(find.text('App only'), findsOneWidget);
+    expect(find.text('Animation FPS'), findsOneWidget);
+    expect(find.text('This app only'), findsOneWidget);
+    expect(find.text('FPS'), findsNothing);
     expect(find.text('Refresh rate'), findsNothing);
     expect(find.text('120 Hz'), findsNothing);
     expect(find.text('120 FPS'), findsNothing);
-    await tester.tap(find.text('FPS'));
+    await tester.tap(find.text('Animation FPS'));
     await tester.pumpAndSettle();
     expect(find.text('App animation only'), findsOneWidget);
     expect(find.textContaining('Game FPS is unavailable.'), findsOneWidget);
@@ -287,6 +288,35 @@ void main() {
       isFalse,
     );
   });
+
+  testWidgets(
+    'store presentation describes settings and avoids rejected claims',
+    (tester) async {
+      await tester.pumpWidget(const GameBoosterProApp());
+      await tester.pump();
+      for (final rejectedLabel in [
+        'Game Booster Pro',
+        'BOOST NOW',
+        'AI Network',
+        'GFX Tools',
+        'Clear recent apps',
+        'Background',
+        'FPS',
+      ]) {
+        expect(find.text(rejectedLabel), findsNothing);
+      }
+      expect(find.text('Network Latency'), findsOneWidget);
+      await tester.ensureVisible(find.text('App settings'));
+      await tester.pumpAndSettle();
+      expect(find.text('Open settings'), findsOneWidget);
+      await tester.tap(find.text('App settings'));
+      await tester.pumpAndSettle();
+      expect(
+        calls.where((method) => method == 'closeBackgroundApps').length,
+        1,
+      );
+    },
+  );
 
   test(
     'frame cadence uses actual frame intervals and includes slow frames',

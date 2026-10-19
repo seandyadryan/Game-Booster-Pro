@@ -10,5 +10,7 @@ No molestar es opcional y puede silenciar alarmas y contenido multimedia, pero n
 
 Los resultados se procesan en tu dispositivo. Las pruebas de red que solicitas contactan a Cloudflare, que puede recibir tu IP pública. No se incluyen SDK de publicidad ni análisis. La interfaz está en inglés. Las funciones dependen del dispositivo, la versión de Android y los permisos.
 
+Animation FPS mide únicamente la animación de prueba de esta app, no los FPS de otros juegos, y no ofrece una superposición de FPS del juego. App settings solo abre los ajustes de Android; no cierra apps recientes, no detiene otras apps ni cambia los gráficos de los juegos. Esta app no aumenta el rendimiento de los juegos.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

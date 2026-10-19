@@ -10,5 +10,7 @@ Start SessionはGame Tools自身の一時キャッシュのみを削除し、削
 
 結果は端末上で処理されます。利用者が実行したネットワーク確認はCloudflareへ接続し、接続先に公開IPアドレスが伝わる場合があります。広告・解析SDKは含みません。アプリの表示言語は英語です。機能は端末、Androidのバージョン、権限に依存します。
 
+Animation FPSは、このアプリ内のテストアニメーションのみを測定します。他のゲームのFPS測定やゲームFPSのオーバーレイ表示はできません。App settingsはAndroid設定を開くだけで、最近使ったアプリの終了、他のアプリの停止、ゲーム画質の変更は行いません。このアプリはゲームの性能を向上させません。
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

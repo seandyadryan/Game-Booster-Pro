@@ -10,5 +10,7 @@ Optional Do Not Disturb can silence alarms and media but does not reject calls. 
 
 Results are processed on your device. User-requested network checks contact Cloudflare, which can receive your public IP address. No advertising or analytics SDK is included. The app interface is in English. Features depend on your device, Android version and permissions.
 
+Animation FPS measures only this app's built-in test animation. It does not measure another game's FPS or provide a game FPS overlay. App settings only opens Android settings; it does not close recent apps, stop other apps, or change game graphics. This app does not boost game performance.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

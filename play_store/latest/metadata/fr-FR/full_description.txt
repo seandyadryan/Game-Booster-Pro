@@ -10,5 +10,7 @@ Le mode Ne pas déranger est facultatif. Il peut couper les alarmes et les médi
 
 Les résultats sont traités sur votre appareil. Les vérifications réseau demandées contactent Cloudflare, qui peut recevoir votre adresse IP publique. Aucun SDK publicitaire ou analytique. L'interface est en anglais. Les fonctions dépendent de l'appareil, d'Android et des autorisations.
 
+Animation FPS mesure uniquement l'animation de test de cette application, pas les FPS d'autres jeux, et ne fournit pas de compteur FPS superposé aux jeux. App settings ouvre seulement les paramètres Android ; il ne ferme pas les applications récentes, n'arrête pas les autres applications et ne modifie pas les graphismes des jeux. L'application n'améliore pas les performances des jeux.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

@@ -10,5 +10,7 @@ Valfritt Stör ej kan tysta alarm och media men avvisar inte samtal. Den valfria
 
 Resultaten behandlas på din enhet. Nätverkskontroller som du startar kontaktar Cloudflare, som kan få din offentliga IP-adress. Inga reklam- eller analys-SDK:er ingår. Gränssnittet är på engelska. Funktioner beror på enhet, Android-version och behörigheter.
 
+Animation FPS mäter bara appens egen testanimation, inte FPS i andra spel, och visar inget spel-FPS-överlägg. App settings öppnar bara Android-inställningar; funktionen stänger inte senaste appar, stoppar inte andra appar och ändrar inte spelgrafik. Appen ökar inte spelprestandan.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

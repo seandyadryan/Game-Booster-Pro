@@ -85,10 +85,10 @@ void main() {
       await tester.drag(find.byType(CustomScrollView), const Offset(0, -620));
       await tester.pumpAndSettle();
       await capture('02-tools');
-      if (Platform.environment['CAPTURE_OUTPUT'] != null) {
-        await tester.ensureVisible(find.text('FPS'));
+      {
+        await tester.ensureVisible(find.text('Animation FPS'));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('FPS'));
+        await tester.tap(find.text('Animation FPS'));
         await tester.pumpAndSettle();
         await capture('05-fps');
         Navigator.of(tester.element(find.text('App animation only'))).pop();

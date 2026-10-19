@@ -9,7 +9,8 @@ An Android gaming companion built with FVM Flutter 3.41.2.
 - Network Latency: five TCP connection probes on the active Android network to Cloudflare 1.1.1.1:443. Shows measured average/minimum/maximum latency, consecutive-probe jitter, and failed probes.
 - Top five caches: Usage Access permits reading cache sizes for launcher-visible apps on Android 8+. Cleanup of other apps is manual in Android App Info.
 - Do Not Disturb: optional strict mode, real system status, and restoration of the app's own request at session end.
-- FPS: opt-in frame-cadence measurement of this app's rocket test animation using Flutter engine frame timings. It cannot measure another game's FPS and does not relabel screen Hz as FPS.
+- Animation FPS: opt-in frame-cadence measurement of this app's rocket test animation using Flutter engine frame timings. The menu states "This app only". It cannot measure another game's FPS and does not relabel screen Hz as FPS.
+- App settings: opens Android's app settings. This action does not close recent apps, stop other apps, or change their settings.
 - Device telemetry: battery percentage and battery temperature.
 - Display & games: Android display settings and installed-game launcher.
 - Display monitor: optional overlay controlled by Usage Access and Display over other apps permission. Shows display refresh rate in Hz.

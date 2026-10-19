@@ -338,8 +338,8 @@ class MainActivity : FlutterActivity() {
     private fun closeBackgroundApps(): Map<String, Any> {
         startActivity(Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS))
         return mapOf(
-            "success" to false,
-            "message" to "Manage apps in Android settings. To close recent apps, use your device's Recent Apps screen."
+            "success" to true,
+            "message" to "Android app settings opened. No apps have been closed or changed."
         )
     }
 

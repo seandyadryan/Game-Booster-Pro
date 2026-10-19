@@ -117,7 +117,7 @@ class _FpsMonitorSheetState extends State<FpsMonitorSheet>
               children: [
                 const Expanded(
                   child: Text(
-                    'FPS',
+                    'Animation FPS',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                 ),

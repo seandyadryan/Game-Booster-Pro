@@ -5,7 +5,7 @@
       "maximum": 80
     },
     "full-description": {
-      "characters": 1287,
+      "characters": 1579,
       "maximum": 4000
     }
   },
@@ -20,49 +20,61 @@
       "file": "phone/01-dashboard.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 395458
+      "bytes": 289625
     },
     {
       "file": "phone/02-tools.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 189991
+      "bytes": 191009
     },
     {
       "file": "phone/03-display-game-tools.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 144988
+      "bytes": 145353
     },
     {
       "file": "phone/04-network-latency.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 156495
+      "bytes": 155930
+    },
+    {
+      "file": "phone/05-fps.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 133470
     },
     {
       "file": "desktop/01-dashboard.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 282808
+      "bytes": 239033
     },
     {
       "file": "desktop/02-tools.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 230289
+      "bytes": 229402
     },
     {
       "file": "desktop/03-display-game-tools.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 167162
+      "bytes": 167039
     },
     {
       "file": "desktop/04-network-latency.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 163365
+      "bytes": 163550
+    },
+    {
+      "file": "desktop/05-fps.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 156207
     }
   ]
 }

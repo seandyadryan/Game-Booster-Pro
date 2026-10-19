@@ -10,5 +10,7 @@ Opcjonalny tryb Nie przeszkadzać może wyciszać alarmy i multimedia, ale nie o
 
 Wyniki są przetwarzane na urządzeniu. Zlecane kontrole sieci łączą się z Cloudflare, który może otrzymać publiczny adres IP. Brak SDK reklamowych i analitycznych. Interfejs jest po angielsku. Funkcje zależą od urządzenia, wersji Androida i uprawnień.
 
+Animation FPS mierzy wyłącznie animację testową tej aplikacji, a nie FPS innych gier, i nie oferuje nakładki z FPS gry. App settings tylko otwiera ustawienia Androida; nie zamyka ostatnich aplikacji, nie zatrzymuje innych aplikacji ani nie zmienia grafiki gier. Aplikacja nie zwiększa wydajności gier.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

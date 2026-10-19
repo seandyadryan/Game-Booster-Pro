@@ -8,7 +8,7 @@
       "characters": {
         "title": 27,
         "short": 65,
-        "full": 1287
+        "full": 1579
       },
       "metadataDirectory": "metadata/en-US",
       "sharedAssets": "assets",
@@ -18,7 +18,7 @@
       "characters": {
         "title": 28,
         "short": 65,
-        "full": 1375
+        "full": 1686
       },
       "metadataDirectory": "metadata/id",
       "sharedAssets": "assets",
@@ -28,7 +28,7 @@
       "characters": {
         "title": 27,
         "short": 58,
-        "full": 1216
+        "full": 1481
       },
       "metadataDirectory": "metadata/ar",
       "sharedAssets": "assets",
@@ -38,7 +38,7 @@
       "characters": {
         "title": 27,
         "short": 68,
-        "full": 1352
+        "full": 1633
       },
       "metadataDirectory": "metadata/cs-CZ",
       "sharedAssets": "assets",
@@ -48,7 +48,7 @@
       "characters": {
         "title": 28,
         "short": 57,
-        "full": 1311
+        "full": 1589
       },
       "metadataDirectory": "metadata/da-DK",
       "sharedAssets": "assets",
@@ -58,7 +58,7 @@
       "characters": {
         "title": 28,
         "short": 66,
-        "full": 1538
+        "full": 1868
       },
       "metadataDirectory": "metadata/de-DE",
       "sharedAssets": "assets",
@@ -68,7 +68,7 @@
       "characters": {
         "title": 23,
         "short": 72,
-        "full": 1448
+        "full": 1774
       },
       "metadataDirectory": "metadata/es-419",
       "sharedAssets": "assets",
@@ -78,7 +78,7 @@
       "characters": {
         "title": 23,
         "short": 72,
-        "full": 1478
+        "full": 1834
       },
       "metadataDirectory": "metadata/es-ES",
       "sharedAssets": "assets",
@@ -88,7 +88,7 @@
       "characters": {
         "title": 26,
         "short": 71,
-        "full": 1445
+        "full": 1750
       },
       "metadataDirectory": "metadata/fi-FI",
       "sharedAssets": "assets",
@@ -98,7 +98,7 @@
       "characters": {
         "title": 27,
         "short": 71,
-        "full": 1570
+        "full": 1959
       },
       "metadataDirectory": "metadata/fr-FR",
       "sharedAssets": "assets",
@@ -108,7 +108,7 @@
       "characters": {
         "title": 26,
         "short": 60,
-        "full": 1303
+        "full": 1577
       },
       "metadataDirectory": "metadata/hi-IN",
       "sharedAssets": "assets",
@@ -118,7 +118,7 @@
       "characters": {
         "title": 29,
         "short": 71,
-        "full": 1465
+        "full": 1806
       },
       "metadataDirectory": "metadata/hu-HU",
       "sharedAssets": "assets",
@@ -128,7 +128,7 @@
       "characters": {
         "title": 24,
         "short": 75,
-        "full": 1461
+        "full": 1790
       },
       "metadataDirectory": "metadata/it-IT",
       "sharedAssets": "assets",
@@ -138,7 +138,7 @@
       "characters": {
         "title": 22,
         "short": 60,
-        "full": 1118
+        "full": 1392
       },
       "metadataDirectory": "metadata/iw-IL",
       "sharedAssets": "assets",
@@ -148,7 +148,7 @@
       "characters": {
         "title": 20,
         "short": 34,
-        "full": 736
+        "full": 899
       },
       "metadataDirectory": "metadata/ja-JP",
       "sharedAssets": "assets",
@@ -158,7 +158,7 @@
       "characters": {
         "title": 19,
         "short": 40,
-        "full": 801
+        "full": 973
       },
       "metadataDirectory": "metadata/ko-KR",
       "sharedAssets": "assets",
@@ -168,7 +168,7 @@
       "characters": {
         "title": 28,
         "short": 63,
-        "full": 1402
+        "full": 1696
       },
       "metadataDirectory": "metadata/nl-NL",
       "sharedAssets": "assets",
@@ -178,7 +178,7 @@
       "characters": {
         "title": 29,
         "short": 66,
-        "full": 1337
+        "full": 1621
       },
       "metadataDirectory": "metadata/no-NO",
       "sharedAssets": "assets",
@@ -188,7 +188,7 @@
       "characters": {
         "title": 24,
         "short": 76,
-        "full": 1400
+        "full": 1703
       },
       "metadataDirectory": "metadata/pl-PL",
       "sharedAssets": "assets",
@@ -198,7 +198,7 @@
       "characters": {
         "title": 24,
         "short": 66,
-        "full": 1384
+        "full": 1702
       },
       "metadataDirectory": "metadata/pt-BR",
       "sharedAssets": "assets",
@@ -208,7 +208,7 @@
       "characters": {
         "title": 26,
         "short": 74,
-        "full": 1444
+        "full": 1763
       },
       "metadataDirectory": "metadata/ro",
       "sharedAssets": "assets",
@@ -218,7 +218,7 @@
       "characters": {
         "title": 22,
         "short": 73,
-        "full": 1424
+        "full": 1750
       },
       "metadataDirectory": "metadata/ru-RU",
       "sharedAssets": "assets",
@@ -228,7 +228,7 @@
       "characters": {
         "title": 24,
         "short": 70,
-        "full": 1343
+        "full": 1628
       },
       "metadataDirectory": "metadata/sk",
       "sharedAssets": "assets",
@@ -238,7 +238,7 @@
       "characters": {
         "title": 29,
         "short": 64,
-        "full": 1338
+        "full": 1621
       },
       "metadataDirectory": "metadata/sv-SE",
       "sharedAssets": "assets",
@@ -248,7 +248,7 @@
       "characters": {
         "title": 27,
         "short": 52,
-        "full": 1163
+        "full": 1391
       },
       "metadataDirectory": "metadata/th",
       "sharedAssets": "assets",
@@ -258,7 +258,7 @@
       "characters": {
         "title": 26,
         "short": 74,
-        "full": 1361
+        "full": 1669
       },
       "metadataDirectory": "metadata/tr-TR",
       "sharedAssets": "assets",
@@ -268,7 +268,7 @@
       "characters": {
         "title": 24,
         "short": 71,
-        "full": 1365
+        "full": 1668
       },
       "metadataDirectory": "metadata/uk",
       "sharedAssets": "assets",
@@ -278,7 +278,7 @@
       "characters": {
         "title": 25,
         "short": 62,
-        "full": 1376
+        "full": 1680
       },
       "metadataDirectory": "metadata/vi",
       "sharedAssets": "assets",
@@ -288,7 +288,7 @@
       "characters": {
         "title": 16,
         "short": 23,
-        "full": 600
+        "full": 717
       },
       "metadataDirectory": "metadata/zh-CN",
       "sharedAssets": "assets",

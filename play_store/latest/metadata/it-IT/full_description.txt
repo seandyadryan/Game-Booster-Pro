@@ -10,5 +10,7 @@ La modalità Non disturbare è facoltativa e può silenziare sveglie e contenuti
 
 I risultati sono elaborati sul dispositivo. I controlli di rete richiesti contattano Cloudflare, che può ricevere il tuo IP pubblico. Nessun SDK pubblicitario o di analisi. L'interfaccia è in inglese. Le funzioni dipendono da dispositivo, versione Android e autorizzazioni.
 
+Animation FPS misura solo l'animazione di prova di questa app, non gli FPS di altri giochi, e non offre un contatore FPS sovrapposto ai giochi. App settings apre soltanto le impostazioni Android; non chiude le app recenti, non arresta altre app e non modifica la grafica dei giochi. L'app non aumenta le prestazioni dei giochi.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

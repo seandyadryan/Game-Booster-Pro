@@ -10,5 +10,7 @@ Do Not Disturb bersifat opsional dan dapat membisukan alarm serta media, tetapi 
 
 Hasil diproses di perangkat Anda. Pemeriksaan jaringan yang Anda jalankan menghubungi Cloudflare, yang dapat menerima alamat IP publik Anda. Tidak ada SDK iklan atau analitik. Antarmuka aplikasi berbahasa Inggris. Fitur bergantung pada perangkat, versi Android, dan izin.
 
+Animation FPS hanya mengukur animasi uji di aplikasi ini, bukan FPS game lain, dan tidak menyediakan overlay FPS game. App settings hanya membuka pengaturan Android; fitur ini tidak membersihkan Recent Apps, menghentikan aplikasi lain, atau mengubah grafis game. Aplikasi ini tidak meningkatkan performa game.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

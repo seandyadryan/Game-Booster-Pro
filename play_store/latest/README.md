@@ -12,8 +12,11 @@ Support: seandyadryan2@gmail.com
 - ALL_LANGUAGES.md: the same text in one document, preserving each language's opening and closing tags.
 - assets/feature-graphic.png: 1024 x 500 PNG.
 - assets/app-icon.png: 512 x 512 PNG.
-- assets/phone/: four 1080 x 1920 screenshots.
-- assets/desktop/: four 1920 x 1080 large-screen renders.
+- assets/phone/: five 1080 x 1920 screenshots.
+- assets/desktop/: five 1920 x 1080 large-screen renders.
+- capture-provenance.json: matching runtime source and screenshot hashes, with renderer limitations.
+- SUBMISSION_CHECKLIST.md: rejection diagnosis, functionality boundaries and required Console steps.
+- reviewer-notes-en-US.txt: accurate functionality explanation for review.
 - privacy/index.html: current policy with the new name.
 - asset-validation.json: character counts, image dimensions, file sizes and hashes.
 - custom-store-listings/apply-to-existing-listings.json: locale-to-material mapping for existing custom store listings.
@@ -38,7 +41,7 @@ Also check experiments or other active variants that may still serve old titles 
 
 ## Match the Release
 
-These screenshots were captured from the revised Flutter widgets in this repository. They show Start Session, Network Latency, This app's cache, Display & games, and session Active/Inactive. The display monitor now shows only display refresh rate in Hz.
+These screenshots were captured from the revised Flutter widgets in this repository. They show Start Session, Network Latency, This app's cache, App settings, Display & games, and session Active/Inactive. Animation FPS is explicitly labeled This app only; the panel measures only the test animation. The separate optional game display bar shows only display refresh rate in Hz. The original rocket session artwork is retained.
 
 The capture renderer does not execute Android-native APIs. No fake latency, battery, cache savings or FPS measurements were inserted. For verified device telemetry, replace captures with screenshots from the matching release running on Android.
 
@@ -52,7 +55,7 @@ The new presentation describes a utility: TCP connection timings, app-owned temp
 
 Feature graphic and icon artwork were made with the built-in imagegen tool. The banner's exact copy is "Game Tools: Network & Cache" and "Network latency. App cache. Game launcher." The artwork shows a controller, Wi-Fi and storage utilities without a speedometer, rocket, performance numbers or rankings. Mechanical resizing preserves the copy.
 
-Screenshots come from the actual Flutter interface, not generated UI illustrations. Reviewer acceptance remains Google's decision. Policy references:
+Screenshots come from the actual Flutter interface, not generated UI illustrations. Source fingerprints and image hashes guard against accidentally packaging older captures. They do not verify an uploaded binary or an existing Play Console listing. Reviewer acceptance remains Google's decision. Policy references:
 
 - https://support.google.com/googleplay/android-developer/answer/17006354?hl=en
 - https://support.google.com/googleplay/android-developer/answer/9898842?hl=en

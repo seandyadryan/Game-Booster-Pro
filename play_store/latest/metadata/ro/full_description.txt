@@ -10,5 +10,7 @@ Modul opțional Nu deranja poate opri sunetul alarmelor și conținutului media,
 
 Rezultatele sunt procesate pe dispozitiv. Verificările de rețea cerute contactează Cloudflare, care poate primi adresa IP publică. Fără SDK-uri de publicitate sau analiză. Interfața este în engleză. Funcțiile depind de dispozitiv, versiunea Android și permisiuni.
 
+Animation FPS măsoară doar animația de test a acestei aplicații, nu FPS-ul altor jocuri, și nu oferă un indicator FPS suprapus jocurilor. App settings deschide doar setările Android; nu închide aplicațiile recente, nu oprește alte aplicații și nu modifică grafica jocurilor. Aplicația nu crește performanța jocurilor.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

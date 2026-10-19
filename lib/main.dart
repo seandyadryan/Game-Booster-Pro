@@ -861,8 +861,8 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         ),
                         _ActionTile(
                           icon: Icons.layers_clear_outlined,
-                          title: 'Background',
-                          value: 'Manage apps',
+                          title: 'App settings',
+                          value: 'Open settings',
                           color: const Color(0xFFFFB000),
                           onTap: _closeBackgroundApps,
                         ),
@@ -879,8 +879,8 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         ),
                         _ActionTile(
                           icon: Icons.speed_outlined,
-                          title: 'FPS',
-                          value: 'App only',
+                          title: 'Animation FPS',
+                          value: 'This app only',
                           color: const Color(0xFF46C7F4),
                           onTap: () => showModalBottomSheet<void>(
                             context: context,

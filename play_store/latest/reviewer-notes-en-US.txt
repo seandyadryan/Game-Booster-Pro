@@ -1,0 +1,15 @@
+Package: com.deploydulupulangnanti.gameboosterpro
+App identity for this corrected source: Game Tools: Network & Cache.
+
+This is a utility and game-shortcut app, not a game-performance booster.
+
+Start Session clears only this app's own temporary cache and can optionally request system Do Not Disturb after consent. Cleared bytes are measured and may be zero. Usage Access allows cache-size ranking and detection of a selected game; it does not authorize clearing another app's private cache. External app cleanup is manual in Android settings.
+
+Network Latency measures TCP connection time to Cloudflare 1.1.1.1:443. It is not AI, a game-server ping test or a network accelerator. App settings only opens Android settings; it does not close recent apps or force-stop apps. Display & games opens display settings or launches games; it does not change game graphics.
+
+The optional game display bar is labeled Display Refresh Rate in Hz, not game FPS. Animation FPS / This app only measures the in-app test animation and explicitly does not measure another game's FPS or provide a game FPS overlay. Battery percentage and temperature are shown in the dashboard when available, not in the game display bar. Do Not Disturb does not reject incoming calls.
+
+The rocket is decorative artwork for the session animation, not an indication of performance improvement.
+
+Support: seandyadryan2@gmail.com
+Developer: PT Deploy Dulu Pulang Nanti

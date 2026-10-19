@@ -10,5 +10,7 @@ Voliteľný režim Nerušiť môže stíšiť budíky a médiá, ale neodmieta h
 
 Výsledky sa spracúvajú v zariadení. Sieťové kontroly na váš pokyn kontaktujú Cloudflare, ktorý môže získať vašu verejnú IP adresu. Bez reklamných a analytických SDK. Rozhranie je v angličtine. Funkcie závisia od zariadenia, verzie Androidu a povolení.
 
+Animation FPS meria iba testovaciu animáciu tejto aplikácie, nie FPS iných hier, a neposkytuje prekryvné zobrazenie FPS hier. App settings len otvorí nastavenia Androidu; nezatvára nedávne aplikácie, nezastavuje iné aplikácie ani nemení grafiku hier. Aplikácia nezvyšuje herný výkon.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

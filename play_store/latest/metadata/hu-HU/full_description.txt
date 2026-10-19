@@ -10,5 +10,7 @@ Az opcionális Ne zavarjanak mód az ébresztéseket és a médiát is némítha
 
 Az eredmények az eszközön kerülnek feldolgozásra. A kért hálózati teszt kapcsolatba lép a Cloudflare-rel, amely megkaphatja a nyilvános IP-címét. Nincs hirdetési vagy analitikai SDK. A felület angol nyelvű. A funkciók az eszköztől, az Android-verziótól és az engedélyektől függenek.
 
+Az Animation FPS csak az alkalmazás saját tesztanimációját méri, nem más játékok FPS-ét, és nem kínál játékbeli FPS-fedvényt. Az App settings csak az Android beállításait nyitja meg; nem zárja be a legutóbbi alkalmazásokat, nem állít le más appokat, és nem módosítja a játékok grafikáját. Az alkalmazás nem növeli a játékok teljesítményét.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

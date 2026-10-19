@@ -10,5 +10,7 @@ Valgfri Forstyr ikke kan slå alarmer og medier fra, men afviser ikke opkald. De
 
 Resultater behandles på din enhed. Netværkskontroller, du starter, kontakter Cloudflare, som kan modtage din offentlige IP-adresse. Ingen annonce- eller analyse-SDK er inkluderet. Appens brugerflade er på engelsk. Funktioner afhænger af enhed, Android-version og tilladelser.
 
+Animation FPS måler kun appens egen testanimation, ikke FPS i andre spil, og viser ikke spil-FPS som overlejring. App settings åbner kun Android-indstillinger; funktionen lukker ikke seneste apps, stopper ikke andre apps og ændrer ikke spilgrafik. Appen øger ikke spilydelsen.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

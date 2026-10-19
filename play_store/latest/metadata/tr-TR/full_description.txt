@@ -10,5 +10,7 @@ Oyun olarak tanınan yüklü uygulamaları başlatın, Android ekran ayarların�
 
 Sonuçlar cihazda işlenir. Başlattığınız ağ kontrolleri Cloudflare ile bağlantı kurar; Cloudflare genel IP adresinizi alabilir. Reklam veya analiz SDK'sı yoktur. Arayüz İngilizcedir. Özellikler cihaza, Android sürümüne ve izinlere bağlıdır.
 
+Animation FPS yalnızca bu uygulamanın test animasyonunu ölçer; başka oyunların FPS değerini ölçmez ve oyun FPS katmanı sunmaz. App settings yalnızca Android ayarlarını açar; son uygulamaları kapatmaz, diğer uygulamaları durdurmaz veya oyun grafiklerini değiştirmez. Bu uygulama oyun performansını artırmaz.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

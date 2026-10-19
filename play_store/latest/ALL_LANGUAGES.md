@@ -21,6 +21,8 @@ Optional Do Not Disturb can silence alarms and media but does not reject calls. 
 
 Results are processed on your device. User-requested network checks contact Cloudflare, which can receive your public IP address. No advertising or analytics SDK is included. The app interface is in English. Features depend on your device, Android version and permissions.
 
+Animation FPS measures only this app's built-in test animation. It does not measure another game's FPS or provide a game FPS overlay. App settings only opens Android settings; it does not close recent apps, stop other apps, or change game graphics. This app does not boost game performance.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </en-US>
@@ -44,6 +46,8 @@ Buka aplikasi terpasang yang dikenali sebagai game, pengaturan layar Android, da
 Do Not Disturb bersifat opsional dan dapat membisukan alarm serta media, tetapi tidak menolak panggilan. Bar refresh rate opsional memerlukan Usage Access dan izin tampil di atas aplikasi lain.
 
 Hasil diproses di perangkat Anda. Pemeriksaan jaringan yang Anda jalankan menghubungi Cloudflare, yang dapat menerima alamat IP publik Anda. Tidak ada SDK iklan atau analitik. Antarmuka aplikasi berbahasa Inggris. Fitur bergantung pada perangkat, versi Android, dan izin.
+
+Animation FPS hanya mengukur animasi uji di aplikasi ini, bukan FPS game lain, dan tidak menyediakan overlay FPS game. App settings hanya membuka pengaturan Android; fitur ini tidak membersihkan Recent Apps, menghentikan aplikasi lain, atau mengubah grafis game. Aplikasi ini tidak meningkatkan performa game.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -69,6 +73,8 @@ Game Tools أداة Android لفحص زمن استجابة شبكة TCP وذاك
 
 تُعالج النتائج على جهازك. تتصل فحوص الشبكة التي تطلبها بخدمة Cloudflare التي قد تتلقى عنوان IP العام. لا توجد حزم SDK للإعلانات أو التحليلات. واجهة التطبيق بالإنجليزية. تعتمد الميزات على الجهاز وإصدار Android والأذونات.
 
+تقيس Animation FPS الرسوم المتحركة التجريبية داخل هذا التطبيق فقط، ولا تقيس FPS لألعاب أخرى ولا تعرضه فوق الألعاب. يفتح App settings إعدادات Android فقط؛ ولا يغلق التطبيقات الحديثة أو يوقف التطبيقات الأخرى أو يغير رسومات الألعاب. لا يعزز هذا التطبيق أداء الألعاب.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </ar>
@@ -92,6 +98,8 @@ Spouštějte nainstalované aplikace rozpoznané jako hry, otevřete nastavení 
 Volitelný režim Nerušit může ztišit budíky a média, ale neodmítá hovory. Volitelný panel obnovovací frekvence vyžaduje přístup k údajům o používání a oprávnění zobrazovat přes jiné aplikace.
 
 Výsledky se zpracovávají ve vašem zařízení. Síťové kontroly na váš pokyn kontaktují Cloudflare, který může získat vaši veřejnou IP adresu. Aplikace neobsahuje reklamní ani analytické SDK. Rozhraní je v angličtině. Funkce závisí na zařízení, verzi Androidu a oprávněních.
+
+Animation FPS měří pouze testovací animaci v této aplikaci, nikoli FPS jiné hry, a neposkytuje překryvné měření FPS ve hrách. App settings pouze otevře nastavení Androidu; nezavírá nedávné aplikace, neukončuje jiné aplikace ani nemění grafiku her. Aplikace nezvyšuje herní výkon.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -117,6 +125,8 @@ Valgfri Forstyr ikke kan slå alarmer og medier fra, men afviser ikke opkald. De
 
 Resultater behandles på din enhed. Netværkskontroller, du starter, kontakter Cloudflare, som kan modtage din offentlige IP-adresse. Ingen annonce- eller analyse-SDK er inkluderet. Appens brugerflade er på engelsk. Funktioner afhænger af enhed, Android-version og tilladelser.
 
+Animation FPS måler kun appens egen testanimation, ikke FPS i andre spil, og viser ikke spil-FPS som overlejring. App settings åbner kun Android-indstillinger; funktionen lukker ikke seneste apps, stopper ikke andre apps og ændrer ikke spilgrafik. Appen øger ikke spilydelsen.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </da-DK>
@@ -140,6 +150,8 @@ Starten Sie installierte Apps, die als Spiele erkannt werden, öffnen Sie die An
 Der optionale Nicht-stören-Modus kann Wecker und Medien stummschalten, weist aber keine Anrufe ab. Die optionale Anzeigeleiste der Bildwiederholrate benötigt Nutzungsdatenzugriff und die Berechtigung, über anderen Apps zu erscheinen.
 
 Ergebnisse werden auf Ihrem Gerät verarbeitet. Von Ihnen gestartete Netzwerkprüfungen kontaktieren Cloudflare, das Ihre öffentliche IP-Adresse erhalten kann. Keine Werbe- oder Analyse-SDKs. Die App-Oberfläche ist auf Englisch. Funktionen hängen von Gerät, Android-Version und Berechtigungen ab.
+
+Animation FPS misst nur die Testanimation dieser App, nicht die FPS anderer Spiele, und bietet kein Spiel-FPS-Overlay. App settings öffnet lediglich die Android-Einstellungen; zuletzt verwendete Apps werden nicht geschlossen, andere Apps nicht beendet und Spielgrafiken nicht verändert. Die App steigert nicht die Spielleistung.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -165,6 +177,8 @@ No molestar es opcional y puede silenciar alarmas y contenido multimedia, pero n
 
 Los resultados se procesan en tu dispositivo. Las pruebas de red que solicitas contactan a Cloudflare, que puede recibir tu IP pública. No se incluyen SDK de publicidad ni análisis. La interfaz está en inglés. Las funciones dependen del dispositivo, la versión de Android y los permisos.
 
+Animation FPS mide únicamente la animación de prueba de esta app, no los FPS de otros juegos, y no ofrece una superposición de FPS del juego. App settings solo abre los ajustes de Android; no cierra apps recientes, no detiene otras apps ni cambia los gráficos de los juegos. Esta app no aumenta el rendimiento de los juegos.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </es-419>
@@ -188,6 +202,8 @@ Abre aplicaciones instaladas identificadas como juegos, accede a los ajustes de 
 No molestar es opcional y puede silenciar alarmas y contenido multimedia, pero no rechaza llamadas. La barra opcional de frecuencia de actualización requiere Acceso de uso y permiso para mostrarse sobre otras aplicaciones.
 
 Los resultados se procesan en tu dispositivo. Las pruebas de red que solicitas contactan con Cloudflare, que puede recibir tu IP pública. No se incluyen SDK de publicidad ni análisis. La interfaz está en inglés. Las funciones dependen del dispositivo, la versión de Android y los permisos.
+
+Animation FPS mide únicamente la animación de prueba de esta aplicación, no los FPS de otros juegos, y no ofrece una superposición de FPS del juego. App settings solo abre los ajustes de Android; no cierra aplicaciones recientes, no detiene otras aplicaciones ni cambia los gráficos de los juegos. Esta aplicación no aumenta el rendimiento de los juegos.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -213,6 +229,8 @@ Valinnainen Älä häiritse voi mykistää herätykset ja median, mutta ei hylk�
 
 Tulokset käsitellään laitteessasi. Käynnistämäsi verkkotarkistus ottaa yhteyden Cloudflareen, joka voi saada julkisen IP-osoitteesi. Ei mainos- tai analytiikka-SDK:ita. Käyttöliittymä on englanniksi. Toiminnot riippuvat laitteesta, Android-versiosta ja käyttöoikeuksista.
 
+Animation FPS mittaa vain tämän sovelluksen testianimaatiota, ei muiden pelien FPS-lukemaa, eikä näytä pelin FPS-peittokuvaa. App settings avaa vain Android-asetukset; se ei sulje viimeaikaisia sovelluksia, pysäytä muita sovelluksia tai muuta pelien grafiikkaa. Sovellus ei paranna pelien suorituskykyä.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </fi-FI>
@@ -236,6 +254,8 @@ Lancez les applications reconnues comme jeux, ouvrez les paramètres d'affichage
 Le mode Ne pas déranger est facultatif. Il peut couper les alarmes et les médias, mais ne rejette pas les appels. La barre facultative de rafraîchissement nécessite l'accès aux données d'utilisation et l'autorisation d'affichage par-dessus les applications.
 
 Les résultats sont traités sur votre appareil. Les vérifications réseau demandées contactent Cloudflare, qui peut recevoir votre adresse IP publique. Aucun SDK publicitaire ou analytique. L'interface est en anglais. Les fonctions dépendent de l'appareil, d'Android et des autorisations.
+
+Animation FPS mesure uniquement l'animation de test de cette application, pas les FPS d'autres jeux, et ne fournit pas de compteur FPS superposé aux jeux. App settings ouvre seulement les paramètres Android ; il ne ferme pas les applications récentes, n'arrête pas les autres applications et ne modifie pas les graphismes des jeux. L'application n'améliore pas les performances des jeux.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -261,6 +281,8 @@ Start Session केवल Game Tools का अस्थायी कैश स
 
 नतीजे आपके डिवाइस पर प्रोसेस होते हैं। आपके अनुरोध पर नेटवर्क जाँच Cloudflare से संपर्क करती है, जिसे आपका सार्वजनिक IP पता मिल सकता है। विज्ञापन या एनालिटिक्स SDK शामिल नहीं है। इंटरफेस अंग्रेज़ी में है। सुविधाएँ डिवाइस, Android संस्करण और अनुमतियों पर निर्भर हैं।
 
+Animation FPS केवल इस ऐप के परीक्षण एनिमेशन को मापता है, दूसरे गेम के FPS को नहीं। गेम FPS ओवरले उपलब्ध नहीं है। App settings केवल Android सेटिंग खोलता है; यह हाल के ऐप बंद नहीं करता, अन्य ऐप रोकता नहीं है और गेम के ग्राफिक्स नहीं बदलता। यह ऐप गेम का प्रदर्शन नहीं बढ़ाता।
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </hi-IN>
@@ -284,6 +306,8 @@ Indítson játékként felismert alkalmazásokat, nyissa meg a kijelző beállí
 Az opcionális Ne zavarjanak mód az ébresztéseket és a médiát is némíthatja, de nem utasítja el a hívásokat. A képfrissítési sávhoz használati hozzáférés és más alkalmazások feletti megjelenítési engedély kell.
 
 Az eredmények az eszközön kerülnek feldolgozásra. A kért hálózati teszt kapcsolatba lép a Cloudflare-rel, amely megkaphatja a nyilvános IP-címét. Nincs hirdetési vagy analitikai SDK. A felület angol nyelvű. A funkciók az eszköztől, az Android-verziótól és az engedélyektől függenek.
+
+Az Animation FPS csak az alkalmazás saját tesztanimációját méri, nem más játékok FPS-ét, és nem kínál játékbeli FPS-fedvényt. Az App settings csak az Android beállításait nyitja meg; nem zárja be a legutóbbi alkalmazásokat, nem állít le más appokat, és nem módosítja a játékok grafikáját. Az alkalmazás nem növeli a játékok teljesítményét.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -309,6 +333,8 @@ La modalità Non disturbare è facoltativa e può silenziare sveglie e contenuti
 
 I risultati sono elaborati sul dispositivo. I controlli di rete richiesti contattano Cloudflare, che può ricevere il tuo IP pubblico. Nessun SDK pubblicitario o di analisi. L'interfaccia è in inglese. Le funzioni dipendono da dispositivo, versione Android e autorizzazioni.
 
+Animation FPS misura solo l'animazione di prova di questa app, non gli FPS di altri giochi, e non offre un contatore FPS sovrapposto ai giochi. App settings apre soltanto le impostazioni Android; non chiude le app recenti, non arresta altre app e non modifica la grafica dei giochi. L'app non aumenta le prestazioni dei giochi.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </it-IT>
@@ -332,6 +358,8 @@ Start Session מנקה רק את המטמון הזמני של Game Tools ומצ�
 מצב נא לא להפריע הוא אופציונלי ועשוי להשתיק שעונים מעוררים ומדיה, אך אינו דוחה שיחות. סרגל קצב הרענון האופציונלי דורש גישה לנתוני שימוש והרשאת הצגה מעל אפליקציות.
 
 התוצאות מעובדות במכשיר. בדיקות רשת ביוזמתכם מתחברות ל-Cloudflare, שעשויה לקבל את כתובת ה-IP הציבורית שלכם. אין SDK לפרסום או לניתוח נתונים. הממשק באנגלית. התכונות תלויות במכשיר, בגרסת Android ובהרשאות.
+
+Animation FPS מודד רק את אנימציית הבדיקה של אפליקציה זו, ולא את ה-FPS של משחקים אחרים. אין תצוגת FPS מעל משחקים. App settings רק פותח את הגדרות Android; הוא לא סוגר אפליקציות אחרונות, לא עוצר אפליקציות אחרות ולא משנה גרפיקה במשחקים. האפליקציה אינה משפרת את ביצועי המשחקים.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -357,6 +385,8 @@ Start SessionはGame Tools自身の一時キャッシュのみを削除し、削
 
 結果は端末上で処理されます。利用者が実行したネットワーク確認はCloudflareへ接続し、接続先に公開IPアドレスが伝わる場合があります。広告・解析SDKは含みません。アプリの表示言語は英語です。機能は端末、Androidのバージョン、権限に依存します。
 
+Animation FPSは、このアプリ内のテストアニメーションのみを測定します。他のゲームのFPS測定やゲームFPSのオーバーレイ表示はできません。App settingsはAndroid設定を開くだけで、最近使ったアプリの終了、他のアプリの停止、ゲーム画質の変更は行いません。このアプリはゲームの性能を向上させません。
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </ja-JP>
@@ -380,6 +410,8 @@ Start Session은 Game Tools 자체의 임시 캐시만 정리하며 정리 전, 
 선택 기능인 방해 금지 모드는 알람과 미디어를 무음으로 만들 수 있지만 전화를 거절하지는 않습니다. 선택 기능인 주사율 표시줄에는 사용 정보 접근 권한과 다른 앱 위에 표시 권한이 필요합니다.
 
 결과는 기기에서 처리합니다. 사용자가 실행하는 네트워크 검사는 Cloudflare에 연결하며 공개 IP 주소가 전달될 수 있습니다. 광고 또는 분석 SDK는 포함하지 않습니다. 앱 인터페이스는 영어입니다. 기능은 기기, Android 버전 및 권한에 따라 달라집니다.
+
+Animation FPS는 이 앱의 테스트 애니메이션만 측정하며 다른 게임의 FPS를 측정하거나 게임 FPS 오버레이를 제공하지 않습니다. App settings는 Android 설정만 열며 최근 앱을 닫거나 다른 앱을 중지하거나 게임 그래픽을 변경하지 않습니다. 이 앱은 게임 성능을 향상하지 않습니다.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -405,6 +437,8 @@ Optioneel Niet storen kan alarmen en media dempen, maar weigert geen oproepen. D
 
 Resultaten worden op je apparaat verwerkt. Netwerkcontroles die je zelf start maken verbinding met Cloudflare, dat je openbare IP-adres kan ontvangen. Geen advertentie- of analyse-SDK's. De interface is in het Engels. Functies hangen af van apparaat, Android-versie en rechten.
 
+Animation FPS meet alleen de testanimatie van deze app, niet de FPS van andere games, en biedt geen game-FPS-overlay. App settings opent alleen de Android-instellingen; het sluit geen recente apps, stopt geen andere apps en wijzigt geen gamegraphics. Deze app verhoogt de gameprestaties niet.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </nl-NL>
@@ -428,6 +462,8 @@ Start installerte apper som gjenkjennes som spill, åpne Androids skjerminnstill
 Valgfri Ikke forstyrr kan dempe alarmer og medier, men avviser ikke anrop. Den valgfrie oppdateringslinjen krever brukstilgang og tillatelse til å vises over andre apper.
 
 Resultater behandles på enheten. Nettverkskontroller du starter kontakter Cloudflare, som kan motta din offentlige IP-adresse. Ingen reklame- eller analyse-SDK-er. Grensesnittet er på engelsk. Funksjoner avhenger av enhet, Android-versjon og tillatelser.
+
+Animation FPS måler bare denne appens testanimasjon, ikke FPS i andre spill, og tilbyr ikke et spill-FPS-overlegg. App settings åpner bare Android-innstillinger; funksjonen lukker ikke nylige apper, stopper ikke andre apper og endrer ikke spillgrafikk. Appen øker ikke spillytelsen.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -453,6 +489,8 @@ Opcjonalny tryb Nie przeszkadzać może wyciszać alarmy i multimedia, ale nie o
 
 Wyniki są przetwarzane na urządzeniu. Zlecane kontrole sieci łączą się z Cloudflare, który może otrzymać publiczny adres IP. Brak SDK reklamowych i analitycznych. Interfejs jest po angielsku. Funkcje zależą od urządzenia, wersji Androida i uprawnień.
 
+Animation FPS mierzy wyłącznie animację testową tej aplikacji, a nie FPS innych gier, i nie oferuje nakładki z FPS gry. App settings tylko otwiera ustawienia Androida; nie zamyka ostatnich aplikacji, nie zatrzymuje innych aplikacji ani nie zmienia grafiki gier. Aplikacja nie zwiększa wydajności gier.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </pl-PL>
@@ -476,6 +514,8 @@ Abra apps instalados identificados como jogos, acesse as configurações de tela
 O modo Não perturbe é opcional e pode silenciar alarmes e mídia, mas não rejeita chamadas. A barra opcional de taxa de atualização exige acesso ao uso e permissão para aparecer sobre outros apps.
 
 Os resultados são processados no dispositivo. As verificações de rede solicitadas contatam a Cloudflare, que pode receber seu IP público. Nenhum SDK de publicidade ou análise é incluído. A interface está em inglês. Os recursos dependem do dispositivo, da versão do Android e das permissões.
+
+Animation FPS mede apenas a animação de teste deste app, não os FPS de outros jogos, e não oferece uma sobreposição de FPS do jogo. App settings apenas abre as configurações do Android; não fecha apps recentes, não interrompe outros apps nem altera os gráficos dos jogos. Este app não aumenta o desempenho dos jogos.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -501,6 +541,8 @@ Modul opțional Nu deranja poate opri sunetul alarmelor și conținutului media,
 
 Rezultatele sunt procesate pe dispozitiv. Verificările de rețea cerute contactează Cloudflare, care poate primi adresa IP publică. Fără SDK-uri de publicitate sau analiză. Interfața este în engleză. Funcțiile depind de dispozitiv, versiunea Android și permisiuni.
 
+Animation FPS măsoară doar animația de test a acestei aplicații, nu FPS-ul altor jocuri, și nu oferă un indicator FPS suprapus jocurilor. App settings deschide doar setările Android; nu închide aplicațiile recente, nu oprește alte aplicații și nu modifică grafica jocurilor. Aplicația nu crește performanța jocurilor.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </ro>
@@ -524,6 +566,8 @@ Start Session очищает только временный кеш Game Tools �
 Необязательный режим «Не беспокоить» может отключать звук будильников и медиа, но не отклоняет звонки. Необязательная панель частоты обновления требует доступа к данным об использовании и разрешения на показ поверх приложений.
 
 Результаты обрабатываются на устройстве. Запрошенные вами проверки сети обращаются к Cloudflare, которая может получить публичный IP-адрес. Рекламных и аналитических SDK нет. Интерфейс на английском. Функции зависят от устройства, версии Android и разрешений.
+
+Animation FPS измеряет только тестовую анимацию этого приложения, а не FPS других игр, и не показывает игровой FPS поверх игр. App settings только открывает настройки Android; функция не закрывает недавние приложения, не останавливает другие приложения и не меняет графику игр. Приложение не повышает производительность игр.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -549,6 +593,8 @@ Voliteľný režim Nerušiť môže stíšiť budíky a médiá, ale neodmieta h
 
 Výsledky sa spracúvajú v zariadení. Sieťové kontroly na váš pokyn kontaktujú Cloudflare, ktorý môže získať vašu verejnú IP adresu. Bez reklamných a analytických SDK. Rozhranie je v angličtine. Funkcie závisia od zariadenia, verzie Androidu a povolení.
 
+Animation FPS meria iba testovaciu animáciu tejto aplikácie, nie FPS iných hier, a neposkytuje prekryvné zobrazenie FPS hier. App settings len otvorí nastavenia Androidu; nezatvára nedávne aplikácie, nezastavuje iné aplikácie ani nemení grafiku hier. Aplikácia nezvyšuje herný výkon.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </sk>
@@ -572,6 +618,8 @@ Starta installerade appar som identifieras som spel, öppna Androids skärminst�
 Valfritt Stör ej kan tysta alarm och media men avvisar inte samtal. Den valfria uppdateringsfrekvensraden kräver åtkomst till användningsdata och tillstånd att visas över andra appar.
 
 Resultaten behandlas på din enhet. Nätverkskontroller som du startar kontaktar Cloudflare, som kan få din offentliga IP-adress. Inga reklam- eller analys-SDK:er ingår. Gränssnittet är på engelska. Funktioner beror på enhet, Android-version och behörigheter.
+
+Animation FPS mäter bara appens egen testanimation, inte FPS i andra spel, och visar inget spel-FPS-överlägg. App settings öppnar bara Android-inställningar; funktionen stänger inte senaste appar, stoppar inte andra appar och ändrar inte spelgrafik. Appen ökar inte spelprestandan.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -597,6 +645,8 @@ Start Session ล้างเฉพาะแคชชั่วคราวขอ
 
 ผลประมวลผลบนอุปกรณ์ การตรวจสอบเครือข่ายที่คุณสั่งจะติดต่อ Cloudflare ซึ่งอาจได้รับ IP สาธารณะของคุณ ไม่มี SDK โฆษณาหรือวิเคราะห์ข้อมูล อินเทอร์เฟซเป็นภาษาอังกฤษ ฟังก์ชันขึ้นอยู่กับอุปกรณ์ เวอร์ชัน Android และสิทธิ์ที่อนุญาต
 
+Animation FPS วัดเฉพาะแอนิเมชันทดสอบภายในแอปนี้ ไม่ได้วัด FPS ของเกมอื่นและไม่มีแถบ FPS ซ้อนทับเกม App settings เปิดการตั้งค่า Android เท่านั้น ไม่ปิดแอปล่าสุด ไม่หยุดแอปอื่น และไม่เปลี่ยนกราฟิกเกม แอปนี้ไม่เพิ่มประสิทธิภาพเกม
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </th>
@@ -620,6 +670,8 @@ Oyun olarak tanınan yüklü uygulamaları başlatın, Android ekran ayarların�
 İsteğe bağlı Rahatsız Etmeyin, alarmları ve medyayı sessize alabilir ancak aramaları reddetmez. İsteğe bağlı yenileme hızı çubuğu için kullanım erişimi ve diğer uygulamalar üzerinde gösterme izni gerekir.
 
 Sonuçlar cihazda işlenir. Başlattığınız ağ kontrolleri Cloudflare ile bağlantı kurar; Cloudflare genel IP adresinizi alabilir. Reklam veya analiz SDK'sı yoktur. Arayüz İngilizcedir. Özellikler cihaza, Android sürümüne ve izinlere bağlıdır.
+
+Animation FPS yalnızca bu uygulamanın test animasyonunu ölçer; başka oyunların FPS değerini ölçmez ve oyun FPS katmanı sunmaz. App settings yalnızca Android ayarlarını açar; son uygulamaları kapatmaz, diğer uygulamaları durdurmaz veya oyun grafiklerini değiştirmez. Bu uygulama oyun performansını artırmaz.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
@@ -645,6 +697,8 @@ Start Session очищає лише тимчасовий кеш Game Tools і п
 
 Результати обробляються на пристрої. Замовлені вами перевірки мережі звертаються до Cloudflare, яка може отримати публічну IP-адресу. Рекламних і аналітичних SDK немає. Інтерфейс англійською. Функції залежать від пристрою, версії Android і дозволів.
 
+Animation FPS вимірює лише тестову анімацію цієї програми, а не FPS інших ігор, і не показує ігровий FPS поверх ігор. App settings лише відкриває налаштування Android; функція не закриває нещодавні програми, не зупиняє інші програми та не змінює графіку ігор. Програма не підвищує продуктивність ігор.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </uk>
@@ -669,6 +723,8 @@ Chế độ Không làm phiền là tùy chọn, có thể tắt tiếng báo th
 
 Kết quả được xử lý trên thiết bị. Kiểm tra mạng do bạn yêu cầu liên hệ Cloudflare, nơi có thể nhận địa chỉ IP công khai của bạn. Không có SDK quảng cáo hoặc phân tích. Giao diện bằng tiếng Anh. Tính năng phụ thuộc thiết bị, phiên bản Android và quyền được cấp.
 
+Animation FPS chỉ đo hoạt ảnh thử nghiệm trong ứng dụng này, không đo FPS của trò chơi khác và không cung cấp lớp phủ FPS trò chơi. App settings chỉ mở phần cài đặt Android; không đóng ứng dụng gần đây, không dừng ứng dụng khác hoặc thay đổi đồ họa trò chơi. Ứng dụng này không tăng hiệu năng trò chơi.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com
 </vi>
@@ -692,6 +748,8 @@ Start Session 仅清理 Game Tools 自身的临时缓存，显示清理前、已
 可选的勿扰模式可能会静音闹钟和媒体，但不会拒接来电。可选的刷新率显示条需要使用情况访问权限及在其他应用上层显示的权限。
 
 结果在设备上处理。用户主动执行的网络检测会连接 Cloudflare，对方可能接收到您的公网 IP 地址。不包含广告或分析 SDK。应用界面为英语。功能取决于设备、Android 版本及已授予的权限。
+
+Animation FPS仅测量本应用内的测试动画，不测量其他游戏的FPS，也不提供游戏FPS悬浮显示。App settings仅打开Android设置，不会关闭最近使用的应用、停止其他应用或更改游戏画质。本应用不会提升游戏性能。
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

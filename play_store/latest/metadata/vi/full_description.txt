@@ -10,5 +10,7 @@ Chế độ Không làm phiền là tùy chọn, có thể tắt tiếng báo th
 
 Kết quả được xử lý trên thiết bị. Kiểm tra mạng do bạn yêu cầu liên hệ Cloudflare, nơi có thể nhận địa chỉ IP công khai của bạn. Không có SDK quảng cáo hoặc phân tích. Giao diện bằng tiếng Anh. Tính năng phụ thuộc thiết bị, phiên bản Android và quyền được cấp.
 
+Animation FPS chỉ đo hoạt ảnh thử nghiệm trong ứng dụng này, không đo FPS của trò chơi khác và không cung cấp lớp phủ FPS trò chơi. App settings chỉ mở phần cài đặt Android; không đóng ứng dụng gần đây, không dừng ứng dụng khác hoặc thay đổi đồ họa trò chơi. Ứng dụng này không tăng hiệu năng trò chơi.
+
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

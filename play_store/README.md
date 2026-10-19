@@ -2,11 +2,11 @@
 
 The current listing title is **Game Tools: Network & Cache**.
 
-Use [latest/README.md](latest/README.md) for the current 29-language upload package, images, privacy policy and default/custom listing instructions. The ZIP deliverable is game-tools-store-listing-latest.zip in this directory.
+Use [latest/README.md](latest/README.md) for the current 29-language upload package, images, privacy policy and default/custom listing instructions. The October 19 remediation ZIP is game-tools-policy-fix-2026-10-19.zip in this directory. Start with latest/SUBMISSION_CHECKLIST.md before submitting a new binary and listing together.
 
-The current English fields are also available as title.txt, short-description.txt and full-description.txt. Canonical translations are stored in listing-source.json. Each locale has a title, short description and full description. The app interface and shared images are in English, as disclosed in every description.
+The current English fields are also available as title.txt, short-description.txt and full-description.txt. Canonical translations are stored in listing-source.json, with the explicit Animation FPS/settings scope in animation-fps-disclosures.json. Packaging combines both sources for each locale. The app interface and shared images are in English, as disclosed in every description.
 
-Current screen captures use Start Session, Network Latency, This app's cache, Display & games, and session Active/Inactive. The display monitor shows only refresh rate in Hz. The icon and feature graphic use the new Game Tools identity.
+Current screen captures use Start Session, Network Latency, This app's cache, App settings, Display & games, Animation FPS / This app only, and session Active/Inactive. The display monitor shows only refresh rate in Hz. The rocket is unchanged session artwork. The icon and feature graphic use the Game Tools identity.
 
 Older release-note files refer to their historical release and are not part of the latest upload bundle. Previous promotional assets under assets/play_store are superseded. Do not upload them together with this package.
 
@@ -14,7 +14,7 @@ Older release-note files refer to their historical release and are not part of t
 
 Render the actual Flutter widgets with FVM Flutter 3.41.2:
 
-    fvm flutter test tool/capture_play_store_test.dart --reporter expanded
+    node scripts/capture_store_assets.cjs
 
 With Node.js and Sharp available, package and validate all locales and current images:
 
@@ -25,4 +25,4 @@ Prepare the artwork with scripts/prepare_brand_assets.cjs, passing the generated
 
 Export in-app policy text from docs/index.html with scripts/export_privacy_text.py. Browser layout checks are in scripts/check_privacy_page.cjs.
 
-The screenshot renderer does not execute Android-native APIs and supplies no invented telemetry. Test the matching Android release on a device before resubmission. The current package has not been applied to Play Console; the custom-store-listing inventory and remote edits require an authenticated account.
+The capture wrapper runs Flutter 3.41.2 and records source/screenshot hashes. Direct Flutter captures remain useful for inspection, but rerun the wrapper before packaging to refresh provenance. The screenshot renderer does not execute Android-native APIs and supplies no invented telemetry. Test the matching Android release on a device before resubmission. The current package has not been applied to Play Console; the custom-store-listing inventory and remote edits require an authenticated account.
