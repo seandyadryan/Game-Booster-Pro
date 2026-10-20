@@ -1,7 +1,7 @@
 Game Tools - Privacy Policy
 PT Deploy Dulu Pulang Nanti
 
-Effective date: October 15, 2026
+Effective date: October 20, 2026
 Application package: com.deploydulupulangnanti.gameboosterpro
 
 PT Deploy Dulu Pulang Nanti ("we", "us", or "our") provides Game Tools. This policy explains how the app handles information when you use its cache tools, network diagnostics, game launcher, device dashboard, and optional Android permissions.
@@ -34,13 +34,13 @@ Usage Access: optional access used to read other launchable apps' cache sizes an
 
 Display over other apps: optional access used to show a small monitor bar over the selected game. Tapping the bar removes it.
 
-Do Not Disturb access: optional access used to request a strict interruption filter and end the app's request when the session ends. Strict Do Not Disturb can silence alarms and media; it does not reject calls or guarantee that call screens are hidden.
+Do Not Disturb access: optional access used only when you request the Do Not Disturb control. You can turn the app's request off using the same control. Strict Do Not Disturb can silence alarms and media; it does not reject calls or guarantee that call screens are hidden.
 
 You may decline or revoke optional access in Android settings. Basic app-cache cleanup does not require Usage Access. Denying an optional permission disables the related function.
 
 Cache cleanup and your files
 
-Clear This App's Cache and Start Session remove temporary files only from Game Tools' internal, code-cache, and external app-cache directories. The app reports the bytes removed and the remaining cache. It does not delete your preferences, game saves, other apps' private data, or personal media. Cache files may be recreated during normal use. Cache cleanup for other apps is performed manually through Android settings.
+Clear This App's Cache removes temporary files only from Game Tools' internal, code-cache, and external app-cache directories when you choose that action. The app reports the bytes removed and the remaining cache. It does not delete your preferences, game saves, other apps' private data, or personal media. Cache files may be recreated during normal use. Cache cleanup for other apps is performed manually through Android settings. Opening the game library or launching a game does not clear cache or change Do Not Disturb. Ordinary game launching does not require Usage Access or overlay permission; those permissions are optional for the screen refresh-rate bar.
 
 Support messages
 

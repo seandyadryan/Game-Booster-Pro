@@ -2,7 +2,7 @@ Game Tools 是一款 Android 实用工具，提供 TCP 网络延迟检测、本�
 
 Network Latency 向 Cloudflare 1.1.1.1:443 发起五次 TCP 连接，显示平均、最低和最高延迟、抖动及失败次数。测量的是建立连接所需的时间，并非游戏服务器 ping 或互联网速度测试。
 
-Start Session 仅清理 Game Tools 自身的临时缓存，显示清理前、已删除和剩余的字节数。其他应用的缓存需在 Android 设置中手动清理。查看缓存最大的五个应用需要使用情况访问权限及 Android 8 或更高版本。
+This app's cache 仅清理 Game Tools 自身的临时缓存，显示清理前、已删除和剩余的字节数。其他应用的缓存需在 Android 设置中手动清理。查看缓存最大的五个应用需要使用情况访问权限及 Android 8 或更高版本。
 
 启动被识别为游戏的已安装应用、打开 Android 显示设置并查看电池状态。屏幕刷新率以 Hz 为单位，并非游戏 FPS。游戏内的画质设置由各游戏自行控制。
 
@@ -10,7 +10,7 @@ Start Session 仅清理 Game Tools 自身的临时缓存，显示清理前、已
 
 结果在设备上处理。用户主动执行的网络检测会连接 Cloudflare，对方可能接收到您的公网 IP 地址。不包含广告或分析 SDK。应用界面为英语。功能取决于设备、Android 版本及已授予的权限。
 
-Animation FPS仅测量本应用内的测试动画，不测量其他游戏的FPS，也不提供游戏FPS悬浮显示。App settings仅打开Android设置，不会关闭最近使用的应用、停止其他应用或更改游戏画质。本应用不会提升游戏性能。
+Open game library仅打开游戏列表，不会清理缓存或更改设备设置。App settings仅打开Android设置。本应用不会关闭最近使用的应用、停止其他应用、更改游戏画质、测量游戏FPS或提升游戏性能。
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

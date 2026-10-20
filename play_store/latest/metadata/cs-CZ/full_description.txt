@@ -2,7 +2,7 @@ Game Tools je nástroj pro Android pro měření latence TCP, mezipaměť této 
 
 Network Latency provede pět připojení TCP ke Cloudflare 1.1.1.1:443 a zobrazí průměrnou, minimální a maximální latenci, kolísání a neúspěšné pokusy. Jde o dobu připojení, nikoli ping herního serveru nebo test rychlosti internetu.
 
-Start Session vymaže pouze dočasnou mezipaměť Game Tools a zobrazí původní, odstraněné a zbývající bajty. Mezipaměť jiných aplikací se maže ručně v nastavení Androidu. Žebříček pěti největších mezipamětí vyžaduje přístup k údajům o používání a Android 8 nebo novější.
+This app's cache vymaže pouze dočasnou mezipaměť Game Tools a zobrazí původní, odstraněné a zbývající bajty. Mezipaměť jiných aplikací se maže ručně v nastavení Androidu. Žebříček pěti největších mezipamětí vyžaduje přístup k údajům o používání a Android 8 nebo novější.
 
 Spouštějte nainstalované aplikace rozpoznané jako hry, otevřete nastavení displeje a zobrazte stav baterie. Obnovovací frekvence displeje je v Hz, nikoli FPS hry. Grafiku uvnitř hry nastavuje samotná hra.
 
@@ -10,7 +10,7 @@ Volitelný režim Nerušit může ztišit budíky a média, ale neodmítá hovor
 
 Výsledky se zpracovávají ve vašem zařízení. Síťové kontroly na váš pokyn kontaktují Cloudflare, který může získat vaši veřejnou IP adresu. Aplikace neobsahuje reklamní ani analytické SDK. Rozhraní je v angličtině. Funkce závisí na zařízení, verzi Androidu a oprávněních.
 
-Animation FPS měří pouze testovací animaci v této aplikaci, nikoli FPS jiné hry, a neposkytuje překryvné měření FPS ve hrách. App settings pouze otevře nastavení Androidu; nezavírá nedávné aplikace, neukončuje jiné aplikace ani nemění grafiku her. Aplikace nezvyšuje herní výkon.
+Open game library otevře seznam her bez čištění mezipaměti nebo změn nastavení zařízení. App settings pouze otevře nastavení Androidu. Aplikace nezavírá nedávné aplikace, neukončuje jiné aplikace, nemění grafiku her, neměří herní FPS ani nezvyšuje herní výkon.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

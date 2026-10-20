@@ -143,7 +143,8 @@ class MainActivity : FlutterActivity() {
                 "launchGame" -> {
                     val target = call.argument<String>("packageName") ?: error("Select a game first.")
                     require(target.isNotBlank()) { "Invalid game package ID." }
-                    if (!Settings.canDrawOverlays(this) || !hasUsageAccess()) {
+                    val showDisplayBar = call.argument<Boolean>("showDisplayBar") == true
+                    if (showDisplayBar && (!Settings.canDrawOverlays(this) || !hasUsageAccess())) {
                         pendingGamePackage = target
                         if (!Settings.canDrawOverlays(this)) {
                             startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName")))
@@ -156,7 +157,9 @@ class MainActivity : FlutterActivity() {
                     }
                     val intent = packageManager.getLaunchIntentForPackage(target) ?: error("This game is no longer installed or cannot be launched.")
                     intent.setPackage(target)
-                    startGameMonitor(target)
+                    pendingGamePackage = null
+                    usageSettingsOpenedForGame = false
+                    if (showDisplayBar) startGameMonitor(target) else stopGameMonitor()
                     startActivity(intent)
                     result.success(mapOf("launched" to true))
                 }

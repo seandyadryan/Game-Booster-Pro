@@ -2,7 +2,7 @@ Game Tools là tiện ích Android cho độ trễ mạng TCP, bộ nhớ đệm
 
 Network Latency thực hiện năm kết nối TCP tới Cloudflare 1.1.1.1:443, hiển thị độ trễ trung bình, thấp nhất, cao nhất, độ dao động và các lần thử thất bại. Đây là thời gian kết nối, không phải ping máy chủ trò chơi hay bài kiểm tra tốc độ Internet.
 
-Start Session chỉ xóa bộ nhớ đệm tạm thời của Game Tools và hiển thị số byte ban đầu, đã xóa và còn lại. Bộ nhớ đệm của ứng dụng khác được xóa thủ công trong cài đặt Android. Danh sách năm bộ nhớ đệm lớn nhất cần quyền truy cập dữ liệu sử dụng và Android 8 trở lên.
+This app's cache chỉ xóa bộ nhớ đệm tạm thời của Game Tools và hiển thị số byte ban đầu, đã xóa và còn lại. Bộ nhớ đệm của ứng dụng khác được xóa thủ công trong cài đặt Android. Danh sách năm bộ nhớ đệm lớn nhất cần quyền truy cập dữ liệu sử dụng và Android 8 trở lên.
 
 Mở ứng dụng đã cài được nhận diện là trò chơi, mở cài đặt màn hình Android và xem pin. Tần số quét màn hình được đo bằng Hz, không phải FPS của trò chơi. Đồ họa trong trò chơi do chính trò chơi kiểm soát.
 
@@ -10,7 +10,7 @@ Chế độ Không làm phiền là tùy chọn, có thể tắt tiếng báo th
 
 Kết quả được xử lý trên thiết bị. Kiểm tra mạng do bạn yêu cầu liên hệ Cloudflare, nơi có thể nhận địa chỉ IP công khai của bạn. Không có SDK quảng cáo hoặc phân tích. Giao diện bằng tiếng Anh. Tính năng phụ thuộc thiết bị, phiên bản Android và quyền được cấp.
 
-Animation FPS chỉ đo hoạt ảnh thử nghiệm trong ứng dụng này, không đo FPS của trò chơi khác và không cung cấp lớp phủ FPS trò chơi. App settings chỉ mở phần cài đặt Android; không đóng ứng dụng gần đây, không dừng ứng dụng khác hoặc thay đổi đồ họa trò chơi. Ứng dụng này không tăng hiệu năng trò chơi.
+Open game library mở danh sách trò chơi mà không dọn bộ nhớ đệm hoặc thay đổi cài đặt thiết bị. App settings chỉ mở cài đặt Android. Ứng dụng không đóng ứng dụng gần đây, không dừng ứng dụng khác, không thay đổi đồ họa, không đo FPS trò chơi và không tăng hiệu năng trò chơi.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

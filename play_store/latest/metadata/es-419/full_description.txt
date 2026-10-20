@@ -2,7 +2,7 @@ Game Tools es una utilidad Android para latencia TCP, caché de esta app, acceso
 
 Network Latency realiza cinco conexiones TCP a Cloudflare 1.1.1.1:443 y muestra latencia promedio, mínima y máxima, jitter e intentos fallidos. Son tiempos de conexión, no el ping del servidor del juego ni una prueba de velocidad de Internet.
 
-Start Session limpia únicamente la caché temporal de Game Tools y muestra los bytes iniciales, eliminados y restantes. La caché de otras apps se limpia manualmente en los ajustes de Android. La lista de las cinco cachés más grandes requiere Acceso de uso y Android 8 o posterior.
+This app's cache limpia únicamente la caché temporal de Game Tools y muestra los bytes iniciales, eliminados y restantes. La caché de otras apps se limpia manualmente en los ajustes de Android. La lista de las cinco cachés más grandes requiere Acceso de uso y Android 8 o posterior.
 
 Abre apps instaladas identificadas como juegos, accede a los ajustes de pantalla de Android y consulta la batería. La frecuencia de actualización de la pantalla se mide en Hz, no en FPS del juego. Cada juego controla sus propios gráficos.
 
@@ -10,7 +10,7 @@ No molestar es opcional y puede silenciar alarmas y contenido multimedia, pero n
 
 Los resultados se procesan en tu dispositivo. Las pruebas de red que solicitas contactan a Cloudflare, que puede recibir tu IP pública. No se incluyen SDK de publicidad ni análisis. La interfaz está en inglés. Las funciones dependen del dispositivo, la versión de Android y los permisos.
 
-Animation FPS mide únicamente la animación de prueba de esta app, no los FPS de otros juegos, y no ofrece una superposición de FPS del juego. App settings solo abre los ajustes de Android; no cierra apps recientes, no detiene otras apps ni cambia los gráficos de los juegos. Esta app no aumenta el rendimiento de los juegos.
+Open game library abre la lista de juegos sin limpiar cachés ni cambiar ajustes del dispositivo. App settings solo abre los ajustes de Android. Esta app no cierra apps recientes, no detiene otras apps, no cambia gráficos, no mide FPS de juegos ni aumenta su rendimiento.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

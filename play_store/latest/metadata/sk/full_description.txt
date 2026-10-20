@@ -2,7 +2,7 @@ Game Tools je nástroj Android na meranie latencie TCP, vyrovnávaciu pamäť te
 
 Network Latency vytvorí päť TCP-pripojení ku Cloudflare 1.1.1.1:443 a zobrazí priemernú, minimálnu a maximálnu latenciu, kolísanie a neúspešné pokusy. Ide o časy pripojenia, nie ping herného servera ani test rýchlosti internetu.
 
-Start Session vymaže iba dočasnú vyrovnávaciu pamäť Game Tools a zobrazí pôvodné, odstránené a zostávajúce bajty. Pamäť iných aplikácií sa čistí ručne v nastaveniach Androidu. Rebríček piatich najväčších pamätí vyžaduje prístup k údajom o používaní a Android 8 alebo novší.
+This app's cache vymaže iba dočasnú vyrovnávaciu pamäť Game Tools a zobrazí pôvodné, odstránené a zostávajúce bajty. Pamäť iných aplikácií sa čistí ručne v nastaveniach Androidu. Rebríček piatich najväčších pamätí vyžaduje prístup k údajom o používaní a Android 8 alebo novší.
 
 Spúšťajte nainštalované aplikácie rozpoznané ako hry, otvorte nastavenia displeja Androidu a zobrazte stav batérie. Obnovovacia frekvencia displeja je v Hz, nie FPS hry. Grafiku v hre nastavuje samotná hra.
 
@@ -10,7 +10,7 @@ Voliteľný režim Nerušiť môže stíšiť budíky a médiá, ale neodmieta h
 
 Výsledky sa spracúvajú v zariadení. Sieťové kontroly na váš pokyn kontaktujú Cloudflare, ktorý môže získať vašu verejnú IP adresu. Bez reklamných a analytických SDK. Rozhranie je v angličtine. Funkcie závisia od zariadenia, verzie Androidu a povolení.
 
-Animation FPS meria iba testovaciu animáciu tejto aplikácie, nie FPS iných hier, a neposkytuje prekryvné zobrazenie FPS hier. App settings len otvorí nastavenia Androidu; nezatvára nedávne aplikácie, nezastavuje iné aplikácie ani nemení grafiku hier. Aplikácia nezvyšuje herný výkon.
+Open game library otvorí zoznam hier bez čistenia vyrovnávacej pamäte alebo zmeny nastavení zariadenia. App settings len otvorí nastavenia Androidu. Aplikácia nezatvára nedávne aplikácie, nezastavuje iné aplikácie, nemení grafiku hier, nemeria herné FPS ani nezvyšuje herný výkon.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

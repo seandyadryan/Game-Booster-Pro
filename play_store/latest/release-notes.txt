@@ -1,0 +1,6 @@
+<en-US>
+Replaced the session action with Open game library. Game launching no longer requires Usage Access or overlay permission unless the screen Hz bar is selected. Removed the animation FPS demo. Cache cleanup and Do Not Disturb are now separate actions. Kept the original rocket artwork.
+</en-US>
+<id>
+Mengganti aksi sesi dengan Open game library. Membuka game tidak lagi memerlukan Usage Access atau izin overlay, kecuali bar Hz layar dipilih. Menghapus demo FPS animasi. Pembersihan cache dan Do Not Disturb kini dijalankan secara terpisah. Gambar roket asli tetap dipertahankan.
+</id>

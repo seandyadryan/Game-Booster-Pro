@@ -1,15 +1,15 @@
 Package: com.deploydulupulangnanti.gameboosterpro
-App identity for this corrected source: Game Tools: Network & Cache.
+App identity: Game Tools: Network & Cache
 
-This is a utility and game-shortcut app, not a game-performance booster.
+This source implements game shortcuts and device utilities, not performance boosting. Open game library lists installed apps identified as games and launches the selected package. Ordinary launching does not request Usage Access or overlay access, clear cache, change Do Not Disturb, or alter game settings.
 
-Start Session clears only this app's own temporary cache and can optionally request system Do Not Disturb after consent. Cleared bytes are measured and may be zero. Usage Access allows cache-size ranking and detection of a selected game; it does not authorize clearing another app's private cache. External app cleanup is manual in Android settings.
+The session/boost flow and the animation FPS demo have been removed. There is no game-FPS monitor, game-FPS overlay or graphics modification. The decorative rocket is retained only as navigation artwork. Screen refresh rate is labeled in Hz and is not game FPS.
 
-Network Latency measures TCP connection time to Cloudflare 1.1.1.1:443. It is not AI, a game-server ping test or a network accelerator. App settings only opens Android settings; it does not close recent apps or force-stop apps. Display & games opens display settings or launches games; it does not change game graphics.
+This app's cache removes only Game Tools' temporary files after the user explicitly selects cleanup, showing measured sizes including zero. Other apps' private caches are not automatically cleared. Usage Access is optional for reading available cache sizes; external cleanup is manual in Android settings.
 
-The optional game display bar is labeled Display Refresh Rate in Hz, not game FPS. Animation FPS / This app only measures the in-app test animation and explicitly does not measure another game's FPS or provide a game FPS overlay. Battery percentage and temperature are shown in the dashboard when available, not in the game display bar. Do Not Disturb does not reject incoming calls.
+Network Latency measures TCP connection time to Cloudflare 1.1.1.1:443, not AI, game-server ping or network acceleration. App settings only opens Android settings; it does not close recent apps or stop other applications. The optional screen-Hz bar is separate from ordinary launching and requires disclosure and permissions.
 
-The rocket is decorative artwork for the session animation, not an indication of performance improvement.
+Do Not Disturb is an independent consented toggle, reversible through the same control. It can silence alarms and media but does not reject calls. Battery information is displayed in the app dashboard, not as a game-performance measurement.
 
 Support: seandyadryan2@gmail.com
 Developer: PT Deploy Dulu Pulang Nanti

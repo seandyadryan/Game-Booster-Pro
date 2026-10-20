@@ -18,7 +18,7 @@ async function main() {
   if (before.sha256 !== after.sha256) throw new Error('Runtime source changed during capture; rerun.');
   const screenshots = {};
   for (const group of ['phone', 'desktop']) {
-    for (const name of ['01-dashboard', '02-tools', '03-display-game-tools', '04-network-latency', '05-fps']) {
+    for (const name of ['01-dashboard', '02-tools', '03-display-game-tools', '04-network-latency', '05-dnd-consent']) {
       const file = group + '/' + name + '.png';
       screenshots[file] = sha256(await fs.readFile(path.join(root, 'play_store', file)));
     }

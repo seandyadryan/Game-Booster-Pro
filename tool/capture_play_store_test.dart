@@ -86,12 +86,12 @@ void main() {
       await tester.pumpAndSettle();
       await capture('02-tools');
       {
-        await tester.ensureVisible(find.text('Animation FPS'));
+        await tester.ensureVisible(find.text('Do Not Disturb'));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Animation FPS'));
+        await tester.tap(find.text('Do Not Disturb'));
         await tester.pumpAndSettle();
-        await capture('05-fps');
-        Navigator.of(tester.element(find.text('App animation only'))).pop();
+        await capture('05-dnd-consent');
+        await tester.tap(find.text('Cancel'));
         await tester.pumpAndSettle();
       }
       await tester.ensureVisible(find.text('Display & games'));

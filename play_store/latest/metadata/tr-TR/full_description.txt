@@ -2,7 +2,7 @@ Game Tools; TCP ağ gecikmesi, bu uygulamanın önbelleği, oyun kısayolları v
 
 Network Latency, Cloudflare 1.1.1.1:443 adresine beş TCP bağlantısı kurar; ortalama, en düşük ve en yüksek gecikmeyi, jitter değerini ve başarısız denemeleri gösterir. Bunlar bağlantı süreleridir; oyun sunucusu pingi veya İnternet hız testi değildir.
 
-Start Session yalnızca Game Tools'un geçici önbelleğini temizler; önceki, silinen ve kalan baytları gösterir. Diğer uygulamaların önbelleği Android ayarlarında elle temizlenir. En büyük beş önbellek listesi için kullanım erişimi ve Android 8 veya sonrası gerekir.
+This app's cache yalnızca Game Tools'un geçici önbelleğini temizler; önceki, silinen ve kalan baytları gösterir. Diğer uygulamaların önbelleği Android ayarlarında elle temizlenir. En büyük beş önbellek listesi için kullanım erişimi ve Android 8 veya sonrası gerekir.
 
 Oyun olarak tanınan yüklü uygulamaları başlatın, Android ekran ayarlarını açın ve pil durumunu görüntüleyin. Ekran yenileme hızı Hz cinsindedir, oyun FPS'si değildir. Oyun içi grafikleri oyunun kendisi kontrol eder.
 
@@ -10,7 +10,7 @@ Oyun olarak tanınan yüklü uygulamaları başlatın, Android ekran ayarların�
 
 Sonuçlar cihazda işlenir. Başlattığınız ağ kontrolleri Cloudflare ile bağlantı kurar; Cloudflare genel IP adresinizi alabilir. Reklam veya analiz SDK'sı yoktur. Arayüz İngilizcedir. Özellikler cihaza, Android sürümüne ve izinlere bağlıdır.
 
-Animation FPS yalnızca bu uygulamanın test animasyonunu ölçer; başka oyunların FPS değerini ölçmez ve oyun FPS katmanı sunmaz. App settings yalnızca Android ayarlarını açar; son uygulamaları kapatmaz, diğer uygulamaları durdurmaz veya oyun grafiklerini değiştirmez. Bu uygulama oyun performansını artırmaz.
+Open game library, önbellekleri temizlemeden veya cihaz ayarlarını değiştirmeden oyun listesini açar. App settings yalnızca Android ayarlarını açar. Uygulama son uygulamaları kapatmaz, diğer uygulamaları durdurmaz, oyun grafiklerini değiştirmez, oyun FPS değerini ölçmez veya oyun performansını artırmaz.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

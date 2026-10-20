@@ -5,27 +5,27 @@ const sharp = require('sharp');
 const {runtimeFingerprint} = require('./store_runtime.cjs');
 
 const codePoints = text => Array.from(text).length;
-const shotNames = ['01-dashboard.png', '02-tools.png', '03-display-game-tools.png', '04-network-latency.png', '05-fps.png'];
+const shotNames = ['01-dashboard.png', '02-tools.png', '03-display-game-tools.png', '04-network-latency.png', '05-dnd-consent.png'];
 
 async function main() {
   const root = path.resolve(__dirname, '..');
   const store = path.join(root, 'play_store');
   const latest = path.join(store, 'latest');
   const source = JSON.parse(await fs.readFile(path.join(store, 'listing-source.json'), 'utf8'));
-  const disclosures = JSON.parse(await fs.readFile(path.join(store, 'animation-fps-disclosures.json'), 'utf8'));
+  const disclosures = JSON.parse(await fs.readFile(path.join(store, 'feature-limitations.json'), 'utf8'));
   const capture = JSON.parse(await fs.readFile(path.join(store, 'capture-provenance.json'), 'utf8'));
   const runtime = await runtimeFingerprint(root);
   if (capture.runtime.sha256 !== runtime.sha256) throw new Error('Stale screenshots: run scripts/capture_store_assets.cjs.');
   if (Object.keys(source).length !== 29) throw new Error('Expected English plus the 28 requested locales.');
-  if (Object.keys(disclosures).length !== 29) throw new Error('Expected an explicit animation FPS disclosure for every locale.');
+  if (Object.keys(disclosures).length !== 29) throw new Error('Expected explicit feature limits for every locale.');
   const contact = '\n\nPT Deploy Dulu Pulang Nanti\nSupport: seandyadryan2@gmail.com';
   const fullText = locale => source[locale].full.trim() + '\n\n' + disclosures[locale] + contact;
   const report = {appPackage: 'com.deploydulupulangnanti.gameboosterpro', appInterfaceLanguage: 'en', consoleApplied: false, runtimeSha256: runtime.sha256, locales: {}, assets: []};
   const combined = ['# Current Localized Store Text', '', 'Interface and shared images: English. Titles and descriptions: localized below.', ''];
   for (const [locale, entry] of Object.entries(source)) {
-    if (!disclosures[locale]?.includes('Animation FPS')) throw new Error('Missing scope disclosure in ' + locale);
+    if (!disclosures[locale]) throw new Error('Missing scope disclosure in ' + locale);
     const full = fullText(locale);
-    if (/Game Booster Pro|AI Network|GFX Tools|BOOST NOW|YOUR GAME CONTROL CENTER|Game Mode PRO/i.test(full)) {
+    if (/Game Booster Pro|AI Network|GFX Tools|BOOST NOW|YOUR GAME CONTROL CENTER|Game Mode PRO|Start Session|Animation FPS/i.test(full)) {
       throw new Error('Superseded promotional claim in ' + locale + ' full description.');
     }
     const counts = {title: codePoints(entry.title), short: codePoints(entry.short), full: codePoints(full)};

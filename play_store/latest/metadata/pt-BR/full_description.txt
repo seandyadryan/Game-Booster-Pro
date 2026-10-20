@@ -2,7 +2,7 @@ Game Tools é um utilitário Android para latência de rede TCP, cache deste app
 
 Network Latency faz cinco conexões TCP com Cloudflare 1.1.1.1:443 e mostra latência média, mínima e máxima, jitter e tentativas que falharam. São tempos de conexão, não ping do servidor do jogo nem teste de velocidade da Internet.
 
-Start Session limpa somente o cache temporário do Game Tools e mostra os bytes iniciais, removidos e restantes. O cache de outros apps é limpo manualmente nas configurações do Android. A lista dos cinco maiores caches exige acesso ao uso e Android 8 ou posterior.
+This app's cache limpa somente o cache temporário do Game Tools e mostra os bytes iniciais, removidos e restantes. O cache de outros apps é limpo manualmente nas configurações do Android. A lista dos cinco maiores caches exige acesso ao uso e Android 8 ou posterior.
 
 Abra apps instalados identificados como jogos, acesse as configurações de tela do Android e veja a bateria. A taxa de atualização da tela é medida em Hz, não em FPS do jogo. Cada jogo controla seus próprios gráficos.
 
@@ -10,7 +10,7 @@ O modo Não perturbe é opcional e pode silenciar alarmes e mídia, mas não rej
 
 Os resultados são processados no dispositivo. As verificações de rede solicitadas contatam a Cloudflare, que pode receber seu IP público. Nenhum SDK de publicidade ou análise é incluído. A interface está em inglês. Os recursos dependem do dispositivo, da versão do Android e das permissões.
 
-Animation FPS mede apenas a animação de teste deste app, não os FPS de outros jogos, e não oferece uma sobreposição de FPS do jogo. App settings apenas abre as configurações do Android; não fecha apps recentes, não interrompe outros apps nem altera os gráficos dos jogos. Este app não aumenta o desempenho dos jogos.
+Open game library abre a lista de jogos sem limpar caches ou alterar configurações do dispositivo. App settings apenas abre as configurações do Android. O app não fecha apps recentes, não interrompe outros apps, não altera gráficos, não mede FPS dos jogos nem aumenta seu desempenho.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

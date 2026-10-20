@@ -5,7 +5,7 @@
       "maximum": 80
     },
     "full-description": {
-      "characters": 1579,
+      "characters": 1547,
       "maximum": 4000
     }
   },
@@ -20,61 +20,61 @@
       "file": "phone/01-dashboard.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 289625
+      "bytes": 284493
     },
     {
       "file": "phone/02-tools.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 191009
+      "bytes": 223559
     },
     {
       "file": "phone/03-display-game-tools.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 145353
+      "bytes": 145316
     },
     {
       "file": "phone/04-network-latency.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 155930
+      "bytes": 155737
     },
     {
-      "file": "phone/05-fps.png",
+      "file": "phone/05-dnd-consent.png",
       "width": 1080,
       "height": 1920,
-      "bytes": 133470
+      "bytes": 165201
     },
     {
       "file": "desktop/01-dashboard.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 239033
+      "bytes": 238703
     },
     {
       "file": "desktop/02-tools.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 229402
+      "bytes": 243611
     },
     {
       "file": "desktop/03-display-game-tools.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 167039
+      "bytes": 167482
     },
     {
       "file": "desktop/04-network-latency.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 163550
+      "bytes": 164071
     },
     {
-      "file": "desktop/05-fps.png",
+      "file": "desktop/05-dnd-consent.png",
       "width": 1920,
       "height": 1080,
-      "bytes": 156207
+      "bytes": 170556
     }
   ]
 }

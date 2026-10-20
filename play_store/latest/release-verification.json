@@ -1,0 +1,18 @@
+{
+  "verifiedAtUtc": "2026-10-20T04:32:45.591Z",
+  "appPackage": "com.deploydulupulangnanti.gameboosterpro",
+  "label": "Game Tools",
+  "versionName": "1.0.0",
+  "versionCode": "18",
+  "bundle": "game-tools-1.0.0-18.aab",
+  "bytes": 41827021,
+  "sha256": "b198065bfe1ec21c0bbb3d853b547195f0527f4f8333921dd61245dc66af62bd",
+  "signatureVerified": true,
+  "debugCertificate": false,
+  "signerSha256": "A1:22:71:F8:76:03:8B:D9:2F:2C:80:83:61:35:15:32:B5:B2:08:BE:B4:46:1E:E5:B4:B8:AE:57:9D:19:70:AD",
+  "runtimeSha256": "b2b01701e75d346818f6e118f372dc4a01de562c4b20d45bbd75ef8363112d1d",
+  "consoleUploadKeyMatchVerified": false,
+  "consoleVersionCodeAvailabilityVerified": false,
+  "androidDeviceVerified": false,
+  "consoleSubmitted": false
+}

@@ -4,7 +4,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'system_tools.dart';
-import 'fps_monitor.dart';
 
 void main() {
   runApp(const GameBoosterProApp());
@@ -50,12 +49,11 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   late final AnimationController _flightController;
   Timer? _refreshTimer;
 
+  double _refreshRate = 0;
   int _battery = -1;
   double _temperature = -1;
   bool _pendingDnd = false;
   bool _dndBusy = false;
-  bool _dndRequestFailed = false;
-  bool _sessionOwnsDnd = false;
   bool _usageDisclosureAccepted = false;
   bool _monitorDisclosureAccepted = false;
   int? _ownCacheBytes;
@@ -65,11 +63,9 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   bool _cacheSheetOpen = false;
   bool _cacheLoading = false;
   List<Map<String, dynamic>> _topCachedApps = [];
-  bool _boosting = false;
-  bool _connected = false;
   bool _dndEnabled = false;
   bool _dndPermission = false;
-  String _status = 'Ready to start your gaming session.';
+  String _status = 'Choose an installed game.';
 
   @override
   void initState() {
@@ -354,7 +350,10 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       );
       if (accepted != true || !mounted) return;
     }
-    await _systemAction('launchGame', {'packageName': packageName});
+    await _systemAction('launchGame', {
+      'packageName': packageName,
+      'showDisplayBar': true,
+    });
   }
 
   Future<void> _systemAction(
@@ -384,12 +383,13 @@ class _BoosterDashboardState extends State<BoosterDashboard>
       }
 
       setState(() {
+        _refreshRate = (data['refreshRate'] as num?)?.toDouble() ?? 0;
         _battery = (data['batteryPercent'] as num?)?.toInt() ?? -1;
         _temperature = (data['batteryTemperature'] as num?)?.toDouble() ?? -1;
         _dndEnabled = data['dndEnabled'] == true;
         _dndPermission = data['dndPermission'] == true;
         if (!silent) {
-          _status = 'System status updated.';
+          _status = 'Device information updated.';
         }
       });
     } on MissingPluginException {
@@ -406,73 +406,9 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     }
   }
 
-  Future<void> _runBoost() async {
-    if (_boosting || _dndBusy || _cleaningCache) {
-      return;
-    }
-
-    if (_connected) {
-      if (_sessionOwnsDnd) {
-        await _setDnd(false);
-        if (_dndRequestFailed) return;
-      }
-      _sessionOwnsDnd = false;
-      _pendingDnd = false;
-      if (!mounted) return;
-      setState(() {
-        _connected = false;
-        _status = 'Session ended.';
-      });
-      return;
-    }
-
-    setState(() {
-      _boosting = true;
-      _status = 'Starting session...';
-    });
-    final flight = _flightController
-        .forward(from: 0)
-        .orCancel
-        .then<void>(
-          (_) {},
-          onError: (Object error) {
-            if (error is! TickerCanceled) throw error;
-          },
-        );
-    try {
-      final report = await _cleanCache();
-      await _loadSystemStatus(silent: true);
-      await flight;
-
-      // Cleanup is independent of optional Dont Disturb permission and consent.
-      if (mounted && _dndPermission && !_dndEnabled) {
-        _sessionOwnsDnd = await _toggleDnd();
-      }
-
-      if (!mounted) {
-        return;
-      }
-
-      final failedFiles = (report['failedFiles'] as num?)?.toInt() ?? 0;
-      setState(() {
-        _boosting = false;
-        _connected = true;
-        _status =
-            'Session active. This app\'s cache: ${formatBytes((report['beforeBytes'] as num).toInt())} before, ${formatBytes((report['freedBytes'] as num).toInt())} cleared, ${formatBytes((report['afterBytes'] as num).toInt())} remaining.${failedFiles > 0 ? ' $failedFiles files could not be removed.' : ''}${_dndEnabled ? ' Do Not Disturb active.' : ''}';
-      });
-    } on TickerCanceled {
-      // The dashboard was disposed while its launch animation was active.
-    } on MissingPluginException {
-      if (mounted) {
-        setState(() => _status = 'Sessions are available on Android.');
-      }
-    } on PlatformException catch (error) {
-      if (mounted) {
-        setState(() => _status = error.message ?? 'Unable to clear app cache.');
-      }
-    } finally {
-      if (mounted) setState(() => _boosting = false);
-    }
+  Future<void> _openGameLibrary() async {
+    _flightController.forward(from: 0);
+    await _showGames();
   }
 
   Future<int> _readOwnCacheSize() async {
@@ -643,7 +579,6 @@ class _BoosterDashboardState extends State<BoosterDashboard>
   Future<bool> _setDnd(bool enabled) async {
     if (_dndBusy) return _dndEnabled;
     _dndBusy = true;
-    _dndRequestFailed = false;
     try {
       final result = await _platform.invokeMapMethod<String, dynamic>(
         'toggleDnd',
@@ -667,10 +602,8 @@ class _BoosterDashboardState extends State<BoosterDashboard>
           () => _status = error.message ?? 'Unable to update Do Not Disturb.',
         );
       }
-      _dndRequestFailed = true;
       return false;
     } on MissingPluginException {
-      _dndRequestFailed = true;
       if (mounted) {
         setState(() => _status = 'Do Not Disturb is available on Android.');
       }
@@ -711,7 +644,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                 title: const Text('Launch game with display bar'),
                 onTap: () {
                   Navigator.pop(context);
-                  _showGames();
+                  _showGames(showDisplayBar: true);
                 },
               ),
             ],
@@ -721,7 +654,7 @@ class _BoosterDashboardState extends State<BoosterDashboard>
     );
   }
 
-  Future<void> _showGames() async {
+  Future<void> _showGames({bool showDisplayBar = false}) async {
     try {
       final games =
           await _platform.invokeListMethod<dynamic>('listGames') ?? [];
@@ -755,7 +688,15 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                           trailing: const Icon(Icons.play_arrow),
                           onTap: () {
                             Navigator.pop(context);
-                            _prepareGameLaunch(game['packageName'] as String);
+                            final packageName = game['packageName'] as String;
+                            if (showDisplayBar) {
+                              _prepareGameLaunch(packageName);
+                            } else {
+                              _systemAction('launchGame', {
+                                'packageName': packageName,
+                                'showDisplayBar': false,
+                              });
+                            }
                           },
                         ),
                     ],
@@ -817,12 +758,10 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                       vertical: 8,
                     ),
                     sliver: SliverToBoxAdapter(
-                      child: _BoosterCore(
+                      child: _GameLibraryCore(
                         animation: _flightController,
-                        boosting: _boosting,
-                        connected: _connected,
                         status: _status,
-                        onBoost: _runBoost,
+                        onOpenGames: _openGameLibrary,
                       ),
                     ),
                   ),
@@ -879,25 +818,12 @@ class _BoosterDashboardState extends State<BoosterDashboard>
                         ),
                         _ActionTile(
                           icon: Icons.speed_outlined,
-                          title: 'Animation FPS',
-                          value: 'This app only',
+                          title: 'Screen refresh rate',
+                          value: _refreshRate > 0
+                              ? '${_refreshRate.round()} Hz'
+                              : 'Unavailable',
                           color: const Color(0xFF46C7F4),
-                          onTap: () => showModalBottomSheet<void>(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (_) => const FpsMonitorSheet(),
-                          ),
-                        ),
-                        _ActionTile(
-                          icon: _connected
-                              ? Icons.pause_circle_outline
-                              : Icons.play_circle_outline,
-                          title: 'Session',
-                          value: _connected ? 'Active' : 'Inactive',
-                          color: _connected
-                              ? const Color(0xFF20D38B)
-                              : const Color(0xFF8B9390),
-                          onTap: _runBoost,
+                          onTap: _loadSystemStatus,
                         ),
                         _ActionTile(
                           icon: Icons.tune,
@@ -1032,20 +958,16 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _BoosterCore extends StatelessWidget {
-  const _BoosterCore({
+class _GameLibraryCore extends StatelessWidget {
+  const _GameLibraryCore({
     required this.animation,
-    required this.boosting,
-    required this.connected,
     required this.status,
-    required this.onBoost,
+    required this.onOpenGames,
   });
 
   final Animation<double> animation;
-  final bool boosting;
-  final bool connected;
   final String status;
-  final VoidCallback onBoost;
+  final VoidCallback onOpenGames;
 
   @override
   Widget build(BuildContext context) {
@@ -1066,7 +988,7 @@ class _BoosterCore extends StatelessWidget {
                 AnimatedBuilder(
                   animation: animation,
                   builder: (context, child) {
-                    final pulse = boosting
+                    final pulse = animation.status == AnimationStatus.forward
                         ? 0.88 + math.sin(animation.value * math.pi * 6) * 0.06
                         : 0.82;
                     return Transform.scale(
@@ -1096,7 +1018,7 @@ class _BoosterCore extends StatelessWidget {
                     );
                   },
                 ),
-                _RocketFlight(animation: animation, boosting: boosting),
+                _RocketFlight(animation: animation),
               ],
             ),
           ),
@@ -1105,22 +1027,11 @@ class _BoosterCore extends StatelessWidget {
             width: double.infinity,
             height: 56,
             child: FilledButton.icon(
-              onPressed: boosting ? null : onBoost,
-              icon: Icon(
-                boosting
-                    ? Icons.hourglass_top
-                    : (connected
-                          ? Icons.stop_circle_outlined
-                          : Icons.play_arrow),
-              ),
-              label: Text(
-                boosting
-                    ? 'Starting Session'
-                    : (connected ? 'End Session' : 'Start Session'),
-                style: const TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
-                ),
+              onPressed: onOpenGames,
+              icon: const Icon(Icons.sports_esports_outlined),
+              label: const Text(
+                'Open game library',
+                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
               ),
               style: FilledButton.styleFrom(
                 backgroundColor: const Color(0xFF20D38B),
@@ -1134,12 +1045,6 @@ class _BoosterCore extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            'Clears this app\'s cache. Do Not Disturb is optional.',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white70),
           ),
           const SizedBox(height: 8),
           Text(
@@ -1157,16 +1062,16 @@ class _BoosterCore extends StatelessWidget {
 }
 
 class _RocketFlight extends StatelessWidget {
-  const _RocketFlight({required this.animation, required this.boosting});
+  const _RocketFlight({required this.animation});
 
   final Animation<double> animation;
-  final bool boosting;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {
+        final boosting = animation.status == AnimationStatus.forward;
         final progress = animation.value;
         var verticalOffset = 0.0;
         var opacity = 1.0;

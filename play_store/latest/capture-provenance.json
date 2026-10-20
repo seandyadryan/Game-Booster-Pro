@@ -1,14 +1,16 @@
 {
-  "generatedAtUtc": "2026-10-19T08:04:00.996Z",
+  "generatedAtUtc": "2026-10-20T04:23:11.731Z",
   "method": "Actual Flutter widget renderer; not Android device captures.",
   "nativeTelemetry": "Unavailable. No invented cache savings, latency, battery or game FPS readings.",
   "runtime": {
-    "sha256": "b927ae9e11fe555f1552a46de89884fe676c6adffae1f715fb9fcf71df5581a0",
+    "sha256": "b2b01701e75d346818f6e118f372dc4a01de562c4b20d45bbd75ef8363112d1d",
     "files": {
+      ".fvmrc": "f974dfb1e3cd3daa460468408f0dad0eba043b5a0d14c7e905548b29f49a17e8",
+      "android/app/build.gradle.kts": "94ee533a28cd4988624c07244f12baa0909acb25f61ed71c0849487732de19a1",
       "android/app/src/main/AndroidManifest.xml": "0688848366771b08a5d3571a01d1eb4431a1b256ba7eb6b44c916a0e61cec7f2",
       "android/app/src/main/kotlin/com/deploydulupulangnanti/gameboosterpro/AppCacheCleaner.kt": "b3e8bd947a5177284c27d1568bc9c203faa93f14f7dbf0187846027ac6b7074b",
       "android/app/src/main/kotlin/com/deploydulupulangnanti/gameboosterpro/LatencySummary.kt": "3205baa32ceeabace49c0654f0df5cf14bbcac8f216d03c29ef7bf57172bd7c1",
-      "android/app/src/main/kotlin/com/deploydulupulangnanti/gameboosterpro/MainActivity.kt": "095ed6041d7254bb219af8a727e8a4af65363c4565bdf3f9216f2904b660633b",
+      "android/app/src/main/kotlin/com/deploydulupulangnanti/gameboosterpro/MainActivity.kt": "6a32a48227a434365be76cae9d45d669bd76d4ae905eeaedba57ed32eb999a80",
       "android/app/src/main/kotlin/com/deploydulupulangnanti/gameboosterpro/NetworkDiagnostics.kt": "7be51d24caa5aff8bdc730e76608b150fff284c462daa270f69df79fb8caf22f",
       "android/app/src/main/res/drawable-v21/launch_background.xml": "dca312ec77de83e43ef70a825c299b51451247286c29167d62f19165750b8793",
       "android/app/src/main/res/drawable/launch_background.xml": "2df60e2cfbee873ce2858088cf003e6b93498f2f568476da437610467ea1a9d7",
@@ -21,24 +23,23 @@
       "android/app/src/main/res/values/styles.xml": "cca15a99b59380a548bf6a890f7ca5380ee509b1f9bbb2f5f9ec3589fa25c2f7",
       "assets/app_icon.png": "c746a5b8b4340e5a8c20028d121fac8e580593d5c7c767dd20596b6babd77886",
       "assets/flying_rocket.png": "ef538ac025068f876340327ba22f8b3972700721b9726e88d9538a40ea856965",
-      "assets/privacy-policy.txt": "7320a8813eed51a13a21e3fa185c499bc8b1218c036f62b8f8dc5d5551ef15f1",
-      "lib/fps_monitor.dart": "0d59b3303b2d58b868188812f48a328f64dfbfa1a2d1014cebb7092d451e5dbd",
-      "lib/main.dart": "42908d2c58e7aed5f2e1c69ca01d308316d5077de96c3a00dfe0b8f1ac0807a9",
+      "assets/privacy-policy.txt": "3afe988055a0d9285a4fb20278cb9bc13f73ca8c64244604f693462d5c83bf32",
+      "lib/main.dart": "b7e717a57a40cc6acd1768e7eb5aa603c0291e93de79c323eb267626baf50bc4",
       "lib/system_tools.dart": "38a6e4a803521893563c894329723f6623a5afe1080d0ccbd13e6c145dfe9b78",
       "pubspec.lock": "5056b92d288b6d304c0cf13ca30d3fe8c95dc57d37f0789ed94fc0a9e5d04671"
     }
   },
   "screenshots": {
-    "phone/01-dashboard.png": "1a4feaac14aba183801cc55181ebbb04cc035702f312684382092a01d8ff7824",
-    "phone/02-tools.png": "9b94694843e48aeb1252b15fd4acb9ae4813e5d3a59f6e89b61667f28e0653c9",
-    "phone/03-display-game-tools.png": "9696c8855ca331c053fa4a0107975126e7366dbae7fe2167dc1bc11c9b23cac9",
-    "phone/04-network-latency.png": "3e0fbc9f327a0db85fcb68246b86a7daa0f938a77b7499831f9d8755d83f4e75",
-    "phone/05-fps.png": "bf8340a186ea38d5f3b8e3af23a08e6bce38511cf87958e9a6e8c3f96b77486a",
-    "desktop/01-dashboard.png": "6a167535824b8d136bd2c15d41a07cdc7b79247a5a50ee2fd4c2792447427ce6",
-    "desktop/02-tools.png": "3613bef42e45a00bc1937a6f90166733a694c55faa5f12cb5ec8ee8dea62c6ae",
-    "desktop/03-display-game-tools.png": "f8fa12c884e3d03ce23c70689aa75078179368c822b25e88f1de6f3fb9306d7c",
-    "desktop/04-network-latency.png": "747372b7491e81ae5be4a99ecedcde7a886ad5a4de12ae369e9326e9ad137271",
-    "desktop/05-fps.png": "2546b8cb61006709e001056e58c364765f7717a0b8b80c55c033d5d2f3ef80d4"
+    "phone/01-dashboard.png": "74ed8d5e79eee7c59ba59ef9098419b4bf007989e8f4ba8518ed5e351830068e",
+    "phone/02-tools.png": "eb09d32a326f4f5610a0d2af590ae96ccdc8d66568f70cc7eee6114a952377c1",
+    "phone/03-display-game-tools.png": "166410aa06a23becd44783c360241ecb691a8d0537510518deac6642b2c02473",
+    "phone/04-network-latency.png": "452440dfa392629824446d4c89b44614f5e6f7d0025087f354aa599ededb3924",
+    "phone/05-dnd-consent.png": "43077d560f2ddfbe205fb349679d1cb0bb1337720bf3da902f7c5069586e036f",
+    "desktop/01-dashboard.png": "79169245dd2990a62e68b73eeeed4ed65d0f2b3e52df5571a623800dd4c98ec2",
+    "desktop/02-tools.png": "33b4958483a4aaded251cd4b63a3c208811a9a518468b28c8cef72eef51cc407",
+    "desktop/03-display-game-tools.png": "f07531baedc06cae558721ec36a7ed6820dffdd4d15b945614654d4b4e373de7",
+    "desktop/04-network-latency.png": "73a57b7acf79cd1a335b08975ec6c130f0404290c9d7e0a11cb1768ed9d3904d",
+    "desktop/05-dnd-consent.png": "9658d52d39f3f84fa528fd411ed2967c860187bb20e12f058a1647c758f69683"
   },
   "androidDeviceVerified": false,
   "consoleApplied": false

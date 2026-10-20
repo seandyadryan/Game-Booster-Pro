@@ -2,7 +2,7 @@ A Game Tools Android-segédprogram TCP-késleltetéshez, az alkalmazás saját g
 
 A Network Latency öt TCP-kapcsolatot létesít a Cloudflare 1.1.1.1:443 címével. Megjeleníti az átlagos, legkisebb és legnagyobb késleltetést, az ingadozást és a sikertelen próbákat. Ezek kapcsolódási idők, nem játékszerver-ping vagy internetsebesség-teszt.
 
-A Start Session csak a Game Tools ideiglenes gyorsítótárát törli, és mutatja az eredeti, törölt és megmaradt bájtokat. Más alkalmazások gyorsítótárát kézzel, az Android beállításaiban lehet törölni. Az öt legnagyobb gyorsítótár listájához használati hozzáférés és Android 8 vagy újabb kell.
+A This app's cache csak a Game Tools ideiglenes gyorsítótárát törli, és mutatja az eredeti, törölt és megmaradt bájtokat. Más alkalmazások gyorsítótárát kézzel, az Android beállításaiban lehet törölni. Az öt legnagyobb gyorsítótár listájához használati hozzáférés és Android 8 vagy újabb kell.
 
 Indítson játékként felismert alkalmazásokat, nyissa meg a kijelző beállításait és tekintse meg az akkumulátor állapotát. A kijelző képfrissítése Hz-ben látható, nem a játék FPS-e. A játék grafikáját maga a játék szabályozza.
 
@@ -10,7 +10,7 @@ Az opcionális Ne zavarjanak mód az ébresztéseket és a médiát is némítha
 
 Az eredmények az eszközön kerülnek feldolgozásra. A kért hálózati teszt kapcsolatba lép a Cloudflare-rel, amely megkaphatja a nyilvános IP-címét. Nincs hirdetési vagy analitikai SDK. A felület angol nyelvű. A funkciók az eszköztől, az Android-verziótól és az engedélyektől függenek.
 
-Az Animation FPS csak az alkalmazás saját tesztanimációját méri, nem más játékok FPS-ét, és nem kínál játékbeli FPS-fedvényt. Az App settings csak az Android beállításait nyitja meg; nem zárja be a legutóbbi alkalmazásokat, nem állít le más appokat, és nem módosítja a játékok grafikáját. Az alkalmazás nem növeli a játékok teljesítményét.
+Az Open game library a gyorsítótárak törlése és az eszközbeállítások módosítása nélkül nyitja meg a játéklistát. Az App settings csak az Android beállításait nyitja meg. Az app nem zárja be a legutóbbi alkalmazásokat, nem állít le más appokat, nem módosítja a játékok grafikáját, nem méri a játékok FPS-ét és nem növeli a teljesítményüket.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

@@ -1,61 +1,54 @@
 # Game Tools: Network & Cache
 
-Current package: com.deploydulupulangnanti.gameboosterpro
+Package: com.deploydulupulangnanti.gameboosterpro
 
 Developer: PT Deploy Dulu Pulang Nanti
 
 Support: seandyadryan2@gmail.com
 
+## October 20 Remediation
+
+The main action is Open game library. It opens game shortcuts without cleaning cache, changing Do Not Disturb or requesting overlay/Usage Access. The old session state and the animation FPS demo have been removed. Screen information is labeled Screen refresh rate and measured in Hz, never game FPS. The original rocket illustration is retained as decorative navigation animation.
+
+Cache cleanup and Do Not Disturb are independent explicit actions. App settings only opens Android settings. Display & games can optionally launch a game with a screen-Hz bar after disclosure and permission; ordinary game launching needs neither overlay nor Usage Access.
+
 ## Included Materials
 
-- metadata/: title, short description and full description in all 28 requested locales plus en-US.
-- ALL_LANGUAGES.md: the same text in one document, preserving each language's opening and closing tags.
+- metadata/: title, short description and full description for en-US and all 28 requested locales.
+- ALL_LANGUAGES.md: combined text preserving each language's opening and closing tags.
 - assets/feature-graphic.png: 1024 x 500 PNG.
 - assets/app-icon.png: 512 x 512 PNG.
-- assets/phone/: five 1080 x 1920 screenshots.
-- assets/desktop/: five 1920 x 1080 large-screen renders.
-- capture-provenance.json: matching runtime source and screenshot hashes, with renderer limitations.
-- SUBMISSION_CHECKLIST.md: rejection diagnosis, functionality boundaries and required Console steps.
-- reviewer-notes-en-US.txt: accurate functionality explanation for review.
-- privacy/index.html: current policy with the new name.
-- asset-validation.json: character counts, image dimensions, file sizes and hashes.
-- custom-store-listings/apply-to-existing-listings.json: locale-to-material mapping for existing custom store listings.
+- assets/phone/: five 1080 x 1920 UI captures.
+- assets/desktop/: five 1920 x 1080 responsive UI captures.
+- privacy/index.html: updated privacy policy.
+- capture-provenance.json: runtime source and screenshot hashes.
+- asset-validation.json: field counts, image sizes and hashes.
+- SUBMISSION_CHECKLIST.md: required release and Console checks.
+- reviewer-notes-en-US.txt: accurate functionality explanation.
+- release-verification.json: identity and signature checks for the separately delivered AAB; not proof of Console acceptance or device testing.
+- custom-store-listings/apply-to-existing-listings.json: local mapping for existing custom listings, not evidence of remote changes.
 
-Each title is at most 30 characters, each short description at most 80, and each full description at most 4,000.
+## Capture Limits
 
-## Apply the Default Listing
+The screenshots use the actual Flutter widgets, not generated UI illustrations. The renderer cannot execute Android-native APIs and does not insert invented network, cache, battery or game-FPS measurements. Prefer actual captures from the matching release installed through an internal track after verifying native behavior.
 
-Use the matching locale's text files in the default store listing. The app's interface remains English; every description discloses this. The shared images are therefore in English and can be reused for these locales.
+Desktop images show responsive layout only. They do not establish Windows or Google Play Games on PC support; upload only to categories supported by the actual distribution.
 
-Replace the old title, descriptions, icon, feature graphic and screenshots. Remove old screenshots with Boost Now, AI Network, GFX Tools, Connected/Disconnected sessions, or the FPS placeholder. Do not mix these new images with superseded promotional media.
+The capture wrapper records source and image hashes. Packaging rejects mismatches. This is local evidence only and cannot prove what binary or listing is currently selected in Play Console.
 
-## Apply Every Existing Custom Store Listing
+## Replace All Store Variants
 
-This package has not been uploaded to Play Console. No authenticated inventory of your custom listing IDs, targeting rules, names, or languages was available. The mapping file is an application plan, not evidence of completed remote edits.
+Use each locale's title and descriptions; every description discloses that the interface is English. Replace all superseded screenshots, captions, videos and promotional claims. Do not use old Boost Now, AI Network, game FPS, background cleaner, session-state or GFX-control media.
 
-In Play Console, review each existing custom store listing, including country-, campaign- and URL-targeted variants. For each language, apply the corresponding metadata/<locale> text and the shared assets. Review inherited fields as well as fields overridden by the custom listing. Preserve its targeting unless you intend to change it.
+Apply changes to the default listing AND every existing custom listing, group, translated override and experiment. Custom listings do not automatically translate. Preserve targeting unless intentionally changing it. No authenticated Console inventory or remote updates were performed.
 
-Custom store listings do not automatically translate your content. Add each needed translation explicitly through Manage translations / Manage your own translations. If a listing belongs to a group, review the group's shared assets and any listing-specific overrides.
+The uploaded AAB and screenshots must describe the same source. Changing listing text alone does not update an older binary. Confirm the release shows Game Tools and Open game library before submitting. Acceptance remains Google's decision.
 
-Also check experiments or other active variants that may still serve old titles or media. Use the new materials consistently across all affected variants, preview the rendered listing, then submit the changes for review.
+## Artwork
 
-## Match the Release
+Feature graphic and store icon retain the Game Tools identity documented in ARTWORK.md. The user-provided rocket remains unchanged in the app. This task does not establish a license for that supplied artwork; verify your rights before distribution.
 
-These screenshots were captured from the revised Flutter widgets in this repository. They show Start Session, Network Latency, This app's cache, App settings, Display & games, and session Active/Inactive. Animation FPS is explicitly labeled This app only; the panel measures only the test animation. The separate optional game display bar shows only display refresh rate in Hz. The original rocket session artwork is retained.
-
-The capture renderer does not execute Android-native APIs. No fake latency, battery, cache savings or FPS measurements were inserted. For verified device telemetry, replace captures with screenshots from the matching release running on Android.
-
-The desktop images show the responsive Flutter layout; they do not certify Google Play Games on PC or Windows support. Use only image categories supported by your actual distribution.
-
-Upload a matching new Android App Bundle before using screenshots of changed UI for review. This task does not build or upload an APK/AAB. Updating listing copy alone does not change an already uploaded app.
-
-## Policy and Artwork Notes
-
-The new presentation describes a utility: TCP connection timings, app-owned temporary cache, game shortcuts, display settings and optional Do Not Disturb. It makes no claim to raise FPS, optimize a game's graphics, accelerate the network, or silently clear other apps' caches.
-
-Feature graphic and icon artwork were made with the built-in imagegen tool. The banner's exact copy is "Game Tools: Network & Cache" and "Network latency. App cache. Game launcher." The artwork shows a controller, Wi-Fi and storage utilities without a speedometer, rocket, performance numbers or rankings. Mechanical resizing preserves the copy.
-
-Screenshots come from the actual Flutter interface, not generated UI illustrations. Source fingerprints and image hashes guard against accidentally packaging older captures. They do not verify an uploaded binary or an existing Play Console listing. Reviewer acceptance remains Google's decision. Policy references:
+Policy references:
 
 - https://support.google.com/googleplay/android-developer/answer/17006354?hl=en
 - https://support.google.com/googleplay/android-developer/answer/9898842?hl=en

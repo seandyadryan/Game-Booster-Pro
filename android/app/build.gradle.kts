@@ -21,6 +21,11 @@ if (keyPropertiesFile != null) {
     FileInputStream(keyPropertiesFile).use { keystoreProperties.load(it) }
 }
 
+val buildingRelease = gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true) }
+if (buildingRelease && keyPropertiesFile == null) {
+    throw GradleException("Release signing properties are required. Debug signing is not permitted for release builds.")
+}
+
 android {
     namespace = "com.deploydulupulangnanti.gameboosterpro"
     compileSdk = flutter.compileSdkVersion
@@ -56,11 +61,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig = if (keyPropertiesFile != null) {
-                signingConfigs.getByName("release")
-            } else {
-                signingConfigs.getByName("debug")
-            }
+            signingConfig = signingConfigs.findByName("release")
         }
     }
 }

@@ -2,7 +2,7 @@ Game Tools este un utilitar Android pentru latența TCP, memoria cache a acestei
 
 Network Latency realizează cinci conexiuni TCP la Cloudflare 1.1.1.1:443 și arată latența medie, minimă și maximă, variația latenței și încercările eșuate. Sunt timpi de conectare, nu ping către serverul jocului sau test de viteză a internetului.
 
-Start Session șterge doar memoria cache temporară a Game Tools și arată octeții inițiali, eliminați și rămași. Cache-ul altor aplicații se șterge manual din setările Android. Lista celor mai mari cinci memorii cache necesită acces la datele de utilizare și Android 8 sau mai nou.
+This app's cache șterge doar memoria cache temporară a Game Tools și arată octeții inițiali, eliminați și rămași. Cache-ul altor aplicații se șterge manual din setările Android. Lista celor mai mari cinci memorii cache necesită acces la datele de utilizare și Android 8 sau mai nou.
 
 Pornește aplicațiile instalate identificate ca jocuri, deschide setările de afișare Android și vezi bateria. Rata de reîmprospătare a ecranului se măsoară în Hz, nu în FPS ai jocului. Grafica este controlată de fiecare joc.
 
@@ -10,7 +10,7 @@ Modul opțional Nu deranja poate opri sunetul alarmelor și conținutului media,
 
 Rezultatele sunt procesate pe dispozitiv. Verificările de rețea cerute contactează Cloudflare, care poate primi adresa IP publică. Fără SDK-uri de publicitate sau analiză. Interfața este în engleză. Funcțiile depind de dispozitiv, versiunea Android și permisiuni.
 
-Animation FPS măsoară doar animația de test a acestei aplicații, nu FPS-ul altor jocuri, și nu oferă un indicator FPS suprapus jocurilor. App settings deschide doar setările Android; nu închide aplicațiile recente, nu oprește alte aplicații și nu modifică grafica jocurilor. Aplicația nu crește performanța jocurilor.
+Open game library deschide lista jocurilor fără a curăța memoria cache sau a modifica setările dispozitivului. App settings deschide doar setările Android. Aplicația nu închide aplicațiile recente, nu oprește alte aplicații, nu modifică grafica, nu măsoară FPS-ul jocurilor și nu crește performanța acestora.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

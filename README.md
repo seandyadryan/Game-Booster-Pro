@@ -5,13 +5,12 @@ An Android gaming companion built with FVM Flutter 3.41.2.
 ## Features
 
 - This app's cache: read and clear Game Tools' temporary cache, showing before, cleared, and remaining bytes. Preferences and game data are preserved.
-- Start Session: clean this app's cache and start a session independently of optional Do Not Disturb access.
+- Open game library: opens installed-game shortcuts without clearing cache, changing Do Not Disturb, or requesting overlay/Usage Access.
 - Network Latency: five TCP connection probes on the active Android network to Cloudflare 1.1.1.1:443. Shows measured average/minimum/maximum latency, consecutive-probe jitter, and failed probes.
 - Top five caches: Usage Access permits reading cache sizes for launcher-visible apps on Android 8+. Cleanup of other apps is manual in Android App Info.
-- Do Not Disturb: optional strict mode, real system status, and restoration of the app's own request at session end.
-- Animation FPS: opt-in frame-cadence measurement of this app's rocket test animation using Flutter engine frame timings. The menu states "This app only". It cannot measure another game's FPS and does not relabel screen Hz as FPS.
+- Do Not Disturb: independently controlled, optional strict mode with explicit consent, real system status and a manual off toggle.
 - App settings: opens Android's app settings. This action does not close recent apps, stop other apps, or change their settings.
-- Device telemetry: battery percentage and battery temperature.
+- Device telemetry: screen refresh rate in Hz, battery percentage and battery temperature. No game FPS readings or performance scores.
 - Display & games: Android display settings and installed-game launcher.
 - Display monitor: optional overlay controlled by Usage Access and Display over other apps permission. Shows display refresh rate in Hz.
 - Privacy policy: accessible in the app and as a standalone HTML page in `docs/index.html`.
@@ -22,7 +21,7 @@ TCP connection latency is not ICMP ping, game-server ping, a speed test, or a ne
 
 Android does not allow an ordinary app to clear other apps' private caches, force-stop every background app, clear Recent Apps, change another game's graphics configuration, or read another game's actual FPS. Cache cleanup can legitimately report 0 B when this app has no temporary files.
 
-Strict Do Not Disturb silences alarms and media as well as notifications. WhatsApp and other calls may still arrive or appear. Android 15+ manages the app's request separately; other active rules may keep Do Not Disturb enabled after a session.
+Strict Do Not Disturb silences alarms and media as well as notifications. WhatsApp and other calls may still arrive or appear. Android 15+ manages the app's request separately; other active rules may keep Do Not Disturb enabled after this app's request is turned off.
 
 ## Development
 

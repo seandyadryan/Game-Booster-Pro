@@ -2,11 +2,11 @@
 
 The current listing title is **Game Tools: Network & Cache**.
 
-Use [latest/README.md](latest/README.md) for the current 29-language upload package, images, privacy policy and default/custom listing instructions. The October 19 remediation ZIP is game-tools-policy-fix-2026-10-19.zip in this directory. Start with latest/SUBMISSION_CHECKLIST.md before submitting a new binary and listing together.
+Use [latest/README.md](latest/README.md) for the current 29-language upload package, images, privacy policy and default/custom listing instructions. The October 20 remediation ZIP is game-tools-policy-fix-2026-10-20.zip in this directory. Start with latest/SUBMISSION_CHECKLIST.md before submitting a new binary and listing together.
 
-The current English fields are also available as title.txt, short-description.txt and full-description.txt. Canonical translations are stored in listing-source.json, with the explicit Animation FPS/settings scope in animation-fps-disclosures.json. Packaging combines both sources for each locale. The app interface and shared images are in English, as disclosed in every description.
+The current English fields are also available as title.txt, short-description.txt and full-description.txt. Canonical translations are stored in listing-source.json, with explicit feature limits in feature-limitations.json. Packaging combines both sources for each locale. The app interface and shared images are in English, as disclosed in every description.
 
-Current screen captures use Start Session, Network Latency, This app's cache, App settings, Display & games, Animation FPS / This app only, and session Active/Inactive. The display monitor shows only refresh rate in Hz. The rocket is unchanged session artwork. The icon and feature graphic use the Game Tools identity.
+Current captures use Open game library, Network Latency, This app's cache, App settings, Display & games and Screen refresh rate in Hz. Session state and the FPS demo have been removed. The rocket is unchanged decorative navigation artwork. Ordinary launching has no cleanup, DND changes or overlay/Usage Access requirement.
 
 Older release-note files refer to their historical release and are not part of the latest upload bundle. Previous promotional assets under assets/play_store are superseded. Do not upload them together with this package.
 

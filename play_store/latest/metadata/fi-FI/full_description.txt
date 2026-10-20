@@ -2,7 +2,7 @@ Game Tools on Android-työkalu TCP-verkkoviiveelle, tämän sovelluksen välimui
 
 Network Latency muodostaa viisi TCP-yhteyttä Cloudflareen osoitteessa 1.1.1.1:443. Näet keskimääräisen, pienimmän ja suurimman viiveen, viiveen vaihtelun ja epäonnistuneet yritykset. Tulokset ovat yhteyden muodostusaikoja, eivät pelipalvelimen ping-arvoja tai internetin nopeustesti.
 
-Start Session tyhjentää vain Game Toolsin tilapäisen välimuistin ja näyttää tavut ennen tyhjennystä, poistetut tavut ja jäljellä olevan määrän. Muiden sovellusten välimuisti tyhjennetään käsin Androidin asetuksissa. Viiden suurimman välimuistin lista vaatii käyttötietojen käyttöoikeuden ja Android 8:n tai uudemman.
+This app's cache tyhjentää vain Game Toolsin tilapäisen välimuistin ja näyttää tavut ennen tyhjennystä, poistetut tavut ja jäljellä olevan määrän. Muiden sovellusten välimuisti tyhjennetään käsin Androidin asetuksissa. Viiden suurimman välimuistin lista vaatii käyttötietojen käyttöoikeuden ja Android 8:n tai uudemman.
 
 Avaa peleiksi tunnistettuja sovelluksia, Androidin näyttöasetukset ja akun tiedot. Näytön virkistystaajuus mitataan hertseinä, ei pelin FPS:nä. Pelin grafiikka asetetaan itse pelissä.
 
@@ -10,7 +10,7 @@ Valinnainen Älä häiritse voi mykistää herätykset ja median, mutta ei hylk�
 
 Tulokset käsitellään laitteessasi. Käynnistämäsi verkkotarkistus ottaa yhteyden Cloudflareen, joka voi saada julkisen IP-osoitteesi. Ei mainos- tai analytiikka-SDK:ita. Käyttöliittymä on englanniksi. Toiminnot riippuvat laitteesta, Android-versiosta ja käyttöoikeuksista.
 
-Animation FPS mittaa vain tämän sovelluksen testianimaatiota, ei muiden pelien FPS-lukemaa, eikä näytä pelin FPS-peittokuvaa. App settings avaa vain Android-asetukset; se ei sulje viimeaikaisia sovelluksia, pysäytä muita sovelluksia tai muuta pelien grafiikkaa. Sovellus ei paranna pelien suorituskykyä.
+Open game library avaa peliluettelon tyhjentämättä välimuisteja tai muuttamatta laitteen asetuksia. App settings avaa vain Android-asetukset. Sovellus ei sulje viimeaikaisia sovelluksia, pysäytä muita sovelluksia, muuta pelien grafiikkaa, mittaa pelien FPS-lukemaa tai paranna pelien suorituskykyä.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

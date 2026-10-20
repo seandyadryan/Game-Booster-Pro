@@ -2,7 +2,7 @@ Game Tools to narzędzie Android do pomiaru opóźnienia TCP, pamięci podręczn
 
 Network Latency wykonuje pięć połączeń TCP z Cloudflare 1.1.1.1:443 i pokazuje średnie, minimalne i maksymalne opóźnienie, jitter oraz nieudane próby. To czas nawiązania połączenia, nie ping serwera gry ani test szybkości internetu.
 
-Start Session usuwa tylko tymczasową pamięć podręczną Game Tools i pokazuje bajty przed czyszczeniem, usunięte i pozostałe. Pamięć innych aplikacji czyści się ręcznie w ustawieniach Androida. Lista pięciu największych pamięci podręcznych wymaga dostępu do danych o użytkowaniu i Androida 8 lub nowszego.
+This app's cache usuwa tylko tymczasową pamięć podręczną Game Tools i pokazuje bajty przed czyszczeniem, usunięte i pozostałe. Pamięć innych aplikacji czyści się ręcznie w ustawieniach Androida. Lista pięciu największych pamięci podręcznych wymaga dostępu do danych o użytkowaniu i Androida 8 lub nowszego.
 
 Uruchamiaj zainstalowane aplikacje rozpoznane jako gry, otwieraj ustawienia ekranu Androida i sprawdzaj baterię. Odświeżanie ekranu jest mierzone w Hz, a nie w FPS gry. Grafiką w grze zarządza sama gra.
 
@@ -10,7 +10,7 @@ Opcjonalny tryb Nie przeszkadzać może wyciszać alarmy i multimedia, ale nie o
 
 Wyniki są przetwarzane na urządzeniu. Zlecane kontrole sieci łączą się z Cloudflare, który może otrzymać publiczny adres IP. Brak SDK reklamowych i analitycznych. Interfejs jest po angielsku. Funkcje zależą od urządzenia, wersji Androida i uprawnień.
 
-Animation FPS mierzy wyłącznie animację testową tej aplikacji, a nie FPS innych gier, i nie oferuje nakładki z FPS gry. App settings tylko otwiera ustawienia Androida; nie zamyka ostatnich aplikacji, nie zatrzymuje innych aplikacji ani nie zmienia grafiki gier. Aplikacja nie zwiększa wydajności gier.
+Open game library otwiera listę gier bez czyszczenia pamięci podręcznej ani zmiany ustawień urządzenia. App settings tylko otwiera ustawienia Androida. Aplikacja nie zamyka ostatnich aplikacji, nie zatrzymuje innych aplikacji, nie zmienia grafiki, nie mierzy FPS gier ani nie zwiększa ich wydajności.
 
 PT Deploy Dulu Pulang Nanti
 Support: seandyadryan2@gmail.com

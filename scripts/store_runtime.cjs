@@ -8,6 +8,7 @@ async function runtimeFingerprint(root) {
   const files = [
     'pubspec.lock', 'assets/app_icon.png', 'assets/flying_rocket.png',
     'assets/privacy-policy.txt', 'android/app/src/main/AndroidManifest.xml',
+    'android/app/build.gradle.kts', '.fvmrc',
   ];
   async function walk(relative) {
     for (const entry of await fs.readdir(path.join(root, relative), {withFileTypes: true})) {
